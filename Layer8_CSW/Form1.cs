@@ -10,7 +10,9 @@
 // | Version 1.11	  | 26.10.03	   | 23:41    | CH			   |  Neue ZPositon anlegen
 // | Version 1.12	  | 27.10.03	   | 22:53	  | CSW			   |  DateTimePicker eingebaut und VG.Datum entsprechend geändert
 // | Version 1.13	  | 29.10.03	   | 09:00	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms
-// | Version X ich wollte nur mal testen
+// | Versionsnummer können wir uns jetzt sparen, vergibt CVS ja selbständig
+// | daher ab jetzt nur die Änderungen angeben						
+//					  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
 using System;
 using System.Drawing;
 using System.Collections;
@@ -159,7 +161,9 @@ namespace Layer8_CSW
 		public string kürzelstring;
 		public string positionsnummerstring;
 		private int DG_aktZeile;
+		private KundenVerzeichnis Verzeichnis;
 		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
+		private System.Windows.Forms.ListBox LBox_Kunde;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -234,6 +238,7 @@ namespace Layer8_CSW
 			this.txtbox_Kundennummer = new System.Windows.Forms.TextBox();
 			this.txtbox_Kürzel = new System.Windows.Forms.TextBox();
 			this.Bauvorhaben = new System.Windows.Forms.TabPage();
+			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
 			this.label24 = new System.Windows.Forms.Label();
 			this.txtbox_Datum = new System.Windows.Forms.TextBox();
 			this.label22 = new System.Windows.Forms.Label();
@@ -299,7 +304,7 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
+			this.LBox_Kunde = new System.Windows.Forms.ListBox();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -328,6 +333,7 @@ namespace Layer8_CSW
 			// 
 			// Kunde
 			// 
+			this.Kunde.Controls.Add(this.LBox_Kunde);
 			this.Kunde.Controls.Add(this.button1);
 			this.Kunde.Controls.Add(this.label31);
 			this.Kunde.Controls.Add(this.txtbox_Email);
@@ -437,6 +443,7 @@ namespace Layer8_CSW
 			this.txtbox_Name.TabIndex = 22;
 			this.txtbox_Name.Text = "";
 			this.txtbox_Name.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtbox_Name_MouseDown);
+			this.txtbox_Name.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_Name_KeyPress);
 			this.txtbox_Name.Leave += new System.EventHandler(this.txtbox_Name_Leave);
 			// 
 			// button_Rückgangig
@@ -646,6 +653,15 @@ namespace Layer8_CSW
 			this.Bauvorhaben.TabIndex = 2;
 			this.Bauvorhaben.Text = "Bauvorhaben";
 			this.Bauvorhaben.ToolTipText = "Hier stehen die genauen Angaben zum Bauvorhaben wie z.B. Adresse, Name etc";
+			// 
+			// dateTimePicker_Bau
+			// 
+			this.dateTimePicker_Bau.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker_Bau.Location = new System.Drawing.Point(112, 192);
+			this.dateTimePicker_Bau.Name = "dateTimePicker_Bau";
+			this.dateTimePicker_Bau.Size = new System.Drawing.Size(104, 20);
+			this.dateTimePicker_Bau.TabIndex = 17;
+			this.dateTimePicker_Bau.ValueChanged += new System.EventHandler(this.dateTimePicker_Bau_ValueChanged);
 			// 
 			// label24
 			// 
@@ -1247,14 +1263,14 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// dateTimePicker_Bau
+			// LBox_Kunde
 			// 
-			this.dateTimePicker_Bau.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker_Bau.Location = new System.Drawing.Point(112, 192);
-			this.dateTimePicker_Bau.Name = "dateTimePicker_Bau";
-			this.dateTimePicker_Bau.Size = new System.Drawing.Size(104, 20);
-			this.dateTimePicker_Bau.TabIndex = 17;
-			this.dateTimePicker_Bau.ValueChanged += new System.EventHandler(this.dateTimePicker_Bau_ValueChanged);
+			this.LBox_Kunde.Location = new System.Drawing.Point(40, 344);
+			this.LBox_Kunde.Name = "LBox_Kunde";
+			this.LBox_Kunde.Size = new System.Drawing.Size(440, 121);
+			this.LBox_Kunde.TabIndex = 30;
+			this.LBox_Kunde.Visible = false;
+			this.LBox_Kunde.DoubleClick += new System.EventHandler(this.LBox_Kunde_DoubleClick);
 			// 
 			// MainFrame
 			// 
@@ -1316,8 +1332,7 @@ namespace Layer8_CSW
 			TT_Kundenseite.SetToolTip(this.txtbox_Kundennummer, "Die Kundennummer des aktuellen Kunden");
 			TT_Kundenseite.SetToolTip(this.txtbox_Name, "Der Nachname des aktuellen Kunden");
 			TT_Kundenseite.SetToolTip(this.txtbox_Vorname, "Der Vorname des aktuellen Kunden");
-
-			// Daten_binden();
+			
 			
 		}
 
@@ -2003,6 +2018,45 @@ namespace Layer8_CSW
 			VG.Datum = dateTimePicker_Bau.Value;
 		}
 
+		private void LBox_Kunde_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			MessageBox.Show(""+LBox_Kunde.SelectedIndex);
+
+		}
+
+		private void txtbox_Name_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			if (!this.bearbeiten_flag)
+			{
+
+				if(e.KeyChar == (char)13)
+				{
+					e.Handled=true;
+					String name;
+					name = this.txtbox_Name.Text;
+					
+					
+					this.Verzeichnis = UnsereDb.Kunde_suchen_nach_Name(name);
+//					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (this.Verzeichnis.Count !=0 )
+					{
+						if (this.Verzeichnis.Count == 1)
+						{
+							VG.UnserKunde=Verzeichnis[0];
+							kunde_Anzeigen(VG.UnserKunde);
+						}
+						else
+						{
+							MessageBox.Show(Verzeichnis.Count+" Kunden mit diesem Nachnamen gefunden. Bitte wählen Sie aus.", "Mehrere Übereinstimmungen gefunden");
+							Kundenliste_anzeigen(Verzeichnis);
+							
+						}
+					}
+					else MessageBox.Show("Kunde nicht gefunden");
+				}
+			}
+		}
+
 		/* private void txtbox_Posnummer_TextChanged(object sender, System.EventArgs e)
 		{
 			if (!this.position_neu)
@@ -2015,7 +2069,23 @@ namespace Layer8_CSW
 		}
 		*/
 
-	
+		public void Kundenliste_anzeigen (KundenVerzeichnis Verzeichnis)
+		{	LBox_Kunde.Visible=true;
+			LBox_Kunde.Items.Clear();
+			for(int i=0;i< Verzeichnis.Count;i++)
+			{
+				string Lboxtext = Verzeichnis[i].NName +", "+ Verzeichnis[i].VName;
+				Lboxtext += "   -   " + Verzeichnis[i].Strasse + "   -   " +  Verzeichnis[i].PLZ + " " +Verzeichnis[i].Ort;
+				LBox_Kunde.Items.Add(Lboxtext);
+			}
+		}
+
+		private void LBox_Kunde_DoubleClick(object sender, System.EventArgs e)
+		{	int index = LBox_Kunde.SelectedIndex;
+			VG.UnserKunde = Verzeichnis[index];
+			kunde_Anzeigen(VG.UnserKunde);
+			LBox_Kunde.Visible=false;
+		}
 
 	}
 
