@@ -1,65 +1,12 @@
-<?xml version="1.0"?><PosListe>
+<?xml version="1.0" standalone="yes"?>
+<PosListe>
   <Positionen>
     <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>021</Position>
-    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
-    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
-    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
-    <Fläche>15151</Fläche>
-    <Gesamtpreis>484832</Gesamtpreis>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
   </Positionen>
 </PosListe>

@@ -20,7 +20,7 @@
 // | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der ‹bersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Men¸ verschwindet immer erst nach der 2.Auswahl
 // | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelˆst: W‰hrend des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
 // | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es g‰be System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
-
+// | Version 1.21	  | 13.11.03	   | 00:42    | CSW			   |  Automatisches Berechnen der Betr‰ge (Netto/Brutto) unter Ber¸cksichtigung von MwSt und Rabatt, Darstellung im W‰hrungsformat, Kleinere ƒnderungen auf der Positionsseite, Einbinden von "alle_Vorg‰nge" in der ‹bersicht
 
 using System;
 using System.Drawing;
@@ -172,7 +172,6 @@ namespace Layer8_CSW
 		private System.Windows.Forms.GroupBox gBox_Pos‹bersicht;
 		private System.Windows.Forms.Button button_‹bersicht_Pos_Anzeigen;
 		private System.Windows.Forms.Button button_‹bersicht_alle_Kunden;
-		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.GroupBox gBox_PosBeschr‰nken;
 		private System.Windows.Forms.RadioButton radio_F;
 		private System.Windows.Forms.RadioButton radio_M;
@@ -222,6 +221,13 @@ namespace Layer8_CSW
 		private System.Windows.Forms.MenuItem menuItem13;
 		private System.Windows.Forms.MenuItem menuItem14;
 		private System.Windows.Forms.MenuItem menuItem15;
+		private System.Windows.Forms.Button button_‹bersicht_Vorg‰nge_anzeigen;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleVorgangsview;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn26;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn27;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn28;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label33;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -297,27 +303,22 @@ namespace Layer8_CSW
 			this.txtbox_Vorname = new System.Windows.Forms.TextBox();
 			this.txtbox_Kundennummer = new System.Windows.Forms.TextBox();
 			this.txtbox_K¸rzel = new System.Windows.Forms.TextBox();
-			this.Bauvorhaben = new System.Windows.Forms.TabPage();
-			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
-			this.label24 = new System.Windows.Forms.Label();
-			this.label22 = new System.Windows.Forms.Label();
-			this.label23 = new System.Windows.Forms.Label();
-			this.txtbox_VNummer = new System.Windows.Forms.TextBox();
-			this.txtbox_VBezeichnung = new System.Windows.Forms.TextBox();
-			this.gbox_Vorgangstyp = new System.Windows.Forms.GroupBox();
-			this.radio_Rechnung = new System.Windows.Forms.RadioButton();
-			this.radio_Angebot = new System.Windows.Forms.RadioButton();
-			this.radio_Aufmaﬂ = new System.Windows.Forms.RadioButton();
-			this.label20 = new System.Windows.Forms.Label();
-			this.label19 = new System.Windows.Forms.Label();
-			this.label18 = new System.Windows.Forms.Label();
-			this.label17 = new System.Windows.Forms.Label();
-			this.label16 = new System.Windows.Forms.Label();
-			this.txtbox_PlzBau = new System.Windows.Forms.TextBox();
-			this.txtbox_OrtBau = new System.Windows.Forms.TextBox();
-			this.txtbox_StrasseBau = new System.Windows.Forms.TextBox();
-			this.txtbox_VornameBau = new System.Windows.Forms.TextBox();
-			this.txtbox_NameBau = new System.Windows.Forms.TextBox();
+			this.Zahlung = new System.Windows.Forms.TabPage();
+			this.label33 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label32 = new System.Windows.Forms.Label();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.radioButton3 = new System.Windows.Forms.RadioButton();
+			this.radioButton2 = new System.Windows.Forms.RadioButton();
+			this.radioButton1 = new System.Windows.Forms.RadioButton();
+			this.label28 = new System.Windows.Forms.Label();
+			this.txtbox_Netto = new System.Windows.Forms.TextBox();
+			this.label25 = new System.Windows.Forms.Label();
+			this.txtbox_Mwst = new System.Windows.Forms.TextBox();
+			this.label26 = new System.Windows.Forms.Label();
+			this.label27 = new System.Windows.Forms.Label();
+			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
+			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
 			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
@@ -350,20 +351,27 @@ namespace Layer8_CSW
 			this.txtbox_Langtext = new System.Windows.Forms.TextBox();
 			this.txtbox_Kurztext = new System.Windows.Forms.TextBox();
 			this.txtbox_Posnummer = new System.Windows.Forms.TextBox();
-			this.Zahlung = new System.Windows.Forms.TabPage();
-			this.label32 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.radioButton3 = new System.Windows.Forms.RadioButton();
-			this.radioButton2 = new System.Windows.Forms.RadioButton();
-			this.radioButton1 = new System.Windows.Forms.RadioButton();
-			this.label28 = new System.Windows.Forms.Label();
-			this.txtbox_Netto = new System.Windows.Forms.TextBox();
-			this.label25 = new System.Windows.Forms.Label();
-			this.txtbox_Mwst = new System.Windows.Forms.TextBox();
-			this.label26 = new System.Windows.Forms.Label();
-			this.label27 = new System.Windows.Forms.Label();
-			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
-			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
+			this.Bauvorhaben = new System.Windows.Forms.TabPage();
+			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
+			this.label24 = new System.Windows.Forms.Label();
+			this.label22 = new System.Windows.Forms.Label();
+			this.label23 = new System.Windows.Forms.Label();
+			this.txtbox_VNummer = new System.Windows.Forms.TextBox();
+			this.txtbox_VBezeichnung = new System.Windows.Forms.TextBox();
+			this.gbox_Vorgangstyp = new System.Windows.Forms.GroupBox();
+			this.radio_Rechnung = new System.Windows.Forms.RadioButton();
+			this.radio_Angebot = new System.Windows.Forms.RadioButton();
+			this.radio_Aufmaﬂ = new System.Windows.Forms.RadioButton();
+			this.label20 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label16 = new System.Windows.Forms.Label();
+			this.txtbox_PlzBau = new System.Windows.Forms.TextBox();
+			this.txtbox_OrtBau = new System.Windows.Forms.TextBox();
+			this.txtbox_StrasseBau = new System.Windows.Forms.TextBox();
+			this.txtbox_VornameBau = new System.Windows.Forms.TextBox();
+			this.txtbox_NameBau = new System.Windows.Forms.TextBox();
 			this.‹bersicht = new System.Windows.Forms.TabPage();
 			this.DG_‹bersicht = new System.Windows.Forms.DataGrid();
 			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
@@ -388,6 +396,10 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn22 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn23 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn24 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTableStyleVorgangsview = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTextBoxColumn28 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn26 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn27 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.gBox_Pos‹bersicht = new System.Windows.Forms.GroupBox();
 			this.gBox_PosBeschr‰nken = new System.Windows.Forms.GroupBox();
 			this.radio_Z = new System.Windows.Forms.RadioButton();
@@ -395,7 +407,7 @@ namespace Layer8_CSW
 			this.radio_F = new System.Windows.Forms.RadioButton();
 			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
 			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
-			this.button4 = new System.Windows.Forms.Button();
+			this.button_‹bersicht_Vorg‰nge_anzeigen = new System.Windows.Forms.Button();
 			this.button_‹bersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
 			this.mainMenu1 = new System.Windows.Forms.MainMenu();
@@ -416,12 +428,12 @@ namespace Layer8_CSW
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
-			this.Bauvorhaben.SuspendLayout();
-			this.gbox_Vorgangstyp.SuspendLayout();
-			this.Positionen.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
 			this.Zahlung.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.Positionen.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
+			this.Bauvorhaben.SuspendLayout();
+			this.gbox_Vorgangstyp.SuspendLayout();
 			this.‹bersicht.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).BeginInit();
 			this.gBox_Pos‹bersicht.SuspendLayout();
@@ -435,9 +447,9 @@ namespace Layer8_CSW
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.Kunde);
-			this.tabControl1.Controls.Add(this.Bauvorhaben);
-			this.tabControl1.Controls.Add(this.Positionen);
 			this.tabControl1.Controls.Add(this.Zahlung);
+			this.tabControl1.Controls.Add(this.Positionen);
+			this.tabControl1.Controls.Add(this.Bauvorhaben);
 			this.tabControl1.Controls.Add(this.‹bersicht);
 			this.tabControl1.Location = new System.Drawing.Point(16, 24);
 			this.tabControl1.Name = "tabControl1";
@@ -752,188 +764,152 @@ namespace Layer8_CSW
 			this.txtbox_K¸rzel.TextChanged += new System.EventHandler(this.txtbox_K¸rzel_TextChanged);
 			this.txtbox_K¸rzel.Leave += new System.EventHandler(this.txtbox_K¸rzel_Leave);
 			// 
-			// Bauvorhaben
+			// Zahlung
 			// 
-			this.Bauvorhaben.Controls.Add(this.dateTimePicker_Bau);
-			this.Bauvorhaben.Controls.Add(this.label24);
-			this.Bauvorhaben.Controls.Add(this.label22);
-			this.Bauvorhaben.Controls.Add(this.label23);
-			this.Bauvorhaben.Controls.Add(this.txtbox_VNummer);
-			this.Bauvorhaben.Controls.Add(this.txtbox_VBezeichnung);
-			this.Bauvorhaben.Controls.Add(this.gbox_Vorgangstyp);
-			this.Bauvorhaben.Controls.Add(this.label20);
-			this.Bauvorhaben.Controls.Add(this.label19);
-			this.Bauvorhaben.Controls.Add(this.label18);
-			this.Bauvorhaben.Controls.Add(this.label17);
-			this.Bauvorhaben.Controls.Add(this.label16);
-			this.Bauvorhaben.Controls.Add(this.txtbox_PlzBau);
-			this.Bauvorhaben.Controls.Add(this.txtbox_OrtBau);
-			this.Bauvorhaben.Controls.Add(this.txtbox_StrasseBau);
-			this.Bauvorhaben.Controls.Add(this.txtbox_VornameBau);
-			this.Bauvorhaben.Controls.Add(this.txtbox_NameBau);
-			this.Bauvorhaben.Location = new System.Drawing.Point(4, 22);
-			this.Bauvorhaben.Name = "Bauvorhaben";
-			this.Bauvorhaben.Size = new System.Drawing.Size(988, 590);
-			this.Bauvorhaben.TabIndex = 2;
-			this.Bauvorhaben.Text = "Bauvorhaben";
-			this.Bauvorhaben.ToolTipText = "Hier stehen die genauen Angaben zum Bauvorhaben wie z.B. Adresse, Name etc";
+			this.Zahlung.Controls.Add(this.label33);
+			this.Zahlung.Controls.Add(this.label10);
+			this.Zahlung.Controls.Add(this.label32);
+			this.Zahlung.Controls.Add(this.groupBox1);
+			this.Zahlung.Controls.Add(this.label28);
+			this.Zahlung.Controls.Add(this.txtbox_Netto);
+			this.Zahlung.Controls.Add(this.label25);
+			this.Zahlung.Controls.Add(this.txtbox_Mwst);
+			this.Zahlung.Controls.Add(this.label26);
+			this.Zahlung.Controls.Add(this.label27);
+			this.Zahlung.Controls.Add(this.txtbox_Rabatt);
+			this.Zahlung.Controls.Add(this.txtbox_Brutto);
+			this.Zahlung.Location = new System.Drawing.Point(4, 22);
+			this.Zahlung.Name = "Zahlung";
+			this.Zahlung.Size = new System.Drawing.Size(988, 590);
+			this.Zahlung.TabIndex = 3;
+			this.Zahlung.Text = "Zahlung";
 			// 
-			// dateTimePicker_Bau
+			// label33
 			// 
-			this.dateTimePicker_Bau.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker_Bau.Location = new System.Drawing.Point(112, 192);
-			this.dateTimePicker_Bau.Name = "dateTimePicker_Bau";
-			this.dateTimePicker_Bau.Size = new System.Drawing.Size(104, 20);
-			this.dateTimePicker_Bau.TabIndex = 17;
-			this.dateTimePicker_Bau.ValueChanged += new System.EventHandler(this.dateTimePicker_Bau_ValueChanged);
+			this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label33.Location = new System.Drawing.Point(384, 104);
+			this.label33.Name = "label33";
+			this.label33.Size = new System.Drawing.Size(32, 24);
+			this.label33.TabIndex = 40;
+			this.label33.Text = "%";
 			// 
-			// label24
+			// label10
 			// 
-			this.label24.Location = new System.Drawing.Point(32, 192);
-			this.label24.Name = "label24";
-			this.label24.Size = new System.Drawing.Size(72, 23);
-			this.label24.TabIndex = 16;
-			this.label24.Text = "Datum";
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label10.Location = new System.Drawing.Point(384, 72);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(24, 24);
+			this.label10.TabIndex = 39;
+			this.label10.Text = "%";
 			// 
-			// label22
+			// label32
 			// 
-			this.label22.Location = new System.Drawing.Point(208, 64);
-			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(96, 23);
-			this.label22.TabIndex = 14;
-			this.label22.Text = "Vorgangsnummer";
+			this.label32.Location = new System.Drawing.Point(244, 124);
+			this.label32.Name = "label32";
+			this.label32.Size = new System.Drawing.Size(184, 14);
+			this.label32.TabIndex = 38;
+			this.label32.Text = "============================";
 			// 
-			// label23
+			// groupBox1
 			// 
-			this.label23.Location = new System.Drawing.Point(208, 104);
-			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(120, 23);
-			this.label23.TabIndex = 13;
-			this.label23.Text = "Vorgangsbezeichnung";
+			this.groupBox1.Controls.Add(this.radioButton3);
+			this.groupBox1.Controls.Add(this.radioButton2);
+			this.groupBox1.Controls.Add(this.radioButton1);
+			this.groupBox1.Location = new System.Drawing.Point(24, 32);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(160, 128);
+			this.groupBox1.TabIndex = 37;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Zahlungszeitraum";
 			// 
-			// txtbox_VNummer
+			// radioButton3
 			// 
-			this.txtbox_VNummer.Location = new System.Drawing.Point(336, 64);
-			this.txtbox_VNummer.Name = "txtbox_VNummer";
-			this.txtbox_VNummer.TabIndex = 12;
-			this.txtbox_VNummer.Text = "";
+			this.radioButton3.Location = new System.Drawing.Point(32, 88);
+			this.radioButton3.Name = "radioButton3";
+			this.radioButton3.TabIndex = 2;
+			this.radioButton3.Text = "3 Monate";
 			// 
-			// txtbox_VBezeichnung
+			// radioButton2
 			// 
-			this.txtbox_VBezeichnung.Location = new System.Drawing.Point(336, 104);
-			this.txtbox_VBezeichnung.Name = "txtbox_VBezeichnung";
-			this.txtbox_VBezeichnung.TabIndex = 11;
-			this.txtbox_VBezeichnung.Text = "";
+			this.radioButton2.Checked = true;
+			this.radioButton2.Location = new System.Drawing.Point(32, 56);
+			this.radioButton2.Name = "radioButton2";
+			this.radioButton2.TabIndex = 1;
+			this.radioButton2.TabStop = true;
+			this.radioButton2.Text = "4 Wochen";
 			// 
-			// gbox_Vorgangstyp
+			// radioButton1
 			// 
-			this.gbox_Vorgangstyp.Controls.Add(this.radio_Rechnung);
-			this.gbox_Vorgangstyp.Controls.Add(this.radio_Angebot);
-			this.gbox_Vorgangstyp.Controls.Add(this.radio_Aufmaﬂ);
-			this.gbox_Vorgangstyp.Location = new System.Drawing.Point(32, 32);
-			this.gbox_Vorgangstyp.Name = "gbox_Vorgangstyp";
-			this.gbox_Vorgangstyp.Size = new System.Drawing.Size(144, 128);
-			this.gbox_Vorgangstyp.TabIndex = 10;
-			this.gbox_Vorgangstyp.TabStop = false;
-			this.gbox_Vorgangstyp.Text = "Vorgangstyp";
+			this.radioButton1.Location = new System.Drawing.Point(32, 24);
+			this.radioButton1.Name = "radioButton1";
+			this.radioButton1.TabIndex = 0;
+			this.radioButton1.Text = "14 Tage";
 			// 
-			// radio_Rechnung
+			// label28
 			// 
-			this.radio_Rechnung.Location = new System.Drawing.Point(24, 80);
-			this.radio_Rechnung.Name = "radio_Rechnung";
-			this.radio_Rechnung.TabIndex = 2;
-			this.radio_Rechnung.Text = "Rechnung";
+			this.label28.Location = new System.Drawing.Point(240, 40);
+			this.label28.Name = "label28";
+			this.label28.Size = new System.Drawing.Size(64, 23);
+			this.label28.TabIndex = 36;
+			this.label28.Text = "Netto";
 			// 
-			// radio_Angebot
+			// txtbox_Netto
 			// 
-			this.radio_Angebot.Checked = true;
-			this.radio_Angebot.Location = new System.Drawing.Point(24, 56);
-			this.radio_Angebot.Name = "radio_Angebot";
-			this.radio_Angebot.TabIndex = 1;
-			this.radio_Angebot.TabStop = true;
-			this.radio_Angebot.Text = "Angebot";
+			this.txtbox_Netto.Location = new System.Drawing.Point(312, 40);
+			this.txtbox_Netto.Name = "txtbox_Netto";
+			this.txtbox_Netto.ReadOnly = true;
+			this.txtbox_Netto.TabIndex = 35;
+			this.txtbox_Netto.Text = "";
 			// 
-			// radio_Aufmaﬂ
+			// label25
 			// 
-			this.radio_Aufmaﬂ.Location = new System.Drawing.Point(24, 32);
-			this.radio_Aufmaﬂ.Name = "radio_Aufmaﬂ";
-			this.radio_Aufmaﬂ.TabIndex = 0;
-			this.radio_Aufmaﬂ.Text = "Aufmaﬂ";
+			this.label25.Location = new System.Drawing.Point(240, 104);
+			this.label25.Name = "label25";
+			this.label25.Size = new System.Drawing.Size(72, 23);
+			this.label25.TabIndex = 34;
+			this.label25.Text = "MwSt.";
 			// 
-			// label20
+			// txtbox_Mwst
 			// 
-			this.label20.Location = new System.Drawing.Point(32, 272);
-			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(72, 23);
-			this.label20.TabIndex = 9;
-			this.label20.Text = "Vorname";
+			this.txtbox_Mwst.Location = new System.Drawing.Point(312, 104);
+			this.txtbox_Mwst.Name = "txtbox_Mwst";
+			this.txtbox_Mwst.Size = new System.Drawing.Size(64, 20);
+			this.txtbox_Mwst.TabIndex = 33;
+			this.txtbox_Mwst.Text = "";
+			this.txtbox_Mwst.Leave += new System.EventHandler(this.txtbox_Mwst_Leave);
 			// 
-			// label19
+			// label26
 			// 
-			this.label19.Location = new System.Drawing.Point(32, 232);
-			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(72, 23);
-			this.label19.TabIndex = 8;
-			this.label19.Text = "Name";
+			this.label26.Location = new System.Drawing.Point(240, 72);
+			this.label26.Name = "label26";
+			this.label26.Size = new System.Drawing.Size(56, 23);
+			this.label26.TabIndex = 32;
+			this.label26.Text = "Rabatt";
 			// 
-			// label18
+			// label27
 			// 
-			this.label18.Location = new System.Drawing.Point(32, 352);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(72, 23);
-			this.label18.TabIndex = 7;
-			this.label18.Text = "PLZ";
+			this.label27.Location = new System.Drawing.Point(240, 144);
+			this.label27.Name = "label27";
+			this.label27.Size = new System.Drawing.Size(56, 23);
+			this.label27.TabIndex = 31;
+			this.label27.Text = "Brutto";
 			// 
-			// label17
+			// txtbox_Rabatt
 			// 
-			this.label17.Location = new System.Drawing.Point(32, 392);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(72, 23);
-			this.label17.TabIndex = 6;
-			this.label17.Text = "Ort";
+			this.txtbox_Rabatt.Location = new System.Drawing.Point(312, 72);
+			this.txtbox_Rabatt.Name = "txtbox_Rabatt";
+			this.txtbox_Rabatt.Size = new System.Drawing.Size(64, 20);
+			this.txtbox_Rabatt.TabIndex = 30;
+			this.txtbox_Rabatt.Text = "";
+			this.txtbox_Rabatt.Leave += new System.EventHandler(this.txtbox_Rabatt_Leave);
 			// 
-			// label16
+			// txtbox_Brutto
 			// 
-			this.label16.Location = new System.Drawing.Point(32, 312);
-			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(64, 23);
-			this.label16.TabIndex = 5;
-			this.label16.Text = "Strasse";
-			// 
-			// txtbox_PlzBau
-			// 
-			this.txtbox_PlzBau.Location = new System.Drawing.Point(112, 352);
-			this.txtbox_PlzBau.Name = "txtbox_PlzBau";
-			this.txtbox_PlzBau.TabIndex = 4;
-			this.txtbox_PlzBau.Text = "";
-			// 
-			// txtbox_OrtBau
-			// 
-			this.txtbox_OrtBau.Location = new System.Drawing.Point(112, 392);
-			this.txtbox_OrtBau.Name = "txtbox_OrtBau";
-			this.txtbox_OrtBau.TabIndex = 3;
-			this.txtbox_OrtBau.Text = "";
-			// 
-			// txtbox_StrasseBau
-			// 
-			this.txtbox_StrasseBau.Location = new System.Drawing.Point(112, 312);
-			this.txtbox_StrasseBau.Name = "txtbox_StrasseBau";
-			this.txtbox_StrasseBau.TabIndex = 2;
-			this.txtbox_StrasseBau.Text = "";
-			// 
-			// txtbox_VornameBau
-			// 
-			this.txtbox_VornameBau.Location = new System.Drawing.Point(112, 272);
-			this.txtbox_VornameBau.Name = "txtbox_VornameBau";
-			this.txtbox_VornameBau.TabIndex = 1;
-			this.txtbox_VornameBau.Text = "";
-			// 
-			// txtbox_NameBau
-			// 
-			this.txtbox_NameBau.Location = new System.Drawing.Point(112, 232);
-			this.txtbox_NameBau.Name = "txtbox_NameBau";
-			this.txtbox_NameBau.TabIndex = 0;
-			this.txtbox_NameBau.Text = "";
+			this.txtbox_Brutto.Location = new System.Drawing.Point(312, 144);
+			this.txtbox_Brutto.Name = "txtbox_Brutto";
+			this.txtbox_Brutto.ReadOnly = true;
+			this.txtbox_Brutto.TabIndex = 29;
+			this.txtbox_Brutto.Text = "";
 			// 
 			// Positionen
 			// 
@@ -1267,127 +1243,190 @@ namespace Layer8_CSW
 			this.txtbox_Posnummer.Tag = "Yo Man";
 			this.txtbox_Posnummer.Text = "";
 			this.txtbox_Posnummer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_Posnummer_KeyPress);
+			this.txtbox_Posnummer.Leave += new System.EventHandler(this.txtbox_Posnummer_Leave);
 			// 
-			// Zahlung
+			// Bauvorhaben
 			// 
-			this.Zahlung.Controls.Add(this.label32);
-			this.Zahlung.Controls.Add(this.groupBox1);
-			this.Zahlung.Controls.Add(this.label28);
-			this.Zahlung.Controls.Add(this.txtbox_Netto);
-			this.Zahlung.Controls.Add(this.label25);
-			this.Zahlung.Controls.Add(this.txtbox_Mwst);
-			this.Zahlung.Controls.Add(this.label26);
-			this.Zahlung.Controls.Add(this.label27);
-			this.Zahlung.Controls.Add(this.txtbox_Rabatt);
-			this.Zahlung.Controls.Add(this.txtbox_Brutto);
-			this.Zahlung.Location = new System.Drawing.Point(4, 22);
-			this.Zahlung.Name = "Zahlung";
-			this.Zahlung.Size = new System.Drawing.Size(988, 590);
-			this.Zahlung.TabIndex = 3;
-			this.Zahlung.Text = "Zahlung";
+			this.Bauvorhaben.Controls.Add(this.dateTimePicker_Bau);
+			this.Bauvorhaben.Controls.Add(this.label24);
+			this.Bauvorhaben.Controls.Add(this.label22);
+			this.Bauvorhaben.Controls.Add(this.label23);
+			this.Bauvorhaben.Controls.Add(this.txtbox_VNummer);
+			this.Bauvorhaben.Controls.Add(this.txtbox_VBezeichnung);
+			this.Bauvorhaben.Controls.Add(this.gbox_Vorgangstyp);
+			this.Bauvorhaben.Controls.Add(this.label20);
+			this.Bauvorhaben.Controls.Add(this.label19);
+			this.Bauvorhaben.Controls.Add(this.label18);
+			this.Bauvorhaben.Controls.Add(this.label17);
+			this.Bauvorhaben.Controls.Add(this.label16);
+			this.Bauvorhaben.Controls.Add(this.txtbox_PlzBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_OrtBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_StrasseBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_VornameBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_NameBau);
+			this.Bauvorhaben.Location = new System.Drawing.Point(4, 22);
+			this.Bauvorhaben.Name = "Bauvorhaben";
+			this.Bauvorhaben.Size = new System.Drawing.Size(988, 590);
+			this.Bauvorhaben.TabIndex = 2;
+			this.Bauvorhaben.Text = "Bauvorhaben";
+			this.Bauvorhaben.ToolTipText = "Hier stehen die genauen Angaben zum Bauvorhaben wie z.B. Adresse, Name etc";
 			// 
-			// label32
+			// dateTimePicker_Bau
 			// 
-			this.label32.Location = new System.Drawing.Point(232, 120);
-			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(280, 23);
-			this.label32.TabIndex = 38;
-			this.label32.Text = "________________________________";
+			this.dateTimePicker_Bau.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker_Bau.Location = new System.Drawing.Point(112, 192);
+			this.dateTimePicker_Bau.Name = "dateTimePicker_Bau";
+			this.dateTimePicker_Bau.Size = new System.Drawing.Size(104, 20);
+			this.dateTimePicker_Bau.TabIndex = 17;
+			this.dateTimePicker_Bau.ValueChanged += new System.EventHandler(this.dateTimePicker_Bau_ValueChanged);
 			// 
-			// groupBox1
+			// label24
 			// 
-			this.groupBox1.Controls.Add(this.radioButton3);
-			this.groupBox1.Controls.Add(this.radioButton2);
-			this.groupBox1.Controls.Add(this.radioButton1);
-			this.groupBox1.Location = new System.Drawing.Point(24, 32);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(160, 128);
-			this.groupBox1.TabIndex = 37;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Zahlungszeitraum";
+			this.label24.Location = new System.Drawing.Point(32, 192);
+			this.label24.Name = "label24";
+			this.label24.Size = new System.Drawing.Size(72, 23);
+			this.label24.TabIndex = 16;
+			this.label24.Text = "Datum";
 			// 
-			// radioButton3
+			// label22
 			// 
-			this.radioButton3.Location = new System.Drawing.Point(32, 88);
-			this.radioButton3.Name = "radioButton3";
-			this.radioButton3.TabIndex = 2;
-			this.radioButton3.Text = "3 Monate";
+			this.label22.Location = new System.Drawing.Point(208, 64);
+			this.label22.Name = "label22";
+			this.label22.Size = new System.Drawing.Size(96, 23);
+			this.label22.TabIndex = 14;
+			this.label22.Text = "Vorgangsnummer";
 			// 
-			// radioButton2
+			// label23
 			// 
-			this.radioButton2.Checked = true;
-			this.radioButton2.Location = new System.Drawing.Point(32, 56);
-			this.radioButton2.Name = "radioButton2";
-			this.radioButton2.TabIndex = 1;
-			this.radioButton2.TabStop = true;
-			this.radioButton2.Text = "4 Wochen";
+			this.label23.Location = new System.Drawing.Point(208, 104);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(120, 23);
+			this.label23.TabIndex = 13;
+			this.label23.Text = "Vorgangsbezeichnung";
 			// 
-			// radioButton1
+			// txtbox_VNummer
 			// 
-			this.radioButton1.Location = new System.Drawing.Point(32, 24);
-			this.radioButton1.Name = "radioButton1";
-			this.radioButton1.TabIndex = 0;
-			this.radioButton1.Text = "14 Tage";
+			this.txtbox_VNummer.Location = new System.Drawing.Point(336, 64);
+			this.txtbox_VNummer.Name = "txtbox_VNummer";
+			this.txtbox_VNummer.TabIndex = 12;
+			this.txtbox_VNummer.Text = "";
 			// 
-			// label28
+			// txtbox_VBezeichnung
 			// 
-			this.label28.Location = new System.Drawing.Point(240, 144);
-			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(64, 23);
-			this.label28.TabIndex = 36;
-			this.label28.Text = "Netto";
+			this.txtbox_VBezeichnung.Location = new System.Drawing.Point(336, 104);
+			this.txtbox_VBezeichnung.Name = "txtbox_VBezeichnung";
+			this.txtbox_VBezeichnung.TabIndex = 11;
+			this.txtbox_VBezeichnung.Text = "";
 			// 
-			// txtbox_Netto
+			// gbox_Vorgangstyp
 			// 
-			this.txtbox_Netto.Location = new System.Drawing.Point(312, 144);
-			this.txtbox_Netto.Name = "txtbox_Netto";
-			this.txtbox_Netto.TabIndex = 35;
-			this.txtbox_Netto.Text = "";
+			this.gbox_Vorgangstyp.Controls.Add(this.radio_Rechnung);
+			this.gbox_Vorgangstyp.Controls.Add(this.radio_Angebot);
+			this.gbox_Vorgangstyp.Controls.Add(this.radio_Aufmaﬂ);
+			this.gbox_Vorgangstyp.Location = new System.Drawing.Point(32, 32);
+			this.gbox_Vorgangstyp.Name = "gbox_Vorgangstyp";
+			this.gbox_Vorgangstyp.Size = new System.Drawing.Size(144, 128);
+			this.gbox_Vorgangstyp.TabIndex = 10;
+			this.gbox_Vorgangstyp.TabStop = false;
+			this.gbox_Vorgangstyp.Text = "Vorgangstyp";
 			// 
-			// label25
+			// radio_Rechnung
 			// 
-			this.label25.Location = new System.Drawing.Point(240, 104);
-			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(72, 23);
-			this.label25.TabIndex = 34;
-			this.label25.Text = "MwSt.";
+			this.radio_Rechnung.Location = new System.Drawing.Point(24, 80);
+			this.radio_Rechnung.Name = "radio_Rechnung";
+			this.radio_Rechnung.TabIndex = 2;
+			this.radio_Rechnung.Text = "Rechnung";
 			// 
-			// txtbox_Mwst
+			// radio_Angebot
 			// 
-			this.txtbox_Mwst.Location = new System.Drawing.Point(312, 104);
-			this.txtbox_Mwst.Name = "txtbox_Mwst";
-			this.txtbox_Mwst.TabIndex = 33;
-			this.txtbox_Mwst.Text = "";
+			this.radio_Angebot.Checked = true;
+			this.radio_Angebot.Location = new System.Drawing.Point(24, 56);
+			this.radio_Angebot.Name = "radio_Angebot";
+			this.radio_Angebot.TabIndex = 1;
+			this.radio_Angebot.TabStop = true;
+			this.radio_Angebot.Text = "Angebot";
 			// 
-			// label26
+			// radio_Aufmaﬂ
 			// 
-			this.label26.Location = new System.Drawing.Point(240, 72);
-			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(56, 23);
-			this.label26.TabIndex = 32;
-			this.label26.Text = "Rabatt";
+			this.radio_Aufmaﬂ.Location = new System.Drawing.Point(24, 32);
+			this.radio_Aufmaﬂ.Name = "radio_Aufmaﬂ";
+			this.radio_Aufmaﬂ.TabIndex = 0;
+			this.radio_Aufmaﬂ.Text = "Aufmaﬂ";
 			// 
-			// label27
+			// label20
 			// 
-			this.label27.Location = new System.Drawing.Point(240, 40);
-			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(56, 23);
-			this.label27.TabIndex = 31;
-			this.label27.Text = "Brutto";
+			this.label20.Location = new System.Drawing.Point(32, 272);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(72, 23);
+			this.label20.TabIndex = 9;
+			this.label20.Text = "Vorname";
 			// 
-			// txtbox_Rabatt
+			// label19
 			// 
-			this.txtbox_Rabatt.Location = new System.Drawing.Point(312, 72);
-			this.txtbox_Rabatt.Name = "txtbox_Rabatt";
-			this.txtbox_Rabatt.TabIndex = 30;
-			this.txtbox_Rabatt.Text = "";
+			this.label19.Location = new System.Drawing.Point(32, 232);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(72, 23);
+			this.label19.TabIndex = 8;
+			this.label19.Text = "Name";
 			// 
-			// txtbox_Brutto
+			// label18
 			// 
-			this.txtbox_Brutto.Location = new System.Drawing.Point(312, 40);
-			this.txtbox_Brutto.Name = "txtbox_Brutto";
-			this.txtbox_Brutto.TabIndex = 29;
-			this.txtbox_Brutto.Text = "";
+			this.label18.Location = new System.Drawing.Point(32, 352);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(72, 23);
+			this.label18.TabIndex = 7;
+			this.label18.Text = "PLZ";
+			// 
+			// label17
+			// 
+			this.label17.Location = new System.Drawing.Point(32, 392);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(72, 23);
+			this.label17.TabIndex = 6;
+			this.label17.Text = "Ort";
+			// 
+			// label16
+			// 
+			this.label16.Location = new System.Drawing.Point(32, 312);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(64, 23);
+			this.label16.TabIndex = 5;
+			this.label16.Text = "Strasse";
+			// 
+			// txtbox_PlzBau
+			// 
+			this.txtbox_PlzBau.Location = new System.Drawing.Point(112, 352);
+			this.txtbox_PlzBau.Name = "txtbox_PlzBau";
+			this.txtbox_PlzBau.TabIndex = 4;
+			this.txtbox_PlzBau.Text = "";
+			// 
+			// txtbox_OrtBau
+			// 
+			this.txtbox_OrtBau.Location = new System.Drawing.Point(112, 392);
+			this.txtbox_OrtBau.Name = "txtbox_OrtBau";
+			this.txtbox_OrtBau.TabIndex = 3;
+			this.txtbox_OrtBau.Text = "";
+			// 
+			// txtbox_StrasseBau
+			// 
+			this.txtbox_StrasseBau.Location = new System.Drawing.Point(112, 312);
+			this.txtbox_StrasseBau.Name = "txtbox_StrasseBau";
+			this.txtbox_StrasseBau.TabIndex = 2;
+			this.txtbox_StrasseBau.Text = "";
+			// 
+			// txtbox_VornameBau
+			// 
+			this.txtbox_VornameBau.Location = new System.Drawing.Point(112, 272);
+			this.txtbox_VornameBau.Name = "txtbox_VornameBau";
+			this.txtbox_VornameBau.TabIndex = 1;
+			this.txtbox_VornameBau.Text = "";
+			// 
+			// txtbox_NameBau
+			// 
+			this.txtbox_NameBau.Location = new System.Drawing.Point(112, 232);
+			this.txtbox_NameBau.Name = "txtbox_NameBau";
+			this.txtbox_NameBau.TabIndex = 0;
+			this.txtbox_NameBau.Text = "";
 			// 
 			// ‹bersicht
 			// 
@@ -1404,7 +1443,7 @@ namespace Layer8_CSW
 			// 
 			this.DG_‹bersicht.DataMember = "";
 			this.DG_‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.DG_‹bersicht.Location = new System.Drawing.Point(16, 160);
+			this.DG_‹bersicht.Location = new System.Drawing.Point(24, 160);
 			this.DG_‹bersicht.Name = "DG_‹bersicht";
 			this.DG_‹bersicht.ReadOnly = true;
 			this.DG_‹bersicht.Size = new System.Drawing.Size(960, 416);
@@ -1413,7 +1452,8 @@ namespace Layer8_CSW
 																									 this.dataGridTableStyle1,
 																									 this.dataGridTableStyle3,
 																									 this.dataGridTableStyle4,
-																									 this.dataGridTableStyleKunden‹bersicht});
+																									 this.dataGridTableStyleKunden‹bersicht,
+																									 this.dataGridTableStyleVorgangsview});
 			this.DG_‹bersicht.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DG_‹bersicht_MouseUp);
 			// 
 			// dataGridTableStyle1
@@ -1604,6 +1644,41 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn24.MappingName = "eMail";
 			this.dataGridTextBoxColumn24.Width = 125;
 			// 
+			// dataGridTableStyleVorgangsview
+			// 
+			this.dataGridTableStyleVorgangsview.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyleVorgangsview.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+																															 this.dataGridTextBoxColumn28,
+																															 this.dataGridTextBoxColumn26,
+																															 this.dataGridTextBoxColumn27});
+			this.dataGridTableStyleVorgangsview.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyleVorgangsview.MappingName = "KundenVorgaenge";
+			this.dataGridTableStyleVorgangsview.PreferredColumnWidth = 200;
+			// 
+			// dataGridTextBoxColumn28
+			// 
+			this.dataGridTextBoxColumn28.Format = "";
+			this.dataGridTextBoxColumn28.FormatInfo = null;
+			this.dataGridTextBoxColumn28.HeaderText = "Index";
+			this.dataGridTextBoxColumn28.MappingName = "Index";
+			this.dataGridTextBoxColumn28.Width = 75;
+			// 
+			// dataGridTextBoxColumn26
+			// 
+			this.dataGridTextBoxColumn26.Format = "";
+			this.dataGridTextBoxColumn26.FormatInfo = null;
+			this.dataGridTextBoxColumn26.HeaderText = "Vorgang";
+			this.dataGridTextBoxColumn26.MappingName = "Vorgang";
+			this.dataGridTextBoxColumn26.Width = 200;
+			// 
+			// dataGridTextBoxColumn27
+			// 
+			this.dataGridTextBoxColumn27.Format = "";
+			this.dataGridTextBoxColumn27.FormatInfo = null;
+			this.dataGridTextBoxColumn27.HeaderText = "Kundennummer";
+			this.dataGridTextBoxColumn27.MappingName = "Kundennr";
+			this.dataGridTextBoxColumn27.Width = 200;
+			// 
 			// gBox_Pos‹bersicht
 			// 
 			this.gBox_Pos‹bersicht.Controls.Add(this.gBox_PosBeschr‰nken);
@@ -1663,7 +1738,7 @@ namespace Layer8_CSW
 			// 
 			// gBox_Kunden‹bersicht
 			// 
-			this.gBox_Kunden‹bersicht.Controls.Add(this.button4);
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_Vorg‰nge_anzeigen);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_alle_Kunden);
 			this.gBox_Kunden‹bersicht.Location = new System.Drawing.Point(496, 16);
 			this.gBox_Kunden‹bersicht.Name = "gBox_Kunden‹bersicht";
@@ -1672,13 +1747,14 @@ namespace Layer8_CSW
 			this.gBox_Kunden‹bersicht.TabStop = false;
 			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
 			// 
-			// button4
+			// button_‹bersicht_Vorg‰nge_anzeigen
 			// 
-			this.button4.Location = new System.Drawing.Point(24, 80);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(208, 32);
-			this.button4.TabIndex = 1;
-			this.button4.Text = "Alle Vorg‰nge anzeigen";
+			this.button_‹bersicht_Vorg‰nge_anzeigen.Location = new System.Drawing.Point(24, 80);
+			this.button_‹bersicht_Vorg‰nge_anzeigen.Name = "button_‹bersicht_Vorg‰nge_anzeigen";
+			this.button_‹bersicht_Vorg‰nge_anzeigen.Size = new System.Drawing.Size(208, 32);
+			this.button_‹bersicht_Vorg‰nge_anzeigen.TabIndex = 1;
+			this.button_‹bersicht_Vorg‰nge_anzeigen.Text = "Alle Vorg‰nge anzeigen";
+			this.button_‹bersicht_Vorg‰nge_anzeigen.Click += new System.EventHandler(this.button_‹bersicht_Vorg‰nge_anzeigen_Click);
 			// 
 			// button_‹bersicht_alle_Kunden
 			// 
@@ -1799,12 +1875,12 @@ namespace Layer8_CSW
 			this.Load += new System.EventHandler(this.MainFrame_Load);
 			this.tabControl1.ResumeLayout(false);
 			this.Kunde.ResumeLayout(false);
-			this.Bauvorhaben.ResumeLayout(false);
-			this.gbox_Vorgangstyp.ResumeLayout(false);
-			this.Positionen.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
 			this.Zahlung.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
+			this.Positionen.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
+			this.Bauvorhaben.ResumeLayout(false);
+			this.gbox_Vorgangstyp.ResumeLayout(false);
 			this.‹bersicht.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).EndInit();
 			this.gBox_Pos‹bersicht.ResumeLayout(false);
@@ -1857,7 +1933,7 @@ namespace Layer8_CSW
 			this.dataGridTableStyle3.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			this.dataGridTableStyle4.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			
-		
+			ZahlungsTab_aktualisieren();
 		}
 
 
@@ -1908,37 +1984,40 @@ namespace Layer8_CSW
 
 		private void button_‹bernehmen_Click(object sender, System.EventArgs e) //CSW
 		{
+			if(txtbox_Posnummer.Text!="")
+		 {
 
-
-			if (this.position_anlegen)
-			{}
+			 if (this.position_anlegen)
+			 {}
 			
-			else 
-			{
+			 else 
+			 {
 
-				dataGrid_Vorgang.Enabled=true;   // That's the trick! Damit der am Anfang nicht so lange l‰dt bis die erste Position angezeigt wird
-				if(Daten_in_aktPos_schreiben())	 // Eine DummyMethode, damit ich schon Daten ‰ndern kann (hab doch ne Pr¸fung drin, deshalb die if-Abfrage)
-				{
-					if (DG_Zeile_bearbeiten==false) // boolsches Flag - im Bearbeiten Modus ist das DataGrid disabled
-					{	
-						VG.Daten_hinzufuegen();	   //	Einf¸gen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
-					}
-					else 
-					{
-						VG.Daten_wiedereinf¸gen();  // Wird eigentlich an der alten Stelle bearbeitet
-						DG_Zeile_bearbeiten=false;						
-						button_loeschen.Visible=false;
+				 dataGrid_Vorgang.Enabled=true;   // That's the trick! Damit der am Anfang nicht so lange l‰dt bis die erste Position angezeigt wird
+				 if(Daten_in_aktPos_schreiben())	 // Eine DummyMethode, damit ich schon Daten ‰ndern kann (hab doch ne Pr¸fung drin, deshalb die if-Abfrage)
+				 {
+					 if (DG_Zeile_bearbeiten==false) // boolsches Flag - im Bearbeiten Modus ist das DataGrid disabled
+					 {	
+						 VG.Daten_hinzufuegen();	   //	Einf¸gen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
+					 }
+					 else 
+					 {
+						 VG.Daten_wiedereinf¸gen();  // Wird eigentlich an der alten Stelle bearbeitet
+						 DG_Zeile_bearbeiten=false;						
+						 button_loeschen.Visible=false;
 					
-						// alte Formatierung wiederherstellen
-						dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
-					}
-				}
+						 // alte Formatierung wiederherstellen
+						 dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
+					 }
+				 }
 		
-				dataGrid_Vorgang.ReadOnly=true;  // Ich weiﬂ nicht warum aber mit diesem "Trick" l‰uft es schneller
-			}
+				 dataGrid_Vorgang.ReadOnly=true;  // Ich weiﬂ nicht warum aber mit diesem "Trick" l‰uft es schneller
+			 }
+
+			 ZahlungsTab_aktualisieren();
+		 }
+		else MessageBox.Show("Mit der Positionsnummer stimmt etwas nicht.","Es ist ein Fehler aufgetreten.");
 		}
-
-
 		private void txtbox_K¸rzel_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
 			if (!this.bearbeiten_flag)
@@ -2460,10 +2539,12 @@ namespace Layer8_CSW
 					if (VG.aktPos != null)
 					{
 						position_Anzeigen(VG.aktPos);
+						txtbox_Fl‰che.Focus();
 					}
-					else MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+					else{ MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+						this.txtbox_Posnummer.Text="";}
 				}
-
+			
 			}
 		}
 
@@ -2476,7 +2557,7 @@ namespace Layer8_CSW
 
 		
 			dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
-
+			ZahlungsTab_aktualisieren();
 		}
 
 		private void txtbox_Fl‰che_DoubleClick(object sender, System.EventArgs e) // CSW - 26.10.03 
@@ -2691,8 +2772,6 @@ namespace Layer8_CSW
 				cMenu_KundenDG_Anlegen(); // Standard-Elemente
 				if(DG_‹bersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
 				{
-						
-					
 					cMenu_KundenDG.MenuItems.Add("-");
 					cMenu_KundenDG.MenuItems.Add("Position ¸bernehmen (Dummy)");
 				}
@@ -2704,6 +2783,7 @@ namespace Layer8_CSW
 		{
 		
 			cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_‹bersicht_alle_Kunden_Click));
+			cMenu_KundenDG.MenuItems.Add("alle Vorg‰nge",new System.EventHandler(this.button_‹bersicht_Vorg‰nge_anzeigen_Click));
 			cMenu_KundenDG.MenuItems.Add("-");
 			cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
 			cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
@@ -2734,6 +2814,62 @@ namespace Layer8_CSW
 			DG_‹bersicht.Enabled =true;
 			
 
+		}
+
+		private void button_‹bersicht_Vorg‰nge_anzeigen_Click(object sender, System.EventArgs e)
+		{
+			DG_‹bersicht.Enabled =false;
+			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+			VorgangsView.Sort="Index";
+			DG_‹bersicht.SetDataBinding(VorgangsView,null);
+			DG_‹bersicht.Enabled =true;	
+
+		}
+
+		private void ZahlungsTab_aktualisieren()
+		{
+			txtbox_Mwst.Text=Convert.ToString(VG.MwSt);
+			txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);
+			txtbox_Netto.Text=string.Format( "{0:C}",VG.Netto);
+			txtbox_Brutto.Text=string.Format( "{0:C}",VG.Brutto);
+		}
+
+		private void txtbox_Rabatt_Leave(object sender, System.EventArgs e)
+		{
+			try {VG.Rabatt=Convert.ToDecimal(txtbox_Rabatt.Text);
+				ZahlungsTab_aktualisieren();}
+			catch{MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
+				txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);}
+		}
+
+		private void txtbox_Mwst_Leave(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				VG.MwSt=Convert.ToDecimal(txtbox_Mwst.Text);
+				ZahlungsTab_aktualisieren();}
+			catch{MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
+					txtbox_Mwst.Text=Convert.ToString(VG.MwSt);}
+		}
+
+		private void txtbox_Posnummer_Leave(object sender, System.EventArgs e)
+		{
+			if (!this.position_anlegen)
+			{
+				
+					String posnummer;
+					posnummer = this.txtbox_Posnummer.Text;
+						
+					VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(posnummer);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (VG.aktPos != null)
+					{
+						position_Anzeigen(VG.aktPos);
+					}
+					else{ MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+					this.txtbox_Posnummer.Text="";}
+				
+
+			}
 		}
 
 
@@ -3001,7 +3137,7 @@ namespace Layer8_CSW
 		private decimal m_Netto;
 		private decimal m_Brutto;
 		private decimal m_MwSt;
-		private int m_Rabatt;
+		private decimal m_Rabatt;
 		// Zus‰tzlich die Variablen aus Position (Langtext/Kurztext/Preis/ etc.)
 
 		#endregion
@@ -3064,13 +3200,19 @@ namespace Layer8_CSW
 
 		public decimal Netto
 		{
-			get {return m_Netto;}
+			get {m_Netto = Betrag_berechnen(); 
+				return m_Netto;}
 			set{this.m_Netto=value;}
 		}
 
 		public decimal Brutto
 		{
-			get {return m_Brutto;}
+			get {decimal multiplikator = (MwSt*0.01m)+1;
+				 decimal abzug = m_Netto*(Rabatt*0.01m);
+				decimal zwischensumme =m_Netto-abzug;
+				
+				m_Brutto = zwischensumme*multiplikator;
+				return m_Brutto;}
 			set{this.m_Brutto=value;}
 		}
 
@@ -3098,7 +3240,7 @@ namespace Layer8_CSW
 			set{this.m_Vorgangsbezeichnung=value;}
 		}
 
-		public int Rabatt
+		public decimal Rabatt
 		{
 			get {return m_Rabatt;}
 			set{this.m_Rabatt=value;}
@@ -3120,13 +3262,13 @@ namespace Layer8_CSW
 			m_BauStrasse="Baustrasse 15";
 			m_BauPLZ=49148;
 			m_BauOrt="Baustelle";
-			m_Netto= 10.5m;
-			m_Brutto=9.47m;
-			m_MwSt=1.65m;
+			m_Netto= 0m;
+			m_Brutto=0m;
+			m_MwSt=16m;
 			m_Dateiname="testDatei.xml";
 			m_Vorgangsnummer=1;
 			m_Vorgangsbezeichnung="Angebot";
-			m_Rabatt=5;
+			m_Rabatt=0m;
 			PosListe = new DataSet("PosListe");
 			InitializeDataSet();
 		
@@ -3156,7 +3298,7 @@ namespace Layer8_CSW
 
 	
 		public void XML_schreiben()  // Methode um alle aktuellen Daten in ein XML-Dokument zu schreiben - CSW 18.10.03 17:00
-		{
+		{	Betrag_berechnen();
 			PosListe.WriteXml(@"..\..\products.xml");	
 			XmlTextWriter W = new XmlTextWriter(@"..\..\KundeX.xml",null);
 			XmlTextReader R = new XmlTextReader(@"..\..\products.xml");
@@ -3333,7 +3475,7 @@ namespace Layer8_CSW
 			Netto=Convert.ToDecimal(R.ReadElementString());
 			MwSt=Convert.ToDecimal(R.ReadElementString());
 			Brutto = Convert.ToDecimal(R.ReadElementString());
-			Rabatt=Convert.ToInt32(R.ReadElementString());
+			Rabatt=Convert.ToDecimal(R.ReadElementString());
 			Dateiname=R.ReadElementString();
 			R.Read();
 			R.Read();
@@ -3477,6 +3619,15 @@ namespace Layer8_CSW
 		public void Position_aus_Liste_lˆschen()
 		{
 			bearbeiteteZeile.Delete();
+		}
+
+		public decimal Betrag_berechnen()
+		{decimal summe=0;
+		
+			foreach (DataRow DR in PosListe.Tables[0].Rows	)
+			{ summe += Convert.ToDecimal(DR[6]);}
+			
+			return summe;
 		}
 
 		#endregion
@@ -3772,10 +3923,10 @@ namespace Layer8_CSW
 			}
 		    
 			
-			
-			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
-			MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
-			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
+//			
+//			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
+//			MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
+//			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
 
 			return myDataSet;
 		}
@@ -4406,7 +4557,7 @@ namespace Layer8_CSW
 		
 			DataSet myDataSet = new DataSet("KundenVorgaenge");
 			DataTable KundenVorgaenge = myDataSet.Tables.Add("KundenVorgaenge");
-			KundenVorgaenge.Columns.Add("Kundenummer",typeof(int));
+			KundenVorgaenge.Columns.Add("Kundennr",typeof(int));
 			KundenVorgaenge.Columns.Add("Vorgang",typeof(string));
 			KundenVorgaenge.Columns.Add("Index",typeof(int));
 			KundenVorgaenge.PrimaryKey = new DataColumn[]{KundenVorgaenge.Columns["Index"]};
