@@ -27,6 +27,7 @@
 // | Version 1.22d    | 18.11.03	   | 13:25	  | CSW			   |  Casi's Erweiterungen erweitert und eingepflegt, die Übersicht ist jetzt fast fertig (nur noch Kontext Menü fehlt)
 // | Version 1.23     | 20.11.03	   | 18:18	  | Casi		   |  Erste Druckmethoden eingefügt
 // | Version 1.24	  | 21.11.03	   | 17:34    | CSW			   |  Vorgangsnamen gebastelt und Nachkalkulation vorbereitet
+// | Version 1.241    | 22.11.03	   | 12:16	  | Casi		   |  Druckvorschau implementiert
 using System;
 using System.Text;
 using System.Drawing;
@@ -163,6 +164,7 @@ namespace Layer8_CSW
 		private Font maintextFont = new Font("times New Roman", 14);
         private Font subTextFont = new Font("Times New Roman" ,12);
 		private PageSettings storedPageSettings;
+		uint aktuelleSeite;
 		public DB UnsereDb;
 		public Vorgang VG;
 		public bool bearbeiten_flag = false;
@@ -249,7 +251,6 @@ namespace Layer8_CSW
 		private System.Windows.Forms.MenuItem menuItem16;
 		private System.Windows.Forms.MenuItem menuItem17;
 		private System.Windows.Forms.MenuItem menuDruckenPageSetup;
-		private System.Windows.Forms.MenuItem menuItem19;
 		private System.Windows.Forms.MenuItem menuDruckenPrint;
 		private System.Windows.Forms.TabPage Nachkalkulation;
 		private System.Windows.Forms.DataGrid DG_Nachkalkulation;
@@ -264,6 +265,7 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label40;
 		private System.Windows.Forms.TextBox txtBox_Gewinn;
 		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.MenuItem menuDruckenPrintPreview;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -339,22 +341,6 @@ namespace Layer8_CSW
 			this.txtbox_Vorname = new System.Windows.Forms.TextBox();
 			this.txtbox_Kundennummer = new System.Windows.Forms.TextBox();
 			this.txtbox_Kürzel = new System.Windows.Forms.TextBox();
-			this.Zahlung = new System.Windows.Forms.TabPage();
-			this.label33 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
-			this.label32 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.radioButton3 = new System.Windows.Forms.RadioButton();
-			this.radioButton2 = new System.Windows.Forms.RadioButton();
-			this.radioButton1 = new System.Windows.Forms.RadioButton();
-			this.label28 = new System.Windows.Forms.Label();
-			this.txtbox_Netto = new System.Windows.Forms.TextBox();
-			this.label25 = new System.Windows.Forms.Label();
-			this.txtbox_Mwst = new System.Windows.Forms.TextBox();
-			this.label26 = new System.Windows.Forms.Label();
-			this.label27 = new System.Windows.Forms.Label();
-			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
-			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
 			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
@@ -387,6 +373,22 @@ namespace Layer8_CSW
 			this.txtbox_Langtext = new System.Windows.Forms.TextBox();
 			this.txtbox_Kurztext = new System.Windows.Forms.TextBox();
 			this.txtbox_Posnummer = new System.Windows.Forms.TextBox();
+			this.Zahlung = new System.Windows.Forms.TabPage();
+			this.label33 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label32 = new System.Windows.Forms.Label();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.radioButton3 = new System.Windows.Forms.RadioButton();
+			this.radioButton2 = new System.Windows.Forms.RadioButton();
+			this.radioButton1 = new System.Windows.Forms.RadioButton();
+			this.label28 = new System.Windows.Forms.Label();
+			this.txtbox_Netto = new System.Windows.Forms.TextBox();
+			this.label25 = new System.Windows.Forms.Label();
+			this.txtbox_Mwst = new System.Windows.Forms.TextBox();
+			this.label26 = new System.Windows.Forms.Label();
+			this.label27 = new System.Windows.Forms.Label();
+			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
+			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
 			this.Bauvorhaben = new System.Windows.Forms.TabPage();
 			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
 			this.label24 = new System.Windows.Forms.Label();
@@ -454,6 +456,19 @@ namespace Layer8_CSW
 			this.txtBox_Übersicht_Kundenauswahl = new System.Windows.Forms.TextBox();
 			this.button_Übersicht_Vorgänge_anzeigen = new System.Windows.Forms.Button();
 			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
+			this.Nachkalkulation = new System.Windows.Forms.TabPage();
+			this.button2 = new System.Windows.Forms.Button();
+			this.txtBox_Gewinn = new System.Windows.Forms.TextBox();
+			this.label40 = new System.Windows.Forms.Label();
+			this.label39 = new System.Windows.Forms.Label();
+			this.txtBox_NettoRechbetrag = new System.Windows.Forms.TextBox();
+			this.label38 = new System.Windows.Forms.Label();
+			this.txtBox_realGesamtKosten = new System.Windows.Forms.TextBox();
+			this.label37 = new System.Windows.Forms.Label();
+			this.label36 = new System.Windows.Forms.Label();
+			this.txtBox_realLohnKosten = new System.Windows.Forms.TextBox();
+			this.txtBox_realMatKosten = new System.Windows.Forms.TextBox();
+			this.DG_Nachkalkulation = new System.Windows.Forms.DataGrid();
 			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
 			this.mainMenu1 = new System.Windows.Forms.MainMenu();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -474,27 +489,14 @@ namespace Layer8_CSW
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
 			this.menuItem17 = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPageSetup = new System.Windows.Forms.MenuItem();
-			this.menuItem19 = new System.Windows.Forms.MenuItem();
+			this.menuDruckenPrintPreview = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPrint = new System.Windows.Forms.MenuItem();
-			this.Nachkalkulation = new System.Windows.Forms.TabPage();
-			this.DG_Nachkalkulation = new System.Windows.Forms.DataGrid();
-			this.txtBox_realMatKosten = new System.Windows.Forms.TextBox();
-			this.txtBox_realLohnKosten = new System.Windows.Forms.TextBox();
-			this.label36 = new System.Windows.Forms.Label();
-			this.label37 = new System.Windows.Forms.Label();
-			this.txtBox_realGesamtKosten = new System.Windows.Forms.TextBox();
-			this.label38 = new System.Windows.Forms.Label();
-			this.txtBox_NettoRechbetrag = new System.Windows.Forms.TextBox();
-			this.label39 = new System.Windows.Forms.Label();
-			this.label40 = new System.Windows.Forms.Label();
-			this.txtBox_Gewinn = new System.Windows.Forms.TextBox();
-			this.button2 = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
-			this.Zahlung.SuspendLayout();
-			this.groupBox1.SuspendLayout();
 			this.Positionen.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
+			this.Zahlung.SuspendLayout();
+			this.groupBox1.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
 			this.gbox_Vorgangstyp.SuspendLayout();
 			this.Übersicht.SuspendLayout();
@@ -830,153 +832,6 @@ namespace Layer8_CSW
 			this.txtbox_Kürzel.TextChanged += new System.EventHandler(this.txtbox_Kürzel_TextChanged);
 			this.txtbox_Kürzel.Leave += new System.EventHandler(this.txtbox_Kürzel_Leave);
 			// 
-			// Zahlung
-			// 
-			this.Zahlung.Controls.Add(this.label33);
-			this.Zahlung.Controls.Add(this.label10);
-			this.Zahlung.Controls.Add(this.label32);
-			this.Zahlung.Controls.Add(this.groupBox1);
-			this.Zahlung.Controls.Add(this.label28);
-			this.Zahlung.Controls.Add(this.txtbox_Netto);
-			this.Zahlung.Controls.Add(this.label25);
-			this.Zahlung.Controls.Add(this.txtbox_Mwst);
-			this.Zahlung.Controls.Add(this.label26);
-			this.Zahlung.Controls.Add(this.label27);
-			this.Zahlung.Controls.Add(this.txtbox_Rabatt);
-			this.Zahlung.Controls.Add(this.txtbox_Brutto);
-			this.Zahlung.Location = new System.Drawing.Point(4, 22);
-			this.Zahlung.Name = "Zahlung";
-			this.Zahlung.Size = new System.Drawing.Size(988, 590);
-			this.Zahlung.TabIndex = 3;
-			this.Zahlung.Text = "Zahlung";
-			// 
-			// label33
-			// 
-			this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label33.Location = new System.Drawing.Point(384, 104);
-			this.label33.Name = "label33";
-			this.label33.Size = new System.Drawing.Size(32, 24);
-			this.label33.TabIndex = 40;
-			this.label33.Text = "%";
-			// 
-			// label10
-			// 
-			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label10.Location = new System.Drawing.Point(384, 72);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(24, 24);
-			this.label10.TabIndex = 39;
-			this.label10.Text = "%";
-			// 
-			// label32
-			// 
-			this.label32.Location = new System.Drawing.Point(244, 124);
-			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(184, 14);
-			this.label32.TabIndex = 38;
-			this.label32.Text = "============================";
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.Controls.Add(this.radioButton3);
-			this.groupBox1.Controls.Add(this.radioButton2);
-			this.groupBox1.Controls.Add(this.radioButton1);
-			this.groupBox1.Location = new System.Drawing.Point(24, 32);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(160, 128);
-			this.groupBox1.TabIndex = 37;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Zahlungszeitraum";
-			// 
-			// radioButton3
-			// 
-			this.radioButton3.Location = new System.Drawing.Point(32, 88);
-			this.radioButton3.Name = "radioButton3";
-			this.radioButton3.TabIndex = 2;
-			this.radioButton3.Text = "3 Monate";
-			// 
-			// radioButton2
-			// 
-			this.radioButton2.Checked = true;
-			this.radioButton2.Location = new System.Drawing.Point(32, 56);
-			this.radioButton2.Name = "radioButton2";
-			this.radioButton2.TabIndex = 1;
-			this.radioButton2.TabStop = true;
-			this.radioButton2.Text = "4 Wochen";
-			// 
-			// radioButton1
-			// 
-			this.radioButton1.Location = new System.Drawing.Point(32, 24);
-			this.radioButton1.Name = "radioButton1";
-			this.radioButton1.TabIndex = 0;
-			this.radioButton1.Text = "14 Tage";
-			// 
-			// label28
-			// 
-			this.label28.Location = new System.Drawing.Point(240, 40);
-			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(64, 23);
-			this.label28.TabIndex = 36;
-			this.label28.Text = "Netto";
-			// 
-			// txtbox_Netto
-			// 
-			this.txtbox_Netto.Location = new System.Drawing.Point(312, 40);
-			this.txtbox_Netto.Name = "txtbox_Netto";
-			this.txtbox_Netto.ReadOnly = true;
-			this.txtbox_Netto.TabIndex = 35;
-			this.txtbox_Netto.Text = "";
-			// 
-			// label25
-			// 
-			this.label25.Location = new System.Drawing.Point(240, 104);
-			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(72, 23);
-			this.label25.TabIndex = 34;
-			this.label25.Text = "MwSt.";
-			// 
-			// txtbox_Mwst
-			// 
-			this.txtbox_Mwst.Location = new System.Drawing.Point(312, 104);
-			this.txtbox_Mwst.Name = "txtbox_Mwst";
-			this.txtbox_Mwst.Size = new System.Drawing.Size(64, 20);
-			this.txtbox_Mwst.TabIndex = 33;
-			this.txtbox_Mwst.Text = "";
-			this.txtbox_Mwst.Leave += new System.EventHandler(this.txtbox_Mwst_Leave);
-			// 
-			// label26
-			// 
-			this.label26.Location = new System.Drawing.Point(240, 72);
-			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(56, 23);
-			this.label26.TabIndex = 32;
-			this.label26.Text = "Rabatt";
-			// 
-			// label27
-			// 
-			this.label27.Location = new System.Drawing.Point(240, 144);
-			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(56, 23);
-			this.label27.TabIndex = 31;
-			this.label27.Text = "Brutto";
-			// 
-			// txtbox_Rabatt
-			// 
-			this.txtbox_Rabatt.Location = new System.Drawing.Point(312, 72);
-			this.txtbox_Rabatt.Name = "txtbox_Rabatt";
-			this.txtbox_Rabatt.Size = new System.Drawing.Size(64, 20);
-			this.txtbox_Rabatt.TabIndex = 30;
-			this.txtbox_Rabatt.Text = "";
-			this.txtbox_Rabatt.Leave += new System.EventHandler(this.txtbox_Rabatt_Leave);
-			// 
-			// txtbox_Brutto
-			// 
-			this.txtbox_Brutto.Location = new System.Drawing.Point(312, 144);
-			this.txtbox_Brutto.Name = "txtbox_Brutto";
-			this.txtbox_Brutto.ReadOnly = true;
-			this.txtbox_Brutto.TabIndex = 29;
-			this.txtbox_Brutto.Text = "";
-			// 
 			// Positionen
 			// 
 			this.Positionen.Controls.Add(this.button_allePositionen);
@@ -1310,6 +1165,153 @@ namespace Layer8_CSW
 			this.txtbox_Posnummer.Text = "";
 			this.txtbox_Posnummer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_Posnummer_KeyPress);
 			this.txtbox_Posnummer.Leave += new System.EventHandler(this.txtbox_Posnummer_Leave);
+			// 
+			// Zahlung
+			// 
+			this.Zahlung.Controls.Add(this.label33);
+			this.Zahlung.Controls.Add(this.label10);
+			this.Zahlung.Controls.Add(this.label32);
+			this.Zahlung.Controls.Add(this.groupBox1);
+			this.Zahlung.Controls.Add(this.label28);
+			this.Zahlung.Controls.Add(this.txtbox_Netto);
+			this.Zahlung.Controls.Add(this.label25);
+			this.Zahlung.Controls.Add(this.txtbox_Mwst);
+			this.Zahlung.Controls.Add(this.label26);
+			this.Zahlung.Controls.Add(this.label27);
+			this.Zahlung.Controls.Add(this.txtbox_Rabatt);
+			this.Zahlung.Controls.Add(this.txtbox_Brutto);
+			this.Zahlung.Location = new System.Drawing.Point(4, 22);
+			this.Zahlung.Name = "Zahlung";
+			this.Zahlung.Size = new System.Drawing.Size(988, 590);
+			this.Zahlung.TabIndex = 3;
+			this.Zahlung.Text = "Zahlung";
+			// 
+			// label33
+			// 
+			this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label33.Location = new System.Drawing.Point(384, 104);
+			this.label33.Name = "label33";
+			this.label33.Size = new System.Drawing.Size(32, 24);
+			this.label33.TabIndex = 40;
+			this.label33.Text = "%";
+			// 
+			// label10
+			// 
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label10.Location = new System.Drawing.Point(384, 72);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(24, 24);
+			this.label10.TabIndex = 39;
+			this.label10.Text = "%";
+			// 
+			// label32
+			// 
+			this.label32.Location = new System.Drawing.Point(244, 124);
+			this.label32.Name = "label32";
+			this.label32.Size = new System.Drawing.Size(184, 14);
+			this.label32.TabIndex = 38;
+			this.label32.Text = "============================";
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.radioButton3);
+			this.groupBox1.Controls.Add(this.radioButton2);
+			this.groupBox1.Controls.Add(this.radioButton1);
+			this.groupBox1.Location = new System.Drawing.Point(24, 32);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(160, 128);
+			this.groupBox1.TabIndex = 37;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Zahlungszeitraum";
+			// 
+			// radioButton3
+			// 
+			this.radioButton3.Location = new System.Drawing.Point(32, 88);
+			this.radioButton3.Name = "radioButton3";
+			this.radioButton3.TabIndex = 2;
+			this.radioButton3.Text = "3 Monate";
+			// 
+			// radioButton2
+			// 
+			this.radioButton2.Checked = true;
+			this.radioButton2.Location = new System.Drawing.Point(32, 56);
+			this.radioButton2.Name = "radioButton2";
+			this.radioButton2.TabIndex = 1;
+			this.radioButton2.TabStop = true;
+			this.radioButton2.Text = "4 Wochen";
+			// 
+			// radioButton1
+			// 
+			this.radioButton1.Location = new System.Drawing.Point(32, 24);
+			this.radioButton1.Name = "radioButton1";
+			this.radioButton1.TabIndex = 0;
+			this.radioButton1.Text = "14 Tage";
+			// 
+			// label28
+			// 
+			this.label28.Location = new System.Drawing.Point(240, 40);
+			this.label28.Name = "label28";
+			this.label28.Size = new System.Drawing.Size(64, 23);
+			this.label28.TabIndex = 36;
+			this.label28.Text = "Netto";
+			// 
+			// txtbox_Netto
+			// 
+			this.txtbox_Netto.Location = new System.Drawing.Point(312, 40);
+			this.txtbox_Netto.Name = "txtbox_Netto";
+			this.txtbox_Netto.ReadOnly = true;
+			this.txtbox_Netto.TabIndex = 35;
+			this.txtbox_Netto.Text = "";
+			// 
+			// label25
+			// 
+			this.label25.Location = new System.Drawing.Point(240, 104);
+			this.label25.Name = "label25";
+			this.label25.Size = new System.Drawing.Size(72, 23);
+			this.label25.TabIndex = 34;
+			this.label25.Text = "MwSt.";
+			// 
+			// txtbox_Mwst
+			// 
+			this.txtbox_Mwst.Location = new System.Drawing.Point(312, 104);
+			this.txtbox_Mwst.Name = "txtbox_Mwst";
+			this.txtbox_Mwst.Size = new System.Drawing.Size(64, 20);
+			this.txtbox_Mwst.TabIndex = 33;
+			this.txtbox_Mwst.Text = "";
+			this.txtbox_Mwst.Leave += new System.EventHandler(this.txtbox_Mwst_Leave);
+			// 
+			// label26
+			// 
+			this.label26.Location = new System.Drawing.Point(240, 72);
+			this.label26.Name = "label26";
+			this.label26.Size = new System.Drawing.Size(56, 23);
+			this.label26.TabIndex = 32;
+			this.label26.Text = "Rabatt";
+			// 
+			// label27
+			// 
+			this.label27.Location = new System.Drawing.Point(240, 144);
+			this.label27.Name = "label27";
+			this.label27.Size = new System.Drawing.Size(56, 23);
+			this.label27.TabIndex = 31;
+			this.label27.Text = "Brutto";
+			// 
+			// txtbox_Rabatt
+			// 
+			this.txtbox_Rabatt.Location = new System.Drawing.Point(312, 72);
+			this.txtbox_Rabatt.Name = "txtbox_Rabatt";
+			this.txtbox_Rabatt.Size = new System.Drawing.Size(64, 20);
+			this.txtbox_Rabatt.TabIndex = 30;
+			this.txtbox_Rabatt.Text = "";
+			this.txtbox_Rabatt.Leave += new System.EventHandler(this.txtbox_Rabatt_Leave);
+			// 
+			// txtbox_Brutto
+			// 
+			this.txtbox_Brutto.Location = new System.Drawing.Point(312, 144);
+			this.txtbox_Brutto.Name = "txtbox_Brutto";
+			this.txtbox_Brutto.ReadOnly = true;
+			this.txtbox_Brutto.TabIndex = 29;
+			this.txtbox_Brutto.Text = "";
 			// 
 			// Bauvorhaben
 			// 
@@ -1920,6 +1922,117 @@ namespace Layer8_CSW
 			this.button_Übersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
 			this.button_Übersicht_alle_Kunden.Click += new System.EventHandler(this.button_Übersicht_alle_Kunden_Click);
 			// 
+			// Nachkalkulation
+			// 
+			this.Nachkalkulation.Controls.Add(this.button2);
+			this.Nachkalkulation.Controls.Add(this.txtBox_Gewinn);
+			this.Nachkalkulation.Controls.Add(this.label40);
+			this.Nachkalkulation.Controls.Add(this.label39);
+			this.Nachkalkulation.Controls.Add(this.txtBox_NettoRechbetrag);
+			this.Nachkalkulation.Controls.Add(this.label38);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realGesamtKosten);
+			this.Nachkalkulation.Controls.Add(this.label37);
+			this.Nachkalkulation.Controls.Add(this.label36);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realLohnKosten);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realMatKosten);
+			this.Nachkalkulation.Controls.Add(this.DG_Nachkalkulation);
+			this.Nachkalkulation.Location = new System.Drawing.Point(4, 22);
+			this.Nachkalkulation.Name = "Nachkalkulation";
+			this.Nachkalkulation.Size = new System.Drawing.Size(988, 590);
+			this.Nachkalkulation.TabIndex = 5;
+			this.Nachkalkulation.Text = "Nachkalkulation";
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(344, 40);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(128, 56);
+			this.button2.TabIndex = 11;
+			this.button2.Text = "button2";
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// txtBox_Gewinn
+			// 
+			this.txtBox_Gewinn.Location = new System.Drawing.Point(160, 152);
+			this.txtBox_Gewinn.Name = "txtBox_Gewinn";
+			this.txtBox_Gewinn.TabIndex = 10;
+			this.txtBox_Gewinn.Text = "";
+			// 
+			// label40
+			// 
+			this.label40.Location = new System.Drawing.Point(24, 152);
+			this.label40.Name = "label40";
+			this.label40.TabIndex = 9;
+			this.label40.Text = "Gewinn";
+			// 
+			// label39
+			// 
+			this.label39.Location = new System.Drawing.Point(24, 120);
+			this.label39.Name = "label39";
+			this.label39.Size = new System.Drawing.Size(136, 23);
+			this.label39.TabIndex = 8;
+			this.label39.Text = "Rechnungsbetrag (Netto)";
+			// 
+			// txtBox_NettoRechbetrag
+			// 
+			this.txtBox_NettoRechbetrag.Location = new System.Drawing.Point(160, 120);
+			this.txtBox_NettoRechbetrag.Name = "txtBox_NettoRechbetrag";
+			this.txtBox_NettoRechbetrag.TabIndex = 7;
+			this.txtBox_NettoRechbetrag.Text = "";
+			// 
+			// label38
+			// 
+			this.label38.Location = new System.Drawing.Point(24, 88);
+			this.label38.Name = "label38";
+			this.label38.Size = new System.Drawing.Size(112, 23);
+			this.label38.TabIndex = 6;
+			this.label38.Text = "Reale Gesamtkosten";
+			// 
+			// txtBox_realGesamtKosten
+			// 
+			this.txtBox_realGesamtKosten.Location = new System.Drawing.Point(160, 88);
+			this.txtBox_realGesamtKosten.Name = "txtBox_realGesamtKosten";
+			this.txtBox_realGesamtKosten.TabIndex = 5;
+			this.txtBox_realGesamtKosten.Text = "";
+			// 
+			// label37
+			// 
+			this.label37.Location = new System.Drawing.Point(24, 56);
+			this.label37.Name = "label37";
+			this.label37.TabIndex = 4;
+			this.label37.Text = "Reale Lohnkosten";
+			// 
+			// label36
+			// 
+			this.label36.Location = new System.Drawing.Point(24, 24);
+			this.label36.Name = "label36";
+			this.label36.Size = new System.Drawing.Size(112, 23);
+			this.label36.TabIndex = 3;
+			this.label36.Text = "Reale Materialkosten";
+			// 
+			// txtBox_realLohnKosten
+			// 
+			this.txtBox_realLohnKosten.Location = new System.Drawing.Point(160, 56);
+			this.txtBox_realLohnKosten.Name = "txtBox_realLohnKosten";
+			this.txtBox_realLohnKosten.TabIndex = 2;
+			this.txtBox_realLohnKosten.Text = "";
+			// 
+			// txtBox_realMatKosten
+			// 
+			this.txtBox_realMatKosten.Location = new System.Drawing.Point(160, 24);
+			this.txtBox_realMatKosten.Name = "txtBox_realMatKosten";
+			this.txtBox_realMatKosten.TabIndex = 1;
+			this.txtBox_realMatKosten.Text = "";
+			// 
+			// DG_Nachkalkulation
+			// 
+			this.DG_Nachkalkulation.DataMember = "";
+			this.DG_Nachkalkulation.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.DG_Nachkalkulation.Location = new System.Drawing.Point(16, 192);
+			this.DG_Nachkalkulation.Name = "DG_Nachkalkulation";
+			this.DG_Nachkalkulation.Size = new System.Drawing.Size(944, 384);
+			this.DG_Nachkalkulation.TabIndex = 0;
+			// 
 			// mainMenu1
 			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -2029,7 +2142,7 @@ namespace Layer8_CSW
 			this.menuItem17.Index = 3;
 			this.menuItem17.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																					   this.menuDruckenPageSetup,
-																					   this.menuItem19,
+																					   this.menuDruckenPrintPreview,
 																					   this.menuDruckenPrint});
 			this.menuItem17.Text = "Drucken";
 			// 
@@ -2039,127 +2152,17 @@ namespace Layer8_CSW
 			this.menuDruckenPageSetup.Text = "Page Setup";
 			this.menuDruckenPageSetup.Click += new System.EventHandler(this.menuDruckenPageSetup_Click);
 			// 
-			// menuItem19
+			// menuDruckenPrintPreview
 			// 
-			this.menuItem19.Index = 1;
-			this.menuItem19.Text = "Print Preview";
+			this.menuDruckenPrintPreview.Index = 1;
+			this.menuDruckenPrintPreview.Text = "Print Preview";
+			this.menuDruckenPrintPreview.Click += new System.EventHandler(this.menuDruckenPrintPreview_Click);
 			// 
 			// menuDruckenPrint
 			// 
 			this.menuDruckenPrint.Index = 2;
 			this.menuDruckenPrint.Text = "Print";
 			this.menuDruckenPrint.Click += new System.EventHandler(this.menuDruckenPrint_Click);
-			// 
-			// Nachkalkulation
-			// 
-			this.Nachkalkulation.Controls.Add(this.button2);
-			this.Nachkalkulation.Controls.Add(this.txtBox_Gewinn);
-			this.Nachkalkulation.Controls.Add(this.label40);
-			this.Nachkalkulation.Controls.Add(this.label39);
-			this.Nachkalkulation.Controls.Add(this.txtBox_NettoRechbetrag);
-			this.Nachkalkulation.Controls.Add(this.label38);
-			this.Nachkalkulation.Controls.Add(this.txtBox_realGesamtKosten);
-			this.Nachkalkulation.Controls.Add(this.label37);
-			this.Nachkalkulation.Controls.Add(this.label36);
-			this.Nachkalkulation.Controls.Add(this.txtBox_realLohnKosten);
-			this.Nachkalkulation.Controls.Add(this.txtBox_realMatKosten);
-			this.Nachkalkulation.Controls.Add(this.DG_Nachkalkulation);
-			this.Nachkalkulation.Location = new System.Drawing.Point(4, 22);
-			this.Nachkalkulation.Name = "Nachkalkulation";
-			this.Nachkalkulation.Size = new System.Drawing.Size(988, 590);
-			this.Nachkalkulation.TabIndex = 5;
-			this.Nachkalkulation.Text = "Nachkalkulation";
-			// 
-			// DG_Nachkalkulation
-			// 
-			this.DG_Nachkalkulation.DataMember = "";
-			this.DG_Nachkalkulation.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.DG_Nachkalkulation.Location = new System.Drawing.Point(16, 192);
-			this.DG_Nachkalkulation.Name = "DG_Nachkalkulation";
-			this.DG_Nachkalkulation.Size = new System.Drawing.Size(944, 384);
-			this.DG_Nachkalkulation.TabIndex = 0;
-			// 
-			// txtBox_realMatKosten
-			// 
-			this.txtBox_realMatKosten.Location = new System.Drawing.Point(160, 24);
-			this.txtBox_realMatKosten.Name = "txtBox_realMatKosten";
-			this.txtBox_realMatKosten.TabIndex = 1;
-			this.txtBox_realMatKosten.Text = "";
-			// 
-			// txtBox_realLohnKosten
-			// 
-			this.txtBox_realLohnKosten.Location = new System.Drawing.Point(160, 56);
-			this.txtBox_realLohnKosten.Name = "txtBox_realLohnKosten";
-			this.txtBox_realLohnKosten.TabIndex = 2;
-			this.txtBox_realLohnKosten.Text = "";
-			// 
-			// label36
-			// 
-			this.label36.Location = new System.Drawing.Point(24, 24);
-			this.label36.Name = "label36";
-			this.label36.Size = new System.Drawing.Size(112, 23);
-			this.label36.TabIndex = 3;
-			this.label36.Text = "Reale Materialkosten";
-			// 
-			// label37
-			// 
-			this.label37.Location = new System.Drawing.Point(24, 56);
-			this.label37.Name = "label37";
-			this.label37.TabIndex = 4;
-			this.label37.Text = "Reale Lohnkosten";
-			// 
-			// txtBox_realGesamtKosten
-			// 
-			this.txtBox_realGesamtKosten.Location = new System.Drawing.Point(160, 88);
-			this.txtBox_realGesamtKosten.Name = "txtBox_realGesamtKosten";
-			this.txtBox_realGesamtKosten.TabIndex = 5;
-			this.txtBox_realGesamtKosten.Text = "";
-			// 
-			// label38
-			// 
-			this.label38.Location = new System.Drawing.Point(24, 88);
-			this.label38.Name = "label38";
-			this.label38.Size = new System.Drawing.Size(112, 23);
-			this.label38.TabIndex = 6;
-			this.label38.Text = "Reale Gesamtkosten";
-			// 
-			// txtBox_NettoRechbetrag
-			// 
-			this.txtBox_NettoRechbetrag.Location = new System.Drawing.Point(160, 120);
-			this.txtBox_NettoRechbetrag.Name = "txtBox_NettoRechbetrag";
-			this.txtBox_NettoRechbetrag.TabIndex = 7;
-			this.txtBox_NettoRechbetrag.Text = "";
-			// 
-			// label39
-			// 
-			this.label39.Location = new System.Drawing.Point(24, 120);
-			this.label39.Name = "label39";
-			this.label39.Size = new System.Drawing.Size(136, 23);
-			this.label39.TabIndex = 8;
-			this.label39.Text = "Rechnungsbetrag (Netto)";
-			// 
-			// label40
-			// 
-			this.label40.Location = new System.Drawing.Point(24, 152);
-			this.label40.Name = "label40";
-			this.label40.TabIndex = 9;
-			this.label40.Text = "Gewinn";
-			// 
-			// txtBox_Gewinn
-			// 
-			this.txtBox_Gewinn.Location = new System.Drawing.Point(160, 152);
-			this.txtBox_Gewinn.Name = "txtBox_Gewinn";
-			this.txtBox_Gewinn.TabIndex = 10;
-			this.txtBox_Gewinn.Text = "";
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(344, 40);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(128, 56);
-			this.button2.TabIndex = 11;
-			this.button2.Text = "button2";
-			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// MainFrame
 			// 
@@ -2174,10 +2177,10 @@ namespace Layer8_CSW
 			this.Load += new System.EventHandler(this.MainFrame_Load);
 			this.tabControl1.ResumeLayout(false);
 			this.Kunde.ResumeLayout(false);
-			this.Zahlung.ResumeLayout(false);
-			this.groupBox1.ResumeLayout(false);
 			this.Positionen.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
+			this.Zahlung.ResumeLayout(false);
+			this.groupBox1.ResumeLayout(false);
 			this.Bauvorhaben.ResumeLayout(false);
 			this.gbox_Vorgangstyp.ResumeLayout(false);
 			this.Übersicht.ResumeLayout(false);
@@ -3334,6 +3337,24 @@ namespace Layer8_CSW
 		private void txtbox_VBezeichnung_Leave(object sender, System.EventArgs e)
 		{
 			VG.Vorgangsbezeichnung =txtbox_VBezeichnung.Text;
+		}
+
+		private void menuDruckenPrintPreview_Click(object sender, System.EventArgs e)
+		{
+			try
+			{
+				PrintDocument pd = new PrintDocument();
+				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
+				if(this.storedPageSettings != null)
+					pd.DefaultPageSettings = this.storedPageSettings;
+						PrintPreviewDialog dlg = new PrintPreviewDialog();
+				dlg.Document = pd;
+				dlg.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+			MessageBox.Show(ex.Message);
+			}
 		}
 
 
