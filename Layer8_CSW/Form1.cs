@@ -15,7 +15,7 @@
 // | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
 // | Version 1.17	  | 30.10.03	   | 23:56    | CH			   |  ComboBox "Anrede" wird nun auch in DB geschrieben
 // | Version 1.18	  | 03.11.03	   | 22:49    | CH			   |  Fehler korrigiert (Casi)
-
+// | Version 1.19	  | 05.11.03	   | 00:39    | CSW            |  Übersichtstabseite angelegt
 
 using System;
 using System.Drawing;
