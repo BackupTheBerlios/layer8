@@ -9,10 +9,13 @@
 // | Version 1.101	  | 26.10.03	   | 18:18    | CSW			   |  Mini-Bug-Fix beim DataGrid, Doppelklick auf ZellenRahmen hat jetzt gleichen Effekt wie Doppelklick auf Zeilenkopf (Thx@Casi)
 // | Version 1.11	  | 26.10.03	   | 23:41    | CH			   |  Neue ZPositon anlegen
 // | Version 1.12	  | 27.10.03	   | 22:53	  | CSW			   |  DateTimePicker eingebaut und VG.Datum entsprechend geändert
-// | Version 1.13	  | 29.10.03	   | 09:00	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms
-// | Versionsnummer können wir uns jetzt sparen, vergibt CVS ja selbständig
-// | daher ab jetzt nur die Änderungen angeben						
-//					  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
+// | Version 1.13	  | 29.10.03	   | 09:00	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms						
+// | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
+// | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
+
+//ich bin irgendwie doch für Versionsnummern, aber irgendwie auch egal, ich weiss auch nicht
+
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -2975,7 +2978,7 @@ public class Position
 			int Count=0;
 		
 			KundenVerzeichnis Verzeichnis = new KundenVerzeichnis();
-			OleDbCommand sucheNNamen = new OleDbCommand("SELECT * FROM Kunde WHERE Name ='"+nam+"'", myconnection);
+			OleDbCommand sucheNNamen = new OleDbCommand("SELECT * FROM Kunde WHERE Name LIKE '"+nam+"%'", myconnection);  //hab die SQL Abfrage erweitert, so dass man auch nur Teile eines Namens eingeben kann
 		
 			OleDbDataReader dataReader2 = null;
 		
