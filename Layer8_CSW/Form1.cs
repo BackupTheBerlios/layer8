@@ -20,7 +20,7 @@
 // | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der Übersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Menü verschwindet immer erst nach der 2.Auswahl
 // | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelöst: Während des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
 // | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es gäbe System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
-// Testzeile
+
 
 using System;
 using System.Drawing;
@@ -110,14 +110,8 @@ namespace Layer8_CSW
 		private System.Windows.Forms.TextBox txtbox_Kurztext;
 		private System.Windows.Forms.TextBox txtbox_Posnummer;
 		private System.Windows.Forms.TextBox txtbox_Raum;
-		private System.Windows.Forms.TextBox txtbox_PlzTab2;
-		private System.Windows.Forms.TextBox txtbox_OrtTab2;
-		private System.Windows.Forms.TextBox txtbox_StrasseTab2;
-		private System.Windows.Forms.TextBox txtbox_VornameTab2;
-		private System.Windows.Forms.TextBox txtbox_NameTab2;
 		private System.Windows.Forms.TextBox txtbox_VNummer;
 		private System.Windows.Forms.TextBox txtbox_VBezeichnung;
-		private System.Windows.Forms.TextBox txtbox_Datum;
 		private System.Windows.Forms.TextBox txtbox_Fax;
 		private System.Windows.Forms.TextBox txtbox_Email;
 		private System.Windows.Forms.TextBox txtbox_Netto;
@@ -207,6 +201,27 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
 		private System.Windows.Forms.ContextMenu cMenu_KundenDG;
+		private System.Windows.Forms.TextBox txtbox_PlzBau;
+		private System.Windows.Forms.TextBox txtbox_OrtBau;
+		private System.Windows.Forms.TextBox txtbox_StrasseBau;
+		private System.Windows.Forms.TextBox txtbox_VornameBau;
+		private System.Windows.Forms.TextBox txtbox_NameBau;
+		private System.Windows.Forms.MainMenu mainMenu1;
+		private System.Windows.Forms.MenuItem menuItem1;
+		private System.Windows.Forms.MenuItem menuItem2;
+		private System.Windows.Forms.MenuItem menuItem3;
+		private System.Windows.Forms.MenuItem menuItem4;
+		private System.Windows.Forms.MenuItem menuItem5;
+		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.MenuItem menuItem7;
+		private System.Windows.Forms.MenuItem menuItem8;
+		private System.Windows.Forms.MenuItem menuItem9;
+		private System.Windows.Forms.MenuItem menuItem10;
+		private System.Windows.Forms.MenuItem menuItem11;
+		private System.Windows.Forms.MenuItem menuItem12;
+		private System.Windows.Forms.MenuItem menuItem13;
+		private System.Windows.Forms.MenuItem menuItem14;
+		private System.Windows.Forms.MenuItem menuItem15;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -285,7 +300,6 @@ namespace Layer8_CSW
 			this.Bauvorhaben = new System.Windows.Forms.TabPage();
 			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
 			this.label24 = new System.Windows.Forms.Label();
-			this.txtbox_Datum = new System.Windows.Forms.TextBox();
 			this.label22 = new System.Windows.Forms.Label();
 			this.label23 = new System.Windows.Forms.Label();
 			this.txtbox_VNummer = new System.Windows.Forms.TextBox();
@@ -299,11 +313,11 @@ namespace Layer8_CSW
 			this.label18 = new System.Windows.Forms.Label();
 			this.label17 = new System.Windows.Forms.Label();
 			this.label16 = new System.Windows.Forms.Label();
-			this.txtbox_PlzTab2 = new System.Windows.Forms.TextBox();
-			this.txtbox_OrtTab2 = new System.Windows.Forms.TextBox();
-			this.txtbox_StrasseTab2 = new System.Windows.Forms.TextBox();
-			this.txtbox_VornameTab2 = new System.Windows.Forms.TextBox();
-			this.txtbox_NameTab2 = new System.Windows.Forms.TextBox();
+			this.txtbox_PlzBau = new System.Windows.Forms.TextBox();
+			this.txtbox_OrtBau = new System.Windows.Forms.TextBox();
+			this.txtbox_StrasseBau = new System.Windows.Forms.TextBox();
+			this.txtbox_VornameBau = new System.Windows.Forms.TextBox();
+			this.txtbox_NameBau = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
 			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
@@ -352,7 +366,6 @@ namespace Layer8_CSW
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
 			this.Übersicht = new System.Windows.Forms.TabPage();
 			this.DG_Übersicht = new System.Windows.Forms.DataGrid();
-			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
 			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
 			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -384,6 +397,23 @@ namespace Layer8_CSW
 			this.gBox_KundenÜbersicht = new System.Windows.Forms.GroupBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
+			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
+			this.mainMenu1 = new System.Windows.Forms.MainMenu();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.menuItem3 = new System.Windows.Forms.MenuItem();
+			this.menuItem4 = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
+			this.menuItem7 = new System.Windows.Forms.MenuItem();
+			this.menuItem8 = new System.Windows.Forms.MenuItem();
+			this.menuItem9 = new System.Windows.Forms.MenuItem();
+			this.menuItem10 = new System.Windows.Forms.MenuItem();
+			this.menuItem11 = new System.Windows.Forms.MenuItem();
+			this.menuItem12 = new System.Windows.Forms.MenuItem();
+			this.menuItem13 = new System.Windows.Forms.MenuItem();
+			this.menuItem14 = new System.Windows.Forms.MenuItem();
+			this.menuItem15 = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -726,7 +756,6 @@ namespace Layer8_CSW
 			// 
 			this.Bauvorhaben.Controls.Add(this.dateTimePicker_Bau);
 			this.Bauvorhaben.Controls.Add(this.label24);
-			this.Bauvorhaben.Controls.Add(this.txtbox_Datum);
 			this.Bauvorhaben.Controls.Add(this.label22);
 			this.Bauvorhaben.Controls.Add(this.label23);
 			this.Bauvorhaben.Controls.Add(this.txtbox_VNummer);
@@ -737,11 +766,11 @@ namespace Layer8_CSW
 			this.Bauvorhaben.Controls.Add(this.label18);
 			this.Bauvorhaben.Controls.Add(this.label17);
 			this.Bauvorhaben.Controls.Add(this.label16);
-			this.Bauvorhaben.Controls.Add(this.txtbox_PlzTab2);
-			this.Bauvorhaben.Controls.Add(this.txtbox_OrtTab2);
-			this.Bauvorhaben.Controls.Add(this.txtbox_StrasseTab2);
-			this.Bauvorhaben.Controls.Add(this.txtbox_VornameTab2);
-			this.Bauvorhaben.Controls.Add(this.txtbox_NameTab2);
+			this.Bauvorhaben.Controls.Add(this.txtbox_PlzBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_OrtBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_StrasseBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_VornameBau);
+			this.Bauvorhaben.Controls.Add(this.txtbox_NameBau);
 			this.Bauvorhaben.Location = new System.Drawing.Point(4, 22);
 			this.Bauvorhaben.Name = "Bauvorhaben";
 			this.Bauvorhaben.Size = new System.Drawing.Size(988, 590);
@@ -765,15 +794,6 @@ namespace Layer8_CSW
 			this.label24.Size = new System.Drawing.Size(72, 23);
 			this.label24.TabIndex = 16;
 			this.label24.Text = "Datum";
-			// 
-			// txtbox_Datum
-			// 
-			this.txtbox_Datum.Location = new System.Drawing.Point(248, 192);
-			this.txtbox_Datum.Name = "txtbox_Datum";
-			this.txtbox_Datum.Size = new System.Drawing.Size(208, 20);
-			this.txtbox_Datum.TabIndex = 15;
-			this.txtbox_Datum.TabStop = false;
-			this.txtbox_Datum.Text = "Bin durch was Besseres ersetzt worden :-(";
 			// 
 			// label22
 			// 
@@ -880,40 +900,40 @@ namespace Layer8_CSW
 			this.label16.TabIndex = 5;
 			this.label16.Text = "Strasse";
 			// 
-			// txtbox_PlzTab2
+			// txtbox_PlzBau
 			// 
-			this.txtbox_PlzTab2.Location = new System.Drawing.Point(112, 352);
-			this.txtbox_PlzTab2.Name = "txtbox_PlzTab2";
-			this.txtbox_PlzTab2.TabIndex = 4;
-			this.txtbox_PlzTab2.Text = "";
+			this.txtbox_PlzBau.Location = new System.Drawing.Point(112, 352);
+			this.txtbox_PlzBau.Name = "txtbox_PlzBau";
+			this.txtbox_PlzBau.TabIndex = 4;
+			this.txtbox_PlzBau.Text = "";
 			// 
-			// txtbox_OrtTab2
+			// txtbox_OrtBau
 			// 
-			this.txtbox_OrtTab2.Location = new System.Drawing.Point(112, 392);
-			this.txtbox_OrtTab2.Name = "txtbox_OrtTab2";
-			this.txtbox_OrtTab2.TabIndex = 3;
-			this.txtbox_OrtTab2.Text = "";
+			this.txtbox_OrtBau.Location = new System.Drawing.Point(112, 392);
+			this.txtbox_OrtBau.Name = "txtbox_OrtBau";
+			this.txtbox_OrtBau.TabIndex = 3;
+			this.txtbox_OrtBau.Text = "";
 			// 
-			// txtbox_StrasseTab2
+			// txtbox_StrasseBau
 			// 
-			this.txtbox_StrasseTab2.Location = new System.Drawing.Point(112, 312);
-			this.txtbox_StrasseTab2.Name = "txtbox_StrasseTab2";
-			this.txtbox_StrasseTab2.TabIndex = 2;
-			this.txtbox_StrasseTab2.Text = "";
+			this.txtbox_StrasseBau.Location = new System.Drawing.Point(112, 312);
+			this.txtbox_StrasseBau.Name = "txtbox_StrasseBau";
+			this.txtbox_StrasseBau.TabIndex = 2;
+			this.txtbox_StrasseBau.Text = "";
 			// 
-			// txtbox_VornameTab2
+			// txtbox_VornameBau
 			// 
-			this.txtbox_VornameTab2.Location = new System.Drawing.Point(112, 272);
-			this.txtbox_VornameTab2.Name = "txtbox_VornameTab2";
-			this.txtbox_VornameTab2.TabIndex = 1;
-			this.txtbox_VornameTab2.Text = "";
+			this.txtbox_VornameBau.Location = new System.Drawing.Point(112, 272);
+			this.txtbox_VornameBau.Name = "txtbox_VornameBau";
+			this.txtbox_VornameBau.TabIndex = 1;
+			this.txtbox_VornameBau.Text = "";
 			// 
-			// txtbox_NameTab2
+			// txtbox_NameBau
 			// 
-			this.txtbox_NameTab2.Location = new System.Drawing.Point(112, 232);
-			this.txtbox_NameTab2.Name = "txtbox_NameTab2";
-			this.txtbox_NameTab2.TabIndex = 0;
-			this.txtbox_NameTab2.Text = "";
+			this.txtbox_NameBau.Location = new System.Drawing.Point(112, 232);
+			this.txtbox_NameBau.Name = "txtbox_NameBau";
+			this.txtbox_NameBau.TabIndex = 0;
+			this.txtbox_NameBau.Text = "";
 			// 
 			// Positionen
 			// 
@@ -1669,12 +1689,110 @@ namespace Layer8_CSW
 			this.button_Übersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
 			this.button_Übersicht_alle_Kunden.Click += new System.EventHandler(this.button_Übersicht_alle_Kunden_Click);
 			// 
+			// mainMenu1
+			// 
+			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					  this.menuItem1,
+																					  this.menuItem6,
+																					  this.menuItem11});
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 0;
+			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					  this.menuItem2,
+																					  this.menuItem3,
+																					  this.menuItem4,
+																					  this.menuItem5});
+			this.menuItem1.Text = "Datei";
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 0;
+			this.menuItem2.Text = "Neu";
+			// 
+			// menuItem3
+			// 
+			this.menuItem3.Index = 1;
+			this.menuItem3.Text = "Öffnen";
+			// 
+			// menuItem4
+			// 
+			this.menuItem4.Index = 2;
+			this.menuItem4.Text = "Bearbeiten";
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 3;
+			this.menuItem5.Text = "Schließen";
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 1;
+			this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					  this.menuItem7,
+																					  this.menuItem8,
+																					  this.menuItem9,
+																					  this.menuItem10});
+			this.menuItem6.Text = "Kunde";
+			// 
+			// menuItem7
+			// 
+			this.menuItem7.Index = 0;
+			this.menuItem7.Text = "Neu";
+			// 
+			// menuItem8
+			// 
+			this.menuItem8.Index = 1;
+			this.menuItem8.Text = "Bearbeiten";
+			// 
+			// menuItem9
+			// 
+			this.menuItem9.Index = 2;
+			this.menuItem9.Text = "Speichern";
+			// 
+			// menuItem10
+			// 
+			this.menuItem10.Index = 3;
+			this.menuItem10.Text = "Löschen";
+			// 
+			// menuItem11
+			// 
+			this.menuItem11.Index = 2;
+			this.menuItem11.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					   this.menuItem12,
+																					   this.menuItem13,
+																					   this.menuItem14,
+																					   this.menuItem15});
+			this.menuItem11.Text = "Bauvorhaben";
+			// 
+			// menuItem12
+			// 
+			this.menuItem12.Index = 0;
+			this.menuItem12.Text = "Neu";
+			// 
+			// menuItem13
+			// 
+			this.menuItem13.Index = 1;
+			this.menuItem13.Text = "Bearbeiten";
+			// 
+			// menuItem14
+			// 
+			this.menuItem14.Index = 2;
+			this.menuItem14.Text = "Speichern";
+			// 
+			// menuItem15
+			// 
+			this.menuItem15.Index = 3;
+			this.menuItem15.Text = "Löschen";
+			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(1028, 646);
 			this.Controls.Add(this.tabControl1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Menu = this.mainMenu1;
 			this.Name = "MainFrame";
 			this.Text = "Layer 8 ";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -1918,7 +2036,6 @@ namespace Layer8_CSW
 			this.txtbox_Telefonnummer.Text = K.Telefonnummer;
 			this.txtbox_Fax.Text = K.Fax;
 			this.txtbox_Email.Text = K.Email;
-			
 			switch (K.Anrede)
 			{
 				case "Herr": this.cbox_Anrede.SelectedIndex = 0;
@@ -1943,6 +2060,28 @@ namespace Layer8_CSW
 			this.txtbox_Fläche.Text = ""+K.Flaeche;
 			this.txtbox_Gesamtpreis.Text = ""+K.GPreis;
 			this.txtbox_Raum.Text = K.Raum;		
+		}
+
+
+		private void bauvorhaben_Anzeigen (Vorgang V) //- CH 12.11.03 17:11
+		{
+			this.txtbox_VNummer.Text = ""+V.Vorgangsnummer;
+			this.txtbox_VBezeichnung.Text = V.Vorgangsbezeichnung;
+			this.dateTimePicker_Bau.Text = ""+V.Datum;	
+			this.txtbox_NameBau.Text = V.BauNName;
+			this.txtbox_VornameBau.Text = V.BauVName;
+			this.txtbox_StrasseBau.Text = V.BauStrasse;
+			this.txtbox_OrtBau.Text = V.BauOrt;
+			this.txtbox_PlzBau.Text = ""+V.BauPLZ;
+			switch (V.Typ)
+			{
+				case "Aufmaß": this.radio_Aufmaß.Select();
+					break;	
+				case "Angebot": this.radio_Angebot.Select();
+					break;
+				case "Rechnung": this.radio_Rechnung.Select();
+					break;
+			}
 		}
 
 
@@ -2596,6 +2735,7 @@ namespace Layer8_CSW
 			
 
 		}
+
 
 		
 	}
