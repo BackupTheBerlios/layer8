@@ -23,7 +23,7 @@
 // | Version 1.21	  | 13.11.03	   | 00:42    | CSW			   |  Automatisches Berechnen der Beträge (Netto/Brutto) unter Berücksichtigung von MwSt und Rabatt, Darstellung im Währungsformat, Kleinere Änderungen auf der Positionsseite, Einbinden von "alle_Vorgänge" in der Übersicht
 // | Version 1.22     | 16.11.03	   | 12:30	  | CSW			   |  Filtern der Kundenübersicht nach Namen (auch Teile, Anfangsbuchstaben etc.)
 // | Version 1.22b    | 17.11.03	   | 17:13	  | CSW			   |  Kleine Überarbeitung (Filtern -> Suchen) + Button + MessageBox
-
+// | Version 1.22c    | 17.11.03       | 21:12    | Casi           |  VorgaengeKunden dataSet erweitert um die Kundennamen
 using System;
 using System.Drawing;
 using System.Collections;
@@ -4630,14 +4630,24 @@ namespace Layer8_CSW
 		
 			DataSet myDataSet = new DataSet("KundenVorgaenge");
 			DataTable KundenVorgaenge = myDataSet.Tables.Add("KundenVorgaenge");
+			DataTable Kunde = myDataSet.Tables.Add("Kunde");
+			
+			Kunde.Columns.Add("Vorname",typeof(string));
+			Kunde.Columns.Add("Name",typeof(string));
+			Kunde.Columns.Add("Kundennr",typeof(int));
 			KundenVorgaenge.Columns.Add("Kundennr",typeof(int));
 			KundenVorgaenge.Columns.Add("Vorgang",typeof(string));
 			KundenVorgaenge.Columns.Add("Index",typeof(int));
 			KundenVorgaenge.PrimaryKey = new DataColumn[]{KundenVorgaenge.Columns["Index"]};
-			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM KundeVorgang",myconnection);
+			Kunde.PrimaryKey = new DataColumn[]{Kunde.Columns["Kundennr"]};
+			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT * FROM KundeVorgang",myconnection);
+			OleDbDataAdapter myDataAdapter2 = new OleDbDataAdapter("SELECT * FROM Kunde",myconnection);
+			
 			try
 			{
+		
 				myDataAdapter.Fill(myDataSet,"KundenVorgaenge");
+                myDataAdapter2.Fill(myDataSet,"Kunde");
 			}
 			catch(Exception ex)
 			{
