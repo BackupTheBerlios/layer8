@@ -104,7 +104,9 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label28;
 		# endregion
+
 		#region Buttons
+		private System.Windows.Forms.Button button_Übersicht_Vorgänge_anzeigen;
 		private System.Windows.Forms.Button button_Zurück;
 		private System.Windows.Forms.Button button_Speichern;
 		private System.Windows.Forms.Button button_Löschen;
@@ -119,8 +121,18 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button Pos_anlegen;
 		private System.Windows.Forms.Button pos_Speichern; 
+		private System.Windows.Forms.Button button_Übersicht_Pos_Anzeigen;
+		private System.Windows.Forms.Button button_Übersicht_alle_Kunden;
+		private System.Windows.Forms.Button button_allePositionen;
+		private System.Windows.Forms.Button button_Übersicht_Kunden_suchen;
+		private System.Windows.Forms.Button button_Übersicht_Vorgang_suchen;
 		#endregion
+
 		#region Textboxes
+		
+		
+		private System.Windows.Forms.TextBox txtBox_Übersicht_Kundenauswahl;
+		private System.Windows.Forms.TextBox txtBox_Übersicht_Vorgang_suchen;
 		private System.Windows.Forms.TextBox txtbox_Name;
 		private System.Windows.Forms.TextBox txtbox_Telefonnummer;
 		private System.Windows.Forms.TextBox txtbox_PLZ;
@@ -143,9 +155,20 @@ namespace Layer8_CSW
 		private System.Windows.Forms.TextBox txtbox_Mwst;
 		private System.Windows.Forms.TextBox txtbox_Rabatt;
 		private System.Windows.Forms.TextBox txtbox_Brutto;
-		
+		private System.Windows.Forms.TextBox txtbox_PlzBau;
+		private System.Windows.Forms.TextBox txtbox_OrtBau;
+		private System.Windows.Forms.TextBox txtbox_StrasseBau;
+		private System.Windows.Forms.TextBox txtbox_VornameBau;
+		private System.Windows.Forms.TextBox txtbox_NameBau;
+		private System.Windows.Forms.TextBox txtBox_realMatKosten;
+		private System.Windows.Forms.TextBox txtBox_realLohnKosten;
+	
+		private System.Windows.Forms.TextBox txtBox_NettoRechbetrag;
+		private System.Windows.Forms.TextBox txtBox_realGesamtKosten;
+		private System.Windows.Forms.TextBox txtBox_Gewinn;
 		private System.Windows.Forms.TextBox txtbox_Kürzel; 
 		# endregion
+
 		#region RadioButtons
 		private System.Windows.Forms.RadioButton radio_Aufmaß;
 		private System.Windows.Forms.RadioButton radio_Angebot;
@@ -153,7 +176,14 @@ namespace Layer8_CSW
 		private System.Windows.Forms.RadioButton radioButton1;
 		private System.Windows.Forms.RadioButton radioButton2;
 		private System.Windows.Forms.RadioButton radioButton3;
+		
+		private System.Windows.Forms.RadioButton radio_F;
+		private System.Windows.Forms.RadioButton radio_M;
+		private System.Windows.Forms.RadioButton radio_Z;
+		
+		
 		#endregion
+
 		#region Formatierungsinformationen für das DataGrid
 		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle2;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn1;
@@ -185,55 +215,28 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn23;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn26;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn27;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn28;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn29;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn30;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn31;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleVorgangsview;
 		#endregion
+
 		#region Tab
+		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage Positionen;
 		private System.Windows.Forms.TabPage Bauvorhaben;
 		private System.Windows.Forms.TabPage Kunde;
-		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage Zahlung;
-		#endregion
-
-		private System.Windows.Forms.DataGrid dataGrid_Vorgang;
-				
-		private System.Windows.Forms.GroupBox gbox_Vorgangstyp;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.ComboBox cbox_Anrede;
-		
-		private Font maintextFont = new Font("times New Roman", 14);
-        private Font subTextFont = new Font("Times New Roman" ,12);
-		private PageSettings storedPageSettings;
-		uint aktuelleSeite;
-		public DB UnsereDb;
-		public Vorgang VG;
-		public bool bearbeiten_flag = false;
-		public bool neuer_Kunde = false;
-		public bool position_anlegen = false;
-		//public bool position_neu = false;
-		public string kürzelstring;
-		public string positionsnummerstring;
-		private int DG_aktZeile;
-		private KundenVerzeichnis Verzeichnis;
-		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
-		private System.Windows.Forms.ListBox LBox_Kunde;
-		private System.Windows.Forms.Button button_allePositionen;
+		private System.Windows.Forms.TabPage Nachkalkulation;
 		private System.Windows.Forms.TabPage Übersicht;
-		private System.Windows.Forms.GroupBox gBox_KundenÜbersicht;
-		private System.Windows.Forms.GroupBox gBox_PosÜbersicht;
-		private System.Windows.Forms.Button button_Übersicht_Pos_Anzeigen;
-		private System.Windows.Forms.Button button_Übersicht_alle_Kunden;
-		private System.Windows.Forms.GroupBox gBox_PosBeschränken;
-		private System.Windows.Forms.RadioButton radio_F;
-		private System.Windows.Forms.RadioButton radio_M;
-		private System.Windows.Forms.RadioButton radio_Z;
-		private System.Windows.Forms.DataGrid DG_Übersicht;
+		#endregion
 		
+		#region Menüs (Main und Context)
 		private System.Windows.Forms.ContextMenu cMenu_KundenDG;
-		private System.Windows.Forms.TextBox txtbox_PlzBau;
-		private System.Windows.Forms.TextBox txtbox_OrtBau;
-		private System.Windows.Forms.TextBox txtbox_StrasseBau;
-		private System.Windows.Forms.TextBox txtbox_VornameBau;
-		private System.Windows.Forms.TextBox txtbox_NameBau;
+		private System.Windows.Forms.ContextMenu cMenu_VorgangDG;
 		private System.Windows.Forms.MainMenu mainMenu1;
 		private System.Windows.Forms.MenuItem menuItem1;
 		private System.Windows.Forms.MenuItem menuItem2;
@@ -250,36 +253,67 @@ namespace Layer8_CSW
 		private System.Windows.Forms.MenuItem menuItem13;
 		private System.Windows.Forms.MenuItem menuItem14;
 		private System.Windows.Forms.MenuItem menuItem15;
-		private System.Windows.Forms.Button button_Übersicht_Vorgänge_anzeigen;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleVorgangsview;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn26;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn27;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn28;
-		
-		private System.Windows.Forms.Button button_Übersicht_Kunden_suchen;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn29;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn30;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn31;
-		private System.Windows.Forms.TextBox txtBox_Übersicht_Kundenauswahl;
-		private System.Windows.Forms.TextBox txtBox_Übersicht_Vorgang_suchen;
-		private System.Windows.Forms.Button button_Übersicht_Vorgang_suchen;
 		private System.Windows.Forms.MenuItem menuItem16;
 		private System.Windows.Forms.MenuItem menuItem17;
 		private System.Windows.Forms.MenuItem menuDruckenPageSetup;
 		private System.Windows.Forms.MenuItem menuDruckenPrint;
-		private System.Windows.Forms.TabPage Nachkalkulation;
-		private System.Windows.Forms.DataGrid DG_Nachkalkulation;
-		private System.Windows.Forms.TextBox txtBox_realMatKosten;
-		private System.Windows.Forms.TextBox txtBox_realLohnKosten;
-	
-		private System.Windows.Forms.TextBox txtBox_NettoRechbetrag;
-		private System.Windows.Forms.TextBox txtBox_realGesamtKosten;
-		private System.Windows.Forms.TextBox txtBox_Gewinn;
 		private System.Windows.Forms.MenuItem menuDruckenPrintPreview;
+		
+		#endregion
+		
+		#region DataGriddys
+		private System.Windows.Forms.DataGrid DG_Nachkalkulation;
+		private System.Windows.Forms.DataGrid dataGrid_Vorgang;
+		private System.Windows.Forms.DataGrid DG_Übersicht;
+		#endregion
+
+		#region Groupboxes
+		private System.Windows.Forms.GroupBox gbox_Vorgangstyp;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox gBox_KundenÜbersicht;
+		private System.Windows.Forms.GroupBox gBox_PosÜbersicht;
+		private System.Windows.Forms.GroupBox gBox_PosBeschränken;
+		#endregion
+
+		private System.Windows.Forms.ComboBox cbox_Anrede;
+		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
+		private System.Windows.Forms.ListBox LBox_Kunde;
+	
+		// Casi's Gerümpel------------------------------------------
+		private Font maintextFont = new Font("times New Roman", 14);
+        private Font subTextFont = new Font("Times New Roman" ,12);
+		private PageSettings storedPageSettings;
+		uint aktuelleSeite;
+		// ---------------------------------------------------------
+		
+		public DB UnsereDb;
+		public DataView PosView;
+		public Vorgang VG;
+		private KundenVerzeichnis Verzeichnis;
+
+		public bool bearbeiten_flag = false;
+		public bool neuer_Kunde = false;
+		public bool position_anlegen = false;
+		//public bool position_neu = false;
+		public string kürzelstring;
+		public string positionsnummerstring;
+		
+		private int DG_aktZeile=0;
+		
+		
+		
+		
+	
+	
+		
+	
+		
+
+		
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
-		private System.Windows.Forms.ContextMenu cMenu_VorgangDG;
+	
 
 		public enum Ansichtsache {Fliesen, Maurer, Zusatz, Kunden, Vorgang, Noppes };
 		public Ansichtsache Ansicht; 
@@ -2218,9 +2252,13 @@ namespace Layer8_CSW
 			DG_Zeile_bearbeiten=false;
 				
 			// CSW: Das DataGrid muss sein DataBinding behalten, es hat auch versprochen ganz lieb zu sein und keinen Scheiss damit zu machen
-			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			//dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			PosView = new DataView(VG.PosListe.Tables[0]);
 			
-
+			dataGrid_Vorgang.SetDataBinding(PosView,null);
+			PosView.AllowNew=false;
+			PosView.AllowDelete=false;
+			PosView.AllowEdit=false;
 			//CSW: Hier folgt die Defintion der ToolTips 
 			ToolTip TT_Kundenseite = new ToolTip();
 
@@ -2666,10 +2704,10 @@ namespace Layer8_CSW
 
 	#region Button_irgendwas_click
 		private void button_Übernehmen_Click(object sender, System.EventArgs e) //CSW
-		{
+		{//MessageBox.Show("1");
 			if(txtbox_Posnummer.Text!="")
 		 {
-
+		//	MessageBox.Show("2");
 			 if (this.position_anlegen)
 			 {}
 			
@@ -2681,11 +2719,13 @@ namespace Layer8_CSW
 				 {
 					 if (DG_Zeile_bearbeiten==false) // boolsches Flag - im Bearbeiten Modus ist das DataGrid disabled
 					 {	
-						 VG.Daten_hinzufuegen();	   //	Einfügen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
+						 VG.Daten_hinzufuegen();	
+						 PosView=new DataView(VG.PosListe.Tables[0]);//	Einfügen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
 					 }
 					 else 
 					 {
 						 VG.Daten_wiedereinfügen();  // Wird eigentlich an der alten Stelle bearbeitet
+							PosView=new DataView(VG.PosListe.Tables[0]);
 						 DG_Zeile_bearbeiten=false;						
 					 button_loeschen.Visible=false;
 //					
@@ -2695,9 +2735,11 @@ namespace Layer8_CSW
 				 }
 		
 				 dataGrid_Vorgang.ReadOnly=true;  // Ich weiß nicht warum aber mit diesem "Trick" läuft es schneller
+				// MessageBox.Show("3");
 			 }
 
 			 ZahlungsTab_aktualisieren();
+			//MessageBox.Show("4");
 		 }
 
 
@@ -3079,7 +3121,8 @@ namespace Layer8_CSW
 					cMenu_VorgangDG_Anlegen();
 					dataGrid_Vorgang.UnSelect(dataGrid_Vorgang.CurrentRowIndex);
 					dataGrid_Vorgang.CurrentRowIndex=myHitTest.Row;
-					dataGrid_Vorgang.Select(dataGrid_Vorgang.CurrentRowIndex);
+					DG_aktZeile=dataGrid_Vorgang.CurrentRowIndex;
+					dataGrid_Vorgang.Select(DG_aktZeile);
 					cMenu_VorgangDG.Show(dataGrid_Vorgang,new Point(e.X,e.Y));
 				}		
 			}
@@ -3092,7 +3135,7 @@ namespace Layer8_CSW
 				{	
 					button_loeschen.Visible=true;
 					// Übernimmt die doppelt-geklickte Zeile als aktPos und löscht sie aus der PosListe
-					DG_aktZeile = dataGrid_Vorgang.CurrentRowIndex;
+					// DG_aktZeile = dataGrid_Vorgang.CurrentRowIndex; Sollte schon belegt sein ( in dataGrid_Vorgang_MouseUp)
 					VG.Position_aus_Liste_ändern(DG_aktZeile);
 					// Formatierung ändern, um die Zeile hervorzuheben
 					
@@ -3142,15 +3185,19 @@ namespace Layer8_CSW
 			DR[6] = 0;
 			//			
 			
-			derEine.Rows.InsertAt(DR,dataGrid_Vorgang.CurrentRowIndex );
+			derEine.Rows.InsertAt(DR,DG_aktZeile );
 			
 			VG.PosListe.Tables.Clear();
 			VG.PosListe.Tables.Add(derEine) ;
-		dataGrid_Vorgang.Select(dataGrid_Vorgang.CurrentRowIndex);
+		
 
-			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
-			MessageBox.Show(Convert.ToString(VG.PosListe.Tables[0].Rows.Count));
-
+			//dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			PosView=new DataView(VG.PosListe.Tables[0]);
+			MessageBox.Show(Convert.ToString("Index:"+DG_aktZeile));
+			MessageBox.Show(Convert.ToString("Anzahl der Zeilen:"+VG.PosListe.Tables[0].Rows.Count));
+			dataGrid_Vorgang.Select(DG_aktZeile);
+			dataGrid_Vorgang.CurrentRowIndex=DG_aktZeile;
+		
 	//		Position_bearbeiten(sender,e);
 //						
 		}
@@ -3465,7 +3512,7 @@ namespace Layer8_CSW
 		private void dataGrid_Vorgang_CurrentCellChanged(object sender, System.EventArgs e) //CSW - 23.10.03 00:01
 		{	
 			// Schreibt mir den aktuellen Zeilenindex in eine nette Variable, dies war das einzige verlässliche Event
-			this.DG_aktZeile=dataGrid_Vorgang.CurrentRowIndex;
+			//this.DG_aktZeile=dataGrid_Vorgang.CurrentRowIndex;
 			
 		}
 
@@ -3857,7 +3904,7 @@ namespace Layer8_CSW
 		// zweites Tab (Bauvorhaben)
 		private string m_Typ;
 	
-		private DateTime m_Datum; // Hier ein DatenFormat raussuchen und einfügen !!!
+		private DateTime m_Datum; 
 		private string m_BauNName; // extra für Hegi
 		private string m_BauVName;
 		private string m_BauStrasse;
@@ -4394,8 +4441,10 @@ namespace Layer8_CSW
 			// In der nächsten Version fügt er sie evt auch da wieder ein, wo sie hingehört. (Mal sehen ob dat geht)
 			// Update: wurde realisiert !
 			// Diese Methode stellt nur die Daten aus der DataGrid Zeile dar.
+			MessageBox.Show("geänderte Zeile:"+Zeile);
 			try
 			{
+				bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
 				DataRow R =PosListe.Tables[0].Rows[Zeile];
 				aktPos.Raum = Convert.ToString(R[0]);
 				aktPos.Positionsnummer = Convert.ToString(R[1]);
@@ -4405,13 +4454,13 @@ namespace Layer8_CSW
 				aktPos.Flaeche=Convert.ToDouble(R[5]);
 				aktPos.GPreis=Convert.ToDecimal(R[6]);
 
-				bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
+				
 			}
 			catch(Exception ex) {MessageBox.Show("Fehler in Pos aus Liste ändern"); }
 		}
 
 		public void Position_aus_Liste_löschen()
-		{
+		{	MessageBox.Show("löschen");
 			bearbeiteteZeile.Delete();
 		}
 
