@@ -9,7 +9,7 @@
 // | Version 1.101	  | 26.10.03	   | 18:18    | CSW			   |  Mini-Bug-Fix beim DataGrid, Doppelklick auf ZellenRahmen hat jetzt gleichen Effekt wie Doppelklick auf Zeilenkopf (Thx@Casi)
 // | Version 1.11	  | 26.10.03	   | 23:41    | CH			   |  Neue ZPositon anlegen
 // | Version 1.12	  | 27.10.03	   | 22:53	  | CSW			   |  DateTimePicker eingebaut und VG.Datum entsprechend geändert
-// | Version 1.13	  | 28.10.03	   | 22:53	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms
+// | Version 1.13	  | 29.10.03	   | 09:00	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms
 
 using System;
 using System.Drawing;
