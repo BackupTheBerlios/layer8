@@ -19,6 +19,8 @@
 // | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbeträge in den DataGrids haben jetzt ein Währungsformat (und nur da)
 // | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der Übersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Menü verschwindet immer erst nach der 2.Auswahl
 // | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelöst: Während des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
+// | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es gäbe System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
+
 
 using System;
 using System.Drawing;
@@ -350,6 +352,7 @@ namespace Layer8_CSW
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
 			this.Übersicht = new System.Windows.Forms.TabPage();
 			this.DG_Übersicht = new System.Windows.Forms.DataGrid();
+			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
 			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
 			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
@@ -381,7 +384,6 @@ namespace Layer8_CSW
 			this.gBox_KundenÜbersicht = new System.Windows.Forms.GroupBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
-			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -1380,7 +1382,6 @@ namespace Layer8_CSW
 			// 
 			// DG_Übersicht
 			// 
-			this.DG_Übersicht.ContextMenu = this.cMenu_KundenDG;
 			this.DG_Übersicht.DataMember = "";
 			this.DG_Übersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.DG_Übersicht.Location = new System.Drawing.Point(16, 160);
@@ -1738,7 +1739,7 @@ namespace Layer8_CSW
 			this.dataGridTableStyle3.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			this.dataGridTableStyle4.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			
-			cMenu_KundenDG_Anlegen();
+		
 		}
 
 
@@ -2542,10 +2543,16 @@ namespace Layer8_CSW
 		private void DG_Übersicht_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
-			{
-			
-			DG_Übersicht.ContextMenu.Show(DG_Übersicht,new Point(e.X,e.Y));
-			
+			{	cMenu_KundenDG.MenuItems.Clear();
+				cMenu_KundenDG_Anlegen(); // Standard-Elemente
+				if(DG_Übersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
+				{
+						
+					
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Position übernehmen (Dummy)");
+				}
+				cMenu_KundenDG.Show(DG_Übersicht,new Point(e.X,e.Y));
 			}
 		}
 
@@ -2583,6 +2590,8 @@ namespace Layer8_CSW
 			
 
 		}
+
+		
 	}
 
 
