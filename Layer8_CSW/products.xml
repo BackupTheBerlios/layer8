@@ -1,2 +1,21 @@
 <?xml version="1.0" standalone="yes"?>
-<PosListe />
+<PosListe>
+  <Positionen>
+    <Raum />
+    <Position>F01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>10</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+</PosListe>

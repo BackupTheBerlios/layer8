@@ -30,6 +30,8 @@
 // | Version 1.241    | 22.11.03	   | 12:16	  | Casi		   |  Druckvorschau implementiert
 // | Version 1.242a   | 25.11.03	   | 01:25    | CSW            |  Hab dat KontextMenü schon vorbereitet und die Übernahme des Kunden drin, Rest morgen
 // | Version 1.242b   | 25.11.03	   | 13:16    | CSW			   |  Position übernehmen drin, DB (RechPos) geändert
+// | Version 1.243    | 25.11.03	   | 19:59    | Casi		   |  DB, Vorname und nachname in KundeVorgang eingefügt und DB-Methoden aktualisiert
+
 using System;
 using System.Text;
 using System.Drawing;
@@ -4827,10 +4829,13 @@ namespace Layer8_CSW
 			string neuerName= name;
 			Kunde myKunde = k;
 			OleDbCommand Name_aendern= null ;
+			OleDbCommand Name_aendern2= null ;
 			try	
 			{	
 				Name_aendern= new OleDbCommand("UPDATE Kunde SET Name='"+neuerName+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
+				Name_aendern2= new OleDbCommand("UPDATE KundeVorgang SET Name='"+neuerName+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
 				änderungen =Name_aendern.ExecuteNonQuery();
+				änderungen+= Name_aendern2.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
@@ -4842,11 +4847,15 @@ namespace Layer8_CSW
 			string neuerVorName= Vorname;
 			Kunde myKunde = k;
 			OleDbCommand VorName_aendern= null ;
+			OleDbCommand VorName_aendern2= null ;
 			try	
 			{	
 				VorName_aendern= new OleDbCommand("UPDATE Kunde SET Vorname='"+neuerVorName+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
+				VorName_aendern= new OleDbCommand("UPDATE KundeVorgang SET Vorname='"+neuerVorName+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
 				änderungen =VorName_aendern.ExecuteNonQuery();
+			    änderungen =VorName_aendern2.ExecuteNonQuery();
 			}
+
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
 
@@ -4996,9 +5005,11 @@ namespace Layer8_CSW
 			int änderungen=0; 
 			Kunde myKunde = k;
 			OleDbCommand Kunde_aendern= null ;
+			OleDbCommand Kunde_aendern2= null ;
 			try	
 			{	
 				Kunde_aendern= new OleDbCommand("UPDATE Kunde SET Kuerzel='"+myKunde.Kuerzel+"' Firma='"+myKunde.Firma+" Anrede = '"+myKunde.Anrede+"' Name = '"+myKunde.NName+"' Vorname= '"+myKunde.VName+"' Strasse= '"+myKunde.Strasse+"' Ort= '"+myKunde.Ort+"' PLZ="+myKunde.PLZ+" Kontonr ="+myKunde.Kontonr+" BLZ ="+myKunde.BLZ+" Bank = '"+myKunde.Bank+"' Telefon ='"+myKunde.Telefonnummer+"' Fax= '"+myKunde.Fax+"' '  eMail='"+myKunde.Email+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
+				Kunde_aendern2= new OleDbCommand("UPDATE KundeVorgang SET  Name = '"+myKunde.NName+"' Vorname= '"+myKunde.VName+"' WHERE Kundennr ="+myKunde.Kundennummer+"", myconnection);
 				änderungen =Kunde_aendern.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
@@ -5176,7 +5187,7 @@ namespace Layer8_CSW
 			
 			try	
 			{	
-				Vorgang_schreiben= new OleDbCommand("INSERT INTO KundeVorgang VALUES ("+myVor.UnserKunde.Kundennummer+", '"+myVor.Dateiname+"','"+myVor.Datum+"',"+count+")", myconnection);
+				Vorgang_schreiben= new OleDbCommand("INSERT INTO KundeVorgang VALUES ("+myVor.UnserKunde.Kundennummer+", '"+myVor.Dateiname+"','"+myVor.Datum+"',"+count+",'"+myVor.UnserKunde.VName+"','"+myVor.UnserKunde.NName+"')", myconnection);
 				änderungen =Vorgang_schreiben.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
@@ -5242,6 +5253,8 @@ namespace Layer8_CSW
 			KundenVorgaenge.Columns.Add("Vorgang",typeof(string));
 			KundenVorgaenge.Columns.Add("Index",typeof(int));
 			KundenVorgaenge.Columns.Add("Datum",typeof(DateTime));
+			KundenVorgaenge.Columns.Add("Vorname",typeof(string));
+			KundenVorgaenge.Columns.Add("Name",typeof(string));
 			KundenVorgaenge.PrimaryKey = new DataColumn[]{KundenVorgaenge.Columns["Index"]};
 			Kunde.PrimaryKey = new DataColumn[]{Kunde.Columns["Kundennr"]};
 			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT * FROM KundeVorgang",myconnection);
@@ -5260,8 +5273,8 @@ namespace Layer8_CSW
 				return null;
 			}
 			
-			KundenVorgaenge.Columns.Add("Name",typeof(string));
-			KundenVorgaenge.Columns.Add("Vorname",typeof(string));
+			//KundenVorgaenge.Columns.Add("Name",typeof(string));
+			//KundenVorgaenge.Columns.Add("Vorname",typeof(string));
 			
 			
 			
