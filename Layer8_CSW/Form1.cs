@@ -33,6 +33,8 @@
 // | Version 1.243    | 25.11.03	   | 19:59    | Casi		   |  DB, Vorname und Nachname in KundeVorgang eingefügt und DB-Methoden aktualisiert
 // | Version 1.244    | 26.11.03	   | 01:32	  | CSW			   |  KontextMenü für das Vorgangs-DataGrid fertig, dadruch geänderter Workflow beim ändern&löschen, einfügen funktioniert noch nicht so richtig
 // | Version 1.244b   | 26.11.03	   | 18:54    | CSW			   |  "alle_Vorgaenge_eines_Kunden_ausgeben()" an die neue DB angepasst, hat er nich automatisch übernommen.
+// | Version 1.245    | 27.11.03	   | 00:14	  | CSW			   |  Ich verzweifel, wenn ich eine neue Zeile einfüge, erscheint die auch lässt sich aber nicht bearbeiten
+
 using System;
 using System.Text;
 using System.Drawing;
@@ -2685,10 +2687,10 @@ namespace Layer8_CSW
 					 {
 						 VG.Daten_wiedereinfügen();  // Wird eigentlich an der alten Stelle bearbeitet
 						 DG_Zeile_bearbeiten=false;						
-						 button_loeschen.Visible=false;
-					
-						 // alte Formatierung wiederherstellen
-						 dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
+					 button_loeschen.Visible=false;
+//					
+//						 // alte Formatierung wiederherstellen
+					 dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
 					 }
 				 }
 		
@@ -2697,6 +2699,11 @@ namespace Layer8_CSW
 
 			 ZahlungsTab_aktualisieren();
 		 }
+
+
+
+
+
 		else MessageBox.Show("Mit der Positionsnummer stimmt etwas nicht.","Es ist ein Fehler aufgetreten.");
 		}
 		
@@ -3079,19 +3086,28 @@ namespace Layer8_CSW
 		}	
 		private void Position_bearbeiten (object sender, System.EventArgs e)
 		{
-			if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert während noch eine Zeile bearbeitet wird.
-			{	
-				button_loeschen.Visible=true;
-				// Übernimmt die doppelt-geklickte Zeile als aktPos und löscht sie aus der PosListe
-				VG.Position_aus_Liste_ändern(DG_aktZeile);
-				// Formatierung ändern, um die Zeile hervorzuheben
+			try
+			{
+				if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert während noch eine Zeile bearbeitet wird.
+				{	
+					button_loeschen.Visible=true;
+					// Übernimmt die doppelt-geklickte Zeile als aktPos und löscht sie aus der PosListe
+					DG_aktZeile = dataGrid_Vorgang.CurrentRowIndex;
+					VG.Position_aus_Liste_ändern(DG_aktZeile);
+					// Formatierung ändern, um die Zeile hervorzuheben
 					
 				dataGridTableStyle2.SelectionBackColor=System.Drawing.Color.DarkRed;
 				dataGrid_Vorgang.Select(DG_aktZeile);
-				DG_Zeile_bearbeiten=true;
-				position_Anzeigen(VG.aktPos);
-				dataGrid_Vorgang.Enabled=false;
+					DG_Zeile_bearbeiten=true;
+					position_Anzeigen(VG.aktPos);
+					dataGrid_Vorgang.Enabled=false;
+				}
 			}
+			catch(Exception ex)
+			{
+				MessageBox.Show("Fehler in Posbearbeiten");
+			}
+
 		}
 		private void Position_löschen (object sender, System.EventArgs e)
 		{
@@ -3107,36 +3123,71 @@ namespace Layer8_CSW
 		}
 		private void Position_einfügen (object sender, System.EventArgs e)
 		{
-		
-//			 		DataRowCollection rc; 
-//			 		DataRow myNewRow;
-//			 		//ein Array für die 7 Spalten
-//					rc = new DataRowCollection();
+//
+			DataTable derEine;
+			derEine = VG.PosListe.Tables[0];
+			
 				object[] rowVals = new object[7];
 			 
-			 		// Add and return the new row.
-//			 		myNewRow = rc.Add(rowVals);	
+			// Add and return the new row.
+			//			 		myNewRow = rc.Add(rowVals);	
 			
 			DataRow DR = VG.PosListe.Tables[0].NewRow();
-			DR[0] = "";
-			DR[1] = "";
-			DR[2] = "";
-			DR[3] = "";
+			DR[0] = "-";
+			DR[1] = "-";
+			DR[2] = "-";
+			DR[3] = "-";
 			DR[4] = 0;
 			DR[5] = 0;
 			DR[6] = 0;
 			//			
 			
-			VG.PosListe.Tables[0].Rows.InsertAt(DR,dataGrid_Vorgang.CurrentRowIndex );// (new object[]{"",0,"","",0,0,0});
+			derEine.Rows.InsertAt(DR,dataGrid_Vorgang.CurrentRowIndex );
 			
+			VG.PosListe.Tables.Clear();
+			VG.PosListe.Tables.Add(derEine) ;
+		dataGrid_Vorgang.Select(dataGrid_Vorgang.CurrentRowIndex);
+
+			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			MessageBox.Show(Convert.ToString(VG.PosListe.Tables[0].Rows.Count));
+
+	//		Position_bearbeiten(sender,e);
+//						
+		}
+
+		
+//			 		DataRowCollection rc; 
+//			 		DataRow myNewRow;
+//			 		//ein Array für die 7 Spalten
+////					rc = new DataRowCollection();
+//				object[] rowVals = new object[7];
+//			 
+//			 		// Add and return the new row.
+////			 		myNewRow = rc.Add(rowVals);	
+//			
+//			DataRow DR = VG.PosListe.Tables[0].NewRow();
+//			DR[0] = "";
+//			DR[1] = "";
+//			DR[2] = "";
+//			DR[3] = "";
+//			DR[4] = 0;
+//			DR[5] = 0;
+//			DR[6] = 0;
+//			
+//			VG.PosListe.Tables[0].Rows.InsertAt(DR,dataGrid_Vorgang.CurrentRowIndex );// (new object[]{"",0,"","",0,0,0});
+//			dataGrid_Vorgang.SetDataBinding(null,null);
+//			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
 //			if(MessageBox.Show("Noch nicht implementiert", "Not Yet Done",MessageBoxButtons.OKCancel)==System.Windows.Forms.DialogResult.OK)
 //					MessageBox.Show("Wirklich noch nicht", "Not Yet Done");
 //				else
 //					MessageBox.Show("Ich schwöööär, Alder", "Glaubste nich, oder was",MessageBoxButtons.AbortRetryIgnore);
 //			//VG.PosListe.Tables[0].Rows.
+			//DG_Test();
+		//dataGrid_Vorgang.i
+	
+		
+		
 
-
-		}
 		private void DG_Übersicht_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
@@ -3547,8 +3598,14 @@ namespace Layer8_CSW
 		}
 
 		
+		private void DG_Test()
+		{
+		for (int i=0;i<VG.PosListe.Tables[0].Rows.Count; i++)
+		{MessageBox.Show(VG.PosListe.Tables[0].Rows[i][1].ToString());}
 
 
+
+		}
 	
 	
 }
@@ -4218,14 +4275,23 @@ namespace Layer8_CSW
 		public void Daten_wiedereinfügen() //CSW - 25.10.03 01:02 
 		{			
 			// an der Position, an der die Position auch vorher stand werden die einzelnen Spalten geändert
-									
-			bearbeiteteZeile[0]=aktPos.Raum;
-			bearbeiteteZeile[1]=aktPos.Positionsnummer;
-			bearbeiteteZeile[2]=aktPos.Kurztext;
-			bearbeiteteZeile[3]=aktPos.Langtext;
-			bearbeiteteZeile[4]=aktPos.EPreis;
-			bearbeiteteZeile[5]=aktPos.Flaeche;
-			bearbeiteteZeile[6]=aktPos.GPreis;
+
+			try
+			{
+
+				bearbeiteteZeile[0]=aktPos.Raum;
+
+				bearbeiteteZeile[1]=aktPos.Positionsnummer;
+				bearbeiteteZeile[2]=aktPos.Kurztext;
+				bearbeiteteZeile[3]=aktPos.Langtext;
+				bearbeiteteZeile[4]=aktPos.EPreis;
+				bearbeiteteZeile[5]=aktPos.Flaeche;
+				bearbeiteteZeile[6]=aktPos.GPreis;
+			} 
+			catch (Exception ex)
+			{
+			MessageBox.Show("Fehler:"+ex);
+			}
 					
 		}
 
@@ -4328,17 +4394,20 @@ namespace Layer8_CSW
 			// In der nächsten Version fügt er sie evt auch da wieder ein, wo sie hingehört. (Mal sehen ob dat geht)
 			// Update: wurde realisiert !
 			// Diese Methode stellt nur die Daten aus der DataGrid Zeile dar.
+			try
+			{
+				DataRow R =PosListe.Tables[0].Rows[Zeile];
+				aktPos.Raum = Convert.ToString(R[0]);
+				aktPos.Positionsnummer = Convert.ToString(R[1]);
+				aktPos.Kurztext=Convert.ToString(R[2]);
+				aktPos.Langtext=Convert.ToString(R[3]);
+				aktPos.EPreis=Convert.ToDecimal(R[4]);
+				aktPos.Flaeche=Convert.ToDouble(R[5]);
+				aktPos.GPreis=Convert.ToDecimal(R[6]);
 
-			DataRow R =PosListe.Tables[0].Rows[Zeile];
-			aktPos.Raum = Convert.ToString(R[0]);
-			aktPos.Positionsnummer = Convert.ToString(R[1]);
-			aktPos.Kurztext=Convert.ToString(R[2]);
-			aktPos.Langtext=Convert.ToString(R[3]);
-			aktPos.EPreis=Convert.ToDecimal(R[4]);
-			aktPos.Flaeche=Convert.ToDouble(R[5]);
-			aktPos.GPreis=Convert.ToDecimal(R[6]);
-
-			bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
+				bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
+			}
+			catch(Exception ex) {MessageBox.Show("Fehler in Pos aus Liste ändern"); }
 		}
 
 		public void Position_aus_Liste_löschen()
