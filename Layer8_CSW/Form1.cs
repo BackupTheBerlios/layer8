@@ -34,6 +34,7 @@
 // | Version 1.244    | 26.11.03	   | 01:32	  | CSW			   |  KontextMenü für das Vorgangs-DataGrid fertig, dadruch geänderter Workflow beim ändern&löschen, einfügen funktioniert noch nicht so richtig
 // | Version 1.244b   | 26.11.03	   | 18:54    | CSW			   |  "alle_Vorgaenge_eines_Kunden_ausgeben()" an die neue DB angepasst, hat er nich automatisch übernommen.
 // | Version 1.245    | 27.11.03	   | 00:14	  | CSW			   |  Ich verzweifel, wenn ich eine neue Zeile einfüge, erscheint die auch lässt sich aber nicht bearbeiten
+// | Version 1.246    | 01.12.03	   | 18:26	  | CH			   |  Kunde-Funktionalität im Menu
 
 using System;
 using System.Text;
@@ -104,6 +105,9 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label28;
 		# endregion
+		#region Buttons
+
+
 
 		#region Buttons
 		private System.Windows.Forms.Button button_Übersicht_Vorgänge_anzeigen;
@@ -118,7 +122,6 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Button button_Übernehmen;
 		private System.Windows.Forms.Button button_loeschen;
 		private System.Windows.Forms.Button button_Flaeche;
-		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button Pos_anlegen;
 		private System.Windows.Forms.Button pos_Speichern; 
 		private System.Windows.Forms.Button button_Übersicht_Pos_Anzeigen;
@@ -301,19 +304,17 @@ namespace Layer8_CSW
 		private int DG_aktZeile=0;
 		
 		
-		
-		
-	
-	
-		
-	
-		
-
-		
+			
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
+
+		//private System.Windows.Forms.ContextMenu cMenu_VorgangDG;   die mussten nach dem CVS mergen rausgenommen werden
+		//private System.Windows.Forms.Button button_Speichern;		  die hier auch
+		private System.Windows.Forms.Button button_abbrechen;
+
 	
+
 
 		public enum Ansichtsache {Fliesen, Maurer, Zusatz, Kunden, Vorgang, Noppes };
 		public Ansichtsache Ansicht; 
@@ -359,7 +360,6 @@ namespace Layer8_CSW
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.Kunde = new System.Windows.Forms.TabPage();
 			this.LBox_Kunde = new System.Windows.Forms.ListBox();
-			this.button1 = new System.Windows.Forms.Button();
 			this.label31 = new System.Windows.Forms.Label();
 			this.txtbox_Email = new System.Windows.Forms.TextBox();
 			this.label30 = new System.Windows.Forms.Label();
@@ -367,12 +367,8 @@ namespace Layer8_CSW
 			this.label29 = new System.Windows.Forms.Label();
 			this.cbox_Anrede = new System.Windows.Forms.ComboBox();
 			this.txtbox_Name = new System.Windows.Forms.TextBox();
-			this.button_Rückgangig = new System.Windows.Forms.Button();
-			this.button_Neu = new System.Windows.Forms.Button();
-			this.button_Löschen = new System.Windows.Forms.Button();
+			this.button_abbrechen = new System.Windows.Forms.Button();
 			this.button_Speichern = new System.Windows.Forms.Button();
-			this.button_Zurück = new System.Windows.Forms.Button();
-			this.button_Vor = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -576,7 +572,6 @@ namespace Layer8_CSW
 			// Kunde
 			// 
 			this.Kunde.Controls.Add(this.LBox_Kunde);
-			this.Kunde.Controls.Add(this.button1);
 			this.Kunde.Controls.Add(this.label31);
 			this.Kunde.Controls.Add(this.txtbox_Email);
 			this.Kunde.Controls.Add(this.label30);
@@ -584,12 +579,8 @@ namespace Layer8_CSW
 			this.Kunde.Controls.Add(this.label29);
 			this.Kunde.Controls.Add(this.cbox_Anrede);
 			this.Kunde.Controls.Add(this.txtbox_Name);
-			this.Kunde.Controls.Add(this.button_Rückgangig);
-			this.Kunde.Controls.Add(this.button_Neu);
-			this.Kunde.Controls.Add(this.button_Löschen);
+			this.Kunde.Controls.Add(this.button_abbrechen);
 			this.Kunde.Controls.Add(this.button_Speichern);
-			this.Kunde.Controls.Add(this.button_Zurück);
-			this.Kunde.Controls.Add(this.button_Vor);
 			this.Kunde.Controls.Add(this.label8);
 			this.Kunde.Controls.Add(this.label7);
 			this.Kunde.Controls.Add(this.label6);
@@ -621,14 +612,6 @@ namespace Layer8_CSW
 			this.LBox_Kunde.Visible = false;
 			this.LBox_Kunde.DoubleClick += new System.EventHandler(this.LBox_Kunde_DoubleClick);
 			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(32, 200);
-			this.button1.Name = "button1";
-			this.button1.TabIndex = 29;
-			this.button1.Text = "Bearbeiten";
-			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
 			// label31
 			// 
 			this.label31.Location = new System.Drawing.Point(304, 304);
@@ -643,7 +626,7 @@ namespace Layer8_CSW
 			this.txtbox_Email.Name = "txtbox_Email";
 			this.txtbox_Email.ReadOnly = true;
 			this.txtbox_Email.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Email.TabIndex = 27;
+			this.txtbox_Email.TabIndex = 8;
 			this.txtbox_Email.Text = "";
 			this.txtbox_Email.Leave += new System.EventHandler(this.txtbox_Email_Leave);
 			// 
@@ -661,7 +644,7 @@ namespace Layer8_CSW
 			this.txtbox_Fax.Name = "txtbox_Fax";
 			this.txtbox_Fax.ReadOnly = true;
 			this.txtbox_Fax.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Fax.TabIndex = 25;
+			this.txtbox_Fax.TabIndex = 7;
 			this.txtbox_Fax.Text = "";
 			this.txtbox_Fax.Leave += new System.EventHandler(this.txtbox_Fax_Leave);
 			// 
@@ -692,55 +675,29 @@ namespace Layer8_CSW
 			this.txtbox_Name.Name = "txtbox_Name";
 			this.txtbox_Name.ReadOnly = true;
 			this.txtbox_Name.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Name.TabIndex = 22;
+			this.txtbox_Name.TabIndex = 1;
 			this.txtbox_Name.Text = "";
 			this.txtbox_Name.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtbox_Name_MouseDown);
 			this.txtbox_Name.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_Name_KeyPress);
 			this.txtbox_Name.Leave += new System.EventHandler(this.txtbox_Name_Leave);
 			// 
-			// button_Rückgangig
+			// button_abbrechen
 			// 
-			this.button_Rückgangig.Location = new System.Drawing.Point(136, 296);
-			this.button_Rückgangig.Name = "button_Rückgangig";
-			this.button_Rückgangig.TabIndex = 21;
-			this.button_Rückgangig.Text = "Rückgängig";
-			// 
-			// button_Neu
-			// 
-			this.button_Neu.Location = new System.Drawing.Point(32, 152);
-			this.button_Neu.Name = "button_Neu";
-			this.button_Neu.TabIndex = 20;
-			this.button_Neu.Text = "Neu";
-			this.button_Neu.Click += new System.EventHandler(this.button_Neu_Click);
-			// 
-			// button_Löschen
-			// 
-			this.button_Löschen.Location = new System.Drawing.Point(32, 296);
-			this.button_Löschen.Name = "button_Löschen";
-			this.button_Löschen.TabIndex = 19;
-			this.button_Löschen.Text = "Löschen";
+			this.button_abbrechen.Location = new System.Drawing.Point(136, 168);
+			this.button_abbrechen.Name = "button_abbrechen";
+			this.button_abbrechen.TabIndex = 11;
+			this.button_abbrechen.Text = "Abbrechen";
+			this.button_abbrechen.Visible = false;
+			this.button_abbrechen.Click += new System.EventHandler(this.button_abbrechen_Click);
 			// 
 			// button_Speichern
 			// 
-			this.button_Speichern.Location = new System.Drawing.Point(32, 248);
+			this.button_Speichern.Location = new System.Drawing.Point(32, 168);
 			this.button_Speichern.Name = "button_Speichern";
-			this.button_Speichern.TabIndex = 18;
+			this.button_Speichern.TabIndex = 10;
 			this.button_Speichern.Text = "Speichern";
+			this.button_Speichern.Visible = false;
 			this.button_Speichern.Click += new System.EventHandler(this.button_Speichern_Click);
-			// 
-			// button_Zurück
-			// 
-			this.button_Zurück.Location = new System.Drawing.Point(136, 248);
-			this.button_Zurück.Name = "button_Zurück";
-			this.button_Zurück.TabIndex = 17;
-			this.button_Zurück.Text = "Zurück";
-			// 
-			// button_Vor
-			// 
-			this.button_Vor.Location = new System.Drawing.Point(136, 200);
-			this.button_Vor.Name = "button_Vor";
-			this.button_Vor.TabIndex = 16;
-			this.button_Vor.Text = "Vor";
 			// 
 			// label8
 			// 
@@ -772,7 +729,7 @@ namespace Layer8_CSW
 			this.txtbox_Telefonnummer.Name = "txtbox_Telefonnummer";
 			this.txtbox_Telefonnummer.ReadOnly = true;
 			this.txtbox_Telefonnummer.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Telefonnummer.TabIndex = 12;
+			this.txtbox_Telefonnummer.TabIndex = 6;
 			this.txtbox_Telefonnummer.Text = "";
 			this.txtbox_Telefonnummer.Leave += new System.EventHandler(this.txtbox_Telefonnummer_Leave);
 			// 
@@ -782,7 +739,7 @@ namespace Layer8_CSW
 			this.txtbox_PLZ.Name = "txtbox_PLZ";
 			this.txtbox_PLZ.ReadOnly = true;
 			this.txtbox_PLZ.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_PLZ.TabIndex = 11;
+			this.txtbox_PLZ.TabIndex = 5;
 			this.txtbox_PLZ.Text = "";
 			this.txtbox_PLZ.Leave += new System.EventHandler(this.txtbox_PLZ_Leave);
 			// 
@@ -792,7 +749,7 @@ namespace Layer8_CSW
 			this.txtbox_Ort.Name = "txtbox_Ort";
 			this.txtbox_Ort.ReadOnly = true;
 			this.txtbox_Ort.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Ort.TabIndex = 10;
+			this.txtbox_Ort.TabIndex = 4;
 			this.txtbox_Ort.Text = "";
 			this.txtbox_Ort.Leave += new System.EventHandler(this.txtbox_Ort_Leave);
 			// 
@@ -842,7 +799,7 @@ namespace Layer8_CSW
 			this.txtbox_Strasse.Name = "txtbox_Strasse";
 			this.txtbox_Strasse.ReadOnly = true;
 			this.txtbox_Strasse.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Strasse.TabIndex = 4;
+			this.txtbox_Strasse.TabIndex = 3;
 			this.txtbox_Strasse.Text = "";
 			this.txtbox_Strasse.Leave += new System.EventHandler(this.txtbox_Strasse_Leave);
 			// 
@@ -852,7 +809,7 @@ namespace Layer8_CSW
 			this.txtbox_Vorname.Name = "txtbox_Vorname";
 			this.txtbox_Vorname.ReadOnly = true;
 			this.txtbox_Vorname.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Vorname.TabIndex = 3;
+			this.txtbox_Vorname.TabIndex = 2;
 			this.txtbox_Vorname.Text = "";
 			this.txtbox_Vorname.Leave += new System.EventHandler(this.txtbox_Vorname_Leave);
 			// 
@@ -862,7 +819,7 @@ namespace Layer8_CSW
 			this.txtbox_Kundennummer.Name = "txtbox_Kundennummer";
 			this.txtbox_Kundennummer.ReadOnly = true;
 			this.txtbox_Kundennummer.Size = new System.Drawing.Size(104, 20);
-			this.txtbox_Kundennummer.TabIndex = 1;
+			this.txtbox_Kundennummer.TabIndex = 16;
 			this.txtbox_Kundennummer.Text = "";
 			this.txtbox_Kundennummer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtbox_Kundennummer_MouseDown);
 			// 
@@ -2128,16 +2085,19 @@ namespace Layer8_CSW
 			// 
 			this.menuItem7.Index = 0;
 			this.menuItem7.Text = "Neu";
+			this.menuItem7.Click += new System.EventHandler(this.menuItem7_Click);
 			// 
 			// menuItem8
 			// 
 			this.menuItem8.Index = 1;
 			this.menuItem8.Text = "Bearbeiten";
+			this.menuItem8.Click += new System.EventHandler(this.menuItem8_Click);
 			// 
 			// menuItem9
 			// 
 			this.menuItem9.Index = 2;
 			this.menuItem9.Text = "Speichern";
+			this.menuItem9.Click += new System.EventHandler(this.menuItem9_Click);
 			// 
 			// menuItem10
 			// 
@@ -2779,6 +2739,8 @@ namespace Layer8_CSW
 				else
 				{     */
 			this.bearbeiten_flag = false;
+			this.button_Speichern.Visible = false;
+			this.button_abbrechen.Visible = false;
 
 			if (this.neuer_Kunde)
 			{
@@ -3653,6 +3615,97 @@ namespace Layer8_CSW
 
 
 		}
+
+		private void menuItem7_Click(object sender, System.EventArgs e)
+		{
+			this.tabControl1.SelectedTab = Kunde;
+			this.neuer_Kunde = true;
+			this.bearbeiten_flag = true;
+			this.alle_kunden_textboxen_auf_write();
+			this.alle_kunden_textboxen_Inhalt_loeschen();
+			this.button_Speichern.Visible = true;
+			this.button_abbrechen.Visible = true;
+		}
+
+		private void menuItem8_Click(object sender, System.EventArgs e)
+		{
+			if (this.tabControl1.SelectedTab == Kunde)
+			{
+				if (this.txtbox_Kürzel.Text.Equals(""))
+				{
+					MessageBox.Show("Ja würd ich gern, wennn ein Kunde angegeben wär! Ey!");
+				}
+				else
+				{
+					this.bearbeiten_flag = true;
+					this.alle_kunden_textboxen_auf_write();
+				}
+				}
+			else 
+			{
+				this.tabControl1.SelectedTab = Kunde;
+				MessageBox.Show("Sie müssen noch einen Kunden zum Bearbeiten angeben.");
+
+			}
+		}
+
+		private void menuItem9_Click(object sender, System.EventArgs e)
+		{
+			
+
+			/*	if (this.txtbox_Kürzel.Text.Equals(""))
+				{
+					MessageBox.Show("Bitte geben Sie zuerst ein Kürzel ein");
+				}
+
+				else
+				{     */
+			this.bearbeiten_flag = false;
+			this.button_Speichern.Visible = false;
+			this.button_abbrechen.Visible = false;
+
+			if (this.neuer_Kunde)
+			{
+				this.neuer_Kunde = false;
+				UnsereDb.Neuer_Kunde_Anlegen(VG.UnserKunde);
+				this.alle_kunden_textboxen_auf_read();
+			}
+			else
+			{
+
+				// UnsereDb.Kunde_aendern_Kürzel(this.txtbox_Kürzel.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Name(this.txtbox_Name.Text,VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Ort(this.txtbox_Ort.Text, VG.UnserKunde);
+				
+				
+				string temp = this.txtbox_PLZ.Text;
+				temp.Trim();
+				if (temp != "")
+				{
+					int PLZ = Convert.ToInt32(this.txtbox_PLZ.Text);
+					UnsereDb.Kunde_aendern_PLZ(PLZ, VG.UnserKunde);
+				}
+
+				
+				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
+				this.alle_kunden_textboxen_auf_read();
+				// }
+			}
+		}
+
+		private void button_abbrechen_Click(object sender, System.EventArgs e)
+		{
+			this.bearbeiten_flag = false;
+			this.alle_kunden_textboxen_auf_read();
+			this.button_Speichern.Visible = false;
+			this.button_abbrechen.Visible = false;
+		}
+
 	
 	
 }
@@ -5483,3 +5536,4 @@ namespace Layer8_CSW
 
 
 }
+#endregion
