@@ -12,8 +12,8 @@
 // | Version 1.13	  | 29.10.03	   | 09:00	  | CH			   |  CVS System eingeführt, keine Erweiterung des eigentlichen Programms						
 // | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
 // | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
+// | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
 
-//ich bin irgendwie doch für Versionsnummern, aber irgendwie auch egal, ich weiss auch nicht
 
 
 using System;
@@ -1514,19 +1514,19 @@ namespace Layer8_CSW
 			this.txtbox_Telefonnummer.Text = K.Telefonnummer;
 			this.txtbox_Fax.Text = K.Fax;
 			this.txtbox_Email.Text = K.Email;
-			/*
+			
 			switch (K.Anrede)
 			{
-				case "Herr": this.cbox_Anrede.Items.Equals("Herr");
+				case "Herr": this.cbox_Anrede.SelectedIndex = 0;
 					break;	
-				case "Frau": this.cbox_Anrede.Items.Equals("Frau");
+				case "Frau": this.cbox_Anrede.SelectedIndex = 1;
 					break;
-				case "Firma": this.cbox_Anrede.Items.Equals("Firma");
+				case "Firma": this.cbox_Anrede.SelectedIndex = 2;
 					break;
 
 			
 			}
-			*/	
+				
 		}
 		
 
