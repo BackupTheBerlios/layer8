@@ -25,8 +25,10 @@
 // | Version 1.22b    | 17.11.03	   | 17:13	  | CSW			   |  Kleine Überarbeitung (Filtern -> Suchen) + Button + MessageBox
 // | Version 1.22c    | 17.11.03       | 21:12    | Casi           |  VorgaengeKunden dataSet erweitert um die Kundennamen
 // | Version 1.22d    | 18.11.03	   | 13:25	  | CSW			   |  Casi's Erweiterungen erweitert und eingepflegt, die Übersicht ist jetzt fast fertig (nur noch Kontext Menü fehlt)
+// | Version 1.23     | 20.11.03	   | 18:18	  | Casi			   |  Erste Druckmethoden eingefügt
 using System;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -156,7 +158,9 @@ namespace Layer8_CSW
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.ComboBox cbox_Anrede;
 		
-		
+		private Font maintextFont = new Font("times New Roman", 14);
+        private Font subTextFont = new Font("Times New Roman" ,12);
+		private PageSettings storedPageSettings;
 		public DB UnsereDb;
 		public Vorgang VG;
 		public bool bearbeiten_flag = false;
@@ -240,6 +244,11 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label35;
 		private System.Windows.Forms.TextBox txtBox_Übersicht_Vorgang_suchen;
 		private System.Windows.Forms.Button button_Übersicht_Vorgang_suchen;
+		private System.Windows.Forms.MenuItem menuItem16;
+		private System.Windows.Forms.MenuItem menuItem17;
+		private System.Windows.Forms.MenuItem menuDruckenPageSetup;
+		private System.Windows.Forms.MenuItem menuItem19;
+		private System.Windows.Forms.MenuItem menuDruckenPrint;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -411,7 +420,10 @@ namespace Layer8_CSW
 			this.dataGridTableStyleVorgangsview = new System.Windows.Forms.DataGridTableStyle();
 			this.dataGridTextBoxColumn28 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn26 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn29 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.dataGridTextBoxColumn27 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn30 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn31 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.gBox_PosÜbersicht = new System.Windows.Forms.GroupBox();
 			this.gBox_PosBeschränken = new System.Windows.Forms.GroupBox();
 			this.radio_Z = new System.Windows.Forms.RadioButton();
@@ -419,6 +431,9 @@ namespace Layer8_CSW
 			this.radio_F = new System.Windows.Forms.RadioButton();
 			this.button_Übersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
 			this.gBox_KundenÜbersicht = new System.Windows.Forms.GroupBox();
+			this.button_Übersicht_Vorgang_suchen = new System.Windows.Forms.Button();
+			this.txtBox_Übersicht_Vorgang_suchen = new System.Windows.Forms.TextBox();
+			this.label35 = new System.Windows.Forms.Label();
 			this.button_Übersicht_Kunden_suchen = new System.Windows.Forms.Button();
 			this.label34 = new System.Windows.Forms.Label();
 			this.txtBox_Übersicht_Kundenauswahl = new System.Windows.Forms.TextBox();
@@ -441,12 +456,11 @@ namespace Layer8_CSW
 			this.menuItem13 = new System.Windows.Forms.MenuItem();
 			this.menuItem14 = new System.Windows.Forms.MenuItem();
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
-			this.dataGridTextBoxColumn29 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn30 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn31 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.label35 = new System.Windows.Forms.Label();
-			this.txtBox_Übersicht_Vorgang_suchen = new System.Windows.Forms.TextBox();
-			this.button_Übersicht_Vorgang_suchen = new System.Windows.Forms.Button();
+			this.menuItem16 = new System.Windows.Forms.MenuItem();
+			this.menuItem17 = new System.Windows.Forms.MenuItem();
+			this.menuDruckenPageSetup = new System.Windows.Forms.MenuItem();
+			this.menuItem19 = new System.Windows.Forms.MenuItem();
+			this.menuDruckenPrint = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Zahlung.SuspendLayout();
@@ -1695,6 +1709,14 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn26.MappingName = "Vorgang";
 			this.dataGridTextBoxColumn26.Width = 200;
 			// 
+			// dataGridTextBoxColumn29
+			// 
+			this.dataGridTextBoxColumn29.Format = "D";
+			this.dataGridTextBoxColumn29.FormatInfo = null;
+			this.dataGridTextBoxColumn29.HeaderText = "Datum";
+			this.dataGridTextBoxColumn29.MappingName = "Datum";
+			this.dataGridTextBoxColumn29.Width = 180;
+			// 
 			// dataGridTextBoxColumn27
 			// 
 			this.dataGridTextBoxColumn27.Format = "";
@@ -1702,6 +1724,22 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn27.HeaderText = "KD-Nr.";
 			this.dataGridTextBoxColumn27.MappingName = "Kundennr";
 			this.dataGridTextBoxColumn27.Width = 80;
+			// 
+			// dataGridTextBoxColumn30
+			// 
+			this.dataGridTextBoxColumn30.Format = "";
+			this.dataGridTextBoxColumn30.FormatInfo = null;
+			this.dataGridTextBoxColumn30.HeaderText = "Nachname";
+			this.dataGridTextBoxColumn30.MappingName = "Name";
+			this.dataGridTextBoxColumn30.Width = 200;
+			// 
+			// dataGridTextBoxColumn31
+			// 
+			this.dataGridTextBoxColumn31.Format = "";
+			this.dataGridTextBoxColumn31.FormatInfo = null;
+			this.dataGridTextBoxColumn31.HeaderText = "Vorname";
+			this.dataGridTextBoxColumn31.MappingName = "Vorname";
+			this.dataGridTextBoxColumn31.Width = 200;
 			// 
 			// gBox_PosÜbersicht
 			// 
@@ -1777,6 +1815,32 @@ namespace Layer8_CSW
 			this.gBox_KundenÜbersicht.TabStop = false;
 			this.gBox_KundenÜbersicht.Text = "Kunden-Übersicht";
 			// 
+			// button_Übersicht_Vorgang_suchen
+			// 
+			this.button_Übersicht_Vorgang_suchen.Location = new System.Drawing.Point(424, 80);
+			this.button_Übersicht_Vorgang_suchen.Name = "button_Übersicht_Vorgang_suchen";
+			this.button_Übersicht_Vorgang_suchen.Size = new System.Drawing.Size(32, 23);
+			this.button_Übersicht_Vorgang_suchen.TabIndex = 7;
+			this.button_Übersicht_Vorgang_suchen.Text = "los";
+			this.button_Übersicht_Vorgang_suchen.Click += new System.EventHandler(this.button_Übersicht_Vorgang_suchen_Click);
+			// 
+			// txtBox_Übersicht_Vorgang_suchen
+			// 
+			this.txtBox_Übersicht_Vorgang_suchen.Location = new System.Drawing.Point(328, 80);
+			this.txtBox_Übersicht_Vorgang_suchen.Name = "txtBox_Übersicht_Vorgang_suchen";
+			this.txtBox_Übersicht_Vorgang_suchen.Size = new System.Drawing.Size(96, 20);
+			this.txtBox_Übersicht_Vorgang_suchen.TabIndex = 6;
+			this.txtBox_Übersicht_Vorgang_suchen.Text = "";
+			this.txtBox_Übersicht_Vorgang_suchen.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Übersicht_Vorgang_suchen_KeyPress);
+			// 
+			// label35
+			// 
+			this.label35.Location = new System.Drawing.Point(256, 88);
+			this.label35.Name = "label35";
+			this.label35.Size = new System.Drawing.Size(56, 20);
+			this.label35.TabIndex = 5;
+			this.label35.Text = "Suchen:";
+			// 
 			// button_Übersicht_Kunden_suchen
 			// 
 			this.button_Übersicht_Kunden_suchen.Location = new System.Drawing.Point(424, 32);
@@ -1826,7 +1890,8 @@ namespace Layer8_CSW
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																					  this.menuItem1,
 																					  this.menuItem6,
-																					  this.menuItem11});
+																					  this.menuItem11,
+																					  this.menuItem17});
 			// 
 			// menuItem1
 			// 
@@ -1835,7 +1900,8 @@ namespace Layer8_CSW
 																					  this.menuItem2,
 																					  this.menuItem3,
 																					  this.menuItem4,
-																					  this.menuItem5});
+																					  this.menuItem5,
+																					  this.menuItem16});
 			this.menuItem1.Text = "Datei";
 			// 
 			// menuItem2
@@ -1918,55 +1984,37 @@ namespace Layer8_CSW
 			this.menuItem15.Index = 3;
 			this.menuItem15.Text = "Löschen";
 			// 
-			// dataGridTextBoxColumn29
+			// menuItem16
 			// 
-			this.dataGridTextBoxColumn29.Format = "D";
-			this.dataGridTextBoxColumn29.FormatInfo = null;
-			this.dataGridTextBoxColumn29.HeaderText = "Datum";
-			this.dataGridTextBoxColumn29.MappingName = "Datum";
-			this.dataGridTextBoxColumn29.Width = 180;
+			this.menuItem16.Index = 4;
+			this.menuItem16.Text = "";
 			// 
-			// dataGridTextBoxColumn30
+			// menuItem17
 			// 
-			this.dataGridTextBoxColumn30.Format = "";
-			this.dataGridTextBoxColumn30.FormatInfo = null;
-			this.dataGridTextBoxColumn30.HeaderText = "Nachname";
-			this.dataGridTextBoxColumn30.MappingName = "Name";
-			this.dataGridTextBoxColumn30.Width = 200;
+			this.menuItem17.Index = 3;
+			this.menuItem17.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					   this.menuDruckenPageSetup,
+																					   this.menuItem19,
+																					   this.menuDruckenPrint});
+			this.menuItem17.Text = "Drucken";
 			// 
-			// dataGridTextBoxColumn31
+			// menuDruckenPageSetup
 			// 
-			this.dataGridTextBoxColumn31.Format = "";
-			this.dataGridTextBoxColumn31.FormatInfo = null;
-			this.dataGridTextBoxColumn31.HeaderText = "Vorname";
-			this.dataGridTextBoxColumn31.MappingName = "Vorname";
-			this.dataGridTextBoxColumn31.Width = 200;
+			this.menuDruckenPageSetup.Index = 0;
+			this.menuDruckenPageSetup.Text = "Page Setup";
+	
+			this.menuDruckenPageSetup.Click += new System.EventHandler(this.menuDruckenPageSetup_Click);
 			// 
-			// label35
+			// menuItem19
 			// 
-			this.label35.Location = new System.Drawing.Point(256, 88);
-			this.label35.Name = "label35";
-			this.label35.Size = new System.Drawing.Size(56, 20);
-			this.label35.TabIndex = 5;
-			this.label35.Text = "Suchen:";
+			this.menuItem19.Index = 1;
+			this.menuItem19.Text = "Print Preview";
 			// 
-			// txtBox_Übersicht_Vorgang_suchen
+			// menuDruckenPrint
 			// 
-			this.txtBox_Übersicht_Vorgang_suchen.Location = new System.Drawing.Point(328, 80);
-			this.txtBox_Übersicht_Vorgang_suchen.Name = "txtBox_Übersicht_Vorgang_suchen";
-			this.txtBox_Übersicht_Vorgang_suchen.Size = new System.Drawing.Size(96, 20);
-			this.txtBox_Übersicht_Vorgang_suchen.TabIndex = 6;
-			this.txtBox_Übersicht_Vorgang_suchen.Text = "";
-			this.txtBox_Übersicht_Vorgang_suchen.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Übersicht_Vorgang_suchen_KeyPress);
-			// 
-			// button_Übersicht_Vorgang_suchen
-			// 
-			this.button_Übersicht_Vorgang_suchen.Location = new System.Drawing.Point(424, 80);
-			this.button_Übersicht_Vorgang_suchen.Name = "button_Übersicht_Vorgang_suchen";
-			this.button_Übersicht_Vorgang_suchen.Size = new System.Drawing.Size(32, 23);
-			this.button_Übersicht_Vorgang_suchen.TabIndex = 7;
-			this.button_Übersicht_Vorgang_suchen.Text = "los";
-			this.button_Übersicht_Vorgang_suchen.Click += new System.EventHandler(this.button_Übersicht_Vorgang_suchen_Click);
+			this.menuDruckenPrint.Index = 2;
+			this.menuDruckenPrint.Text = "Print";
+			this.menuDruckenPrint.Click += new System.EventHandler(this.menuDruckenPrint_Click);
 			// 
 			// MainFrame
 			// 
@@ -3056,6 +3104,63 @@ namespace Layer8_CSW
 				DG_Übersicht.Enabled =true;
 			}
 		}
+
+		private void menuDruckenPageSetup_Click(object sender, System.EventArgs e)
+		{
+			try
+			{
+				PageSetupDialog psDlg = new PageSetupDialog();
+				// Erzeugen eines PageSetting-objektes, falls noch keines erzeugt wurde
+				if(this.storedPageSettings == null ) 
+					this.storedPageSettings = new PageSettings();
+
+				psDlg.PageSettings = this.storedPageSettings;
+				psDlg.ShowDialog();
+			}
+			catch(Exception ex)
+			{
+			MessageBox.Show(ex.Message);
+			}
+		}
+
+		private void menuDruckenPrint_Click(object sender, System.EventArgs e)
+		{
+			try
+			{
+				PrintDocument pd = new PrintDocument();
+				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
+
+				if(this.storedPageSettings != null)
+					pd.DefaultPageSettings = this.storedPageSettings;
+				PrintDialog dlg = new PrintDialog();
+				dlg.Document = pd;
+				DialogResult result = dlg.ShowDialog();
+				if(result == System.Windows.Forms.DialogResult.OK)
+					pd.Print();
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+		protected void PrintPageEventHandler(object obj, PrintPageEventArgs ev)
+		{
+		Graphics g= ev.Graphics;
+			PaintDocument(g);
+			ev.HasMorePages = false;
+		
+		}
+		
+		private void PaintDocument(Graphics g){
+		
+			g.PageUnit = GraphicsUnit.Point; // PrintingPoints statt Pixel
+
+			g.DrawString("Test, Test, Test",this.maintextFont, Brushes.Black, new Rectangle(10,10,180,30));
+            g.DrawString("Test, Test, Test",this.subTextFont, Brushes.Black, new Rectangle(150,150,180,30));
+		
+		
+		}
+		
 
 
 		
