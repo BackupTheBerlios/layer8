@@ -24,6 +24,7 @@
 // | Version 1.22     | 16.11.03	   | 12:30	  | CSW			   |  Filtern der Kunden¸bersicht nach Namen (auch Teile, Anfangsbuchstaben etc.)
 // | Version 1.22b    | 17.11.03	   | 17:13	  | CSW			   |  Kleine ‹berarbeitung (Filtern -> Suchen) + Button + MessageBox
 // | Version 1.22c    | 17.11.03       | 21:12    | Casi           |  VorgaengeKunden dataSet erweitert um die Kundennamen
+// | Version 1.22d    | 18.11.03	   | 13:25	  | CSW			   |  Casi's Erweiterungen erweitert und eingepflegt, die ‹bersicht ist jetzt fast fertig (nur noch Kontext Men¸ fehlt)
 using System;
 using System.Drawing;
 using System.Collections;
@@ -233,6 +234,12 @@ namespace Layer8_CSW
 		private System.Windows.Forms.TextBox txtBox_‹bersicht_Kundenauswahl;
 		private System.Windows.Forms.Label label34;
 		private System.Windows.Forms.Button button_‹bersicht_Kunden_suchen;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn29;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn30;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn31;
+		private System.Windows.Forms.Label label35;
+		private System.Windows.Forms.TextBox txtBox_‹bersicht_Vorgang_suchen;
+		private System.Windows.Forms.Button button_‹bersicht_Vorgang_suchen;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -412,6 +419,7 @@ namespace Layer8_CSW
 			this.radio_F = new System.Windows.Forms.RadioButton();
 			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
 			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
+			this.button_‹bersicht_Kunden_suchen = new System.Windows.Forms.Button();
 			this.label34 = new System.Windows.Forms.Label();
 			this.txtBox_‹bersicht_Kundenauswahl = new System.Windows.Forms.TextBox();
 			this.button_‹bersicht_Vorg‰nge_anzeigen = new System.Windows.Forms.Button();
@@ -433,7 +441,12 @@ namespace Layer8_CSW
 			this.menuItem13 = new System.Windows.Forms.MenuItem();
 			this.menuItem14 = new System.Windows.Forms.MenuItem();
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
-			this.button_‹bersicht_Kunden_suchen = new System.Windows.Forms.Button();
+			this.dataGridTextBoxColumn29 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn30 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn31 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.label35 = new System.Windows.Forms.Label();
+			this.txtBox_‹bersicht_Vorgang_suchen = new System.Windows.Forms.TextBox();
+			this.button_‹bersicht_Vorgang_suchen = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Zahlung.SuspendLayout();
@@ -1658,7 +1671,10 @@ namespace Layer8_CSW
 			this.dataGridTableStyleVorgangsview.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
 																															 this.dataGridTextBoxColumn28,
 																															 this.dataGridTextBoxColumn26,
-																															 this.dataGridTextBoxColumn27});
+																															 this.dataGridTextBoxColumn29,
+																															 this.dataGridTextBoxColumn27,
+																															 this.dataGridTextBoxColumn30,
+																															 this.dataGridTextBoxColumn31});
 			this.dataGridTableStyleVorgangsview.HeaderForeColor = System.Drawing.SystemColors.ControlText;
 			this.dataGridTableStyleVorgangsview.MappingName = "KundenVorgaenge";
 			this.dataGridTableStyleVorgangsview.PreferredColumnWidth = 200;
@@ -1669,7 +1685,7 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn28.FormatInfo = null;
 			this.dataGridTextBoxColumn28.HeaderText = "Index";
 			this.dataGridTextBoxColumn28.MappingName = "Index";
-			this.dataGridTextBoxColumn28.Width = 75;
+			this.dataGridTextBoxColumn28.Width = 60;
 			// 
 			// dataGridTextBoxColumn26
 			// 
@@ -1683,9 +1699,9 @@ namespace Layer8_CSW
 			// 
 			this.dataGridTextBoxColumn27.Format = "";
 			this.dataGridTextBoxColumn27.FormatInfo = null;
-			this.dataGridTextBoxColumn27.HeaderText = "Kundennummer";
+			this.dataGridTextBoxColumn27.HeaderText = "KD-Nr.";
 			this.dataGridTextBoxColumn27.MappingName = "Kundennr";
-			this.dataGridTextBoxColumn27.Width = 200;
+			this.dataGridTextBoxColumn27.Width = 80;
 			// 
 			// gBox_Pos‹bersicht
 			// 
@@ -1746,6 +1762,9 @@ namespace Layer8_CSW
 			// 
 			// gBox_Kunden‹bersicht
 			// 
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_Vorgang_suchen);
+			this.gBox_Kunden‹bersicht.Controls.Add(this.txtBox_‹bersicht_Vorgang_suchen);
+			this.gBox_Kunden‹bersicht.Controls.Add(this.label35);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_Kunden_suchen);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.label34);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.txtBox_‹bersicht_Kundenauswahl);
@@ -1757,6 +1776,15 @@ namespace Layer8_CSW
 			this.gBox_Kunden‹bersicht.TabIndex = 0;
 			this.gBox_Kunden‹bersicht.TabStop = false;
 			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
+			// 
+			// button_‹bersicht_Kunden_suchen
+			// 
+			this.button_‹bersicht_Kunden_suchen.Location = new System.Drawing.Point(424, 32);
+			this.button_‹bersicht_Kunden_suchen.Name = "button_‹bersicht_Kunden_suchen";
+			this.button_‹bersicht_Kunden_suchen.Size = new System.Drawing.Size(32, 23);
+			this.button_‹bersicht_Kunden_suchen.TabIndex = 4;
+			this.button_‹bersicht_Kunden_suchen.Text = "los";
+			this.button_‹bersicht_Kunden_suchen.Click += new System.EventHandler(this.button_‹bersicht_Kunden_suchen_Click);
 			// 
 			// label34
 			// 
@@ -1890,14 +1918,55 @@ namespace Layer8_CSW
 			this.menuItem15.Index = 3;
 			this.menuItem15.Text = "Lˆschen";
 			// 
-			// button_‹bersicht_Kunden_suchen
+			// dataGridTextBoxColumn29
 			// 
-			this.button_‹bersicht_Kunden_suchen.Location = new System.Drawing.Point(424, 32);
-			this.button_‹bersicht_Kunden_suchen.Name = "button_‹bersicht_Kunden_suchen";
-			this.button_‹bersicht_Kunden_suchen.Size = new System.Drawing.Size(32, 23);
-			this.button_‹bersicht_Kunden_suchen.TabIndex = 4;
-			this.button_‹bersicht_Kunden_suchen.Text = "los";
-			this.button_‹bersicht_Kunden_suchen.Click += new System.EventHandler(this.button_‹bersicht_Kunden_suchen_Click);
+			this.dataGridTextBoxColumn29.Format = "D";
+			this.dataGridTextBoxColumn29.FormatInfo = null;
+			this.dataGridTextBoxColumn29.HeaderText = "Datum";
+			this.dataGridTextBoxColumn29.MappingName = "Datum";
+			this.dataGridTextBoxColumn29.Width = 180;
+			// 
+			// dataGridTextBoxColumn30
+			// 
+			this.dataGridTextBoxColumn30.Format = "";
+			this.dataGridTextBoxColumn30.FormatInfo = null;
+			this.dataGridTextBoxColumn30.HeaderText = "Nachname";
+			this.dataGridTextBoxColumn30.MappingName = "Name";
+			this.dataGridTextBoxColumn30.Width = 200;
+			// 
+			// dataGridTextBoxColumn31
+			// 
+			this.dataGridTextBoxColumn31.Format = "";
+			this.dataGridTextBoxColumn31.FormatInfo = null;
+			this.dataGridTextBoxColumn31.HeaderText = "Vorname";
+			this.dataGridTextBoxColumn31.MappingName = "Vorname";
+			this.dataGridTextBoxColumn31.Width = 200;
+			// 
+			// label35
+			// 
+			this.label35.Location = new System.Drawing.Point(256, 88);
+			this.label35.Name = "label35";
+			this.label35.Size = new System.Drawing.Size(56, 20);
+			this.label35.TabIndex = 5;
+			this.label35.Text = "Suchen:";
+			// 
+			// txtBox_‹bersicht_Vorgang_suchen
+			// 
+			this.txtBox_‹bersicht_Vorgang_suchen.Location = new System.Drawing.Point(328, 80);
+			this.txtBox_‹bersicht_Vorgang_suchen.Name = "txtBox_‹bersicht_Vorgang_suchen";
+			this.txtBox_‹bersicht_Vorgang_suchen.Size = new System.Drawing.Size(96, 20);
+			this.txtBox_‹bersicht_Vorgang_suchen.TabIndex = 6;
+			this.txtBox_‹bersicht_Vorgang_suchen.Text = "";
+			this.txtBox_‹bersicht_Vorgang_suchen.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_‹bersicht_Vorgang_suchen_KeyPress);
+			// 
+			// button_‹bersicht_Vorgang_suchen
+			// 
+			this.button_‹bersicht_Vorgang_suchen.Location = new System.Drawing.Point(424, 80);
+			this.button_‹bersicht_Vorgang_suchen.Name = "button_‹bersicht_Vorgang_suchen";
+			this.button_‹bersicht_Vorgang_suchen.Size = new System.Drawing.Size(32, 23);
+			this.button_‹bersicht_Vorgang_suchen.TabIndex = 7;
+			this.button_‹bersicht_Vorgang_suchen.Text = "los";
+			this.button_‹bersicht_Vorgang_suchen.Click += new System.EventHandler(this.button_‹bersicht_Vorgang_suchen_Click);
 			// 
 			// MainFrame
 			// 
@@ -2894,7 +2963,7 @@ namespace Layer8_CSW
 			if (!this.position_anlegen)
 			{
 				
-					String posnummer;
+					string posnummer;
 					posnummer = this.txtbox_Posnummer.Text;
 						
 					VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(posnummer);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
@@ -2914,7 +2983,7 @@ namespace Layer8_CSW
 			if(e.KeyChar == (char)13)
 			{
 				e.Handled=true;
-				String name;
+				string name;
 				name = this.txtBox_‹bersicht_Kundenauswahl.Text;
 			
 				DG_‹bersicht.Enabled =false;
@@ -2922,16 +2991,18 @@ namespace Layer8_CSW
 				KundenView.Sort="Kundennr";
 				KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
 				if (KundenView.Count==0)
-					MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
-				else
+				{	MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+						KundenView.RowFilter="";
+				}
+				
 					DG_‹bersicht.SetDataBinding(KundenView,null);
-				DG_‹bersicht.Enabled =true;
+					DG_‹bersicht.Enabled =true;
 			}
 		}
 
 		private void button_‹bersicht_Kunden_suchen_Click(object sender, System.EventArgs e)
 		{
-			String name;
+			string name;
 			name = this.txtBox_‹bersicht_Kundenauswahl.Text;
 			
 			DG_‹bersicht.Enabled =false;
@@ -2939,10 +3010,51 @@ namespace Layer8_CSW
 			KundenView.Sort="Kundennr";
 			KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
 			if (KundenView.Count==0)
-				MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
-			else
+			{	MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+				KundenView.RowFilter="";
+			}
+			
 				DG_‹bersicht.SetDataBinding(KundenView,null);
 			DG_‹bersicht.Enabled =true;
+		}
+
+		private void button_‹bersicht_Vorgang_suchen_Click(object sender, System.EventArgs e)
+		{
+			string name;
+			name = this.txtBox_‹bersicht_Vorgang_suchen.Text;
+			DG_‹bersicht.Enabled =false;
+			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+			VorgangsView.Sort="Index";
+			VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
+			if (VorgangsView.Count==0)
+			{
+				MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+				VorgangsView.RowFilter="";
+			}
+			
+				DG_‹bersicht.SetDataBinding(VorgangsView,null);
+			DG_‹bersicht.Enabled =true;
+		}
+
+		private void txtBox_‹bersicht_Vorgang_suchen_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			if(e.KeyChar == (char)13)
+			{
+				e.Handled=true;
+				string name;
+				name = this.txtBox_‹bersicht_Vorgang_suchen.Text;
+				DG_‹bersicht.Enabled =false;
+				DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+				VorgangsView.Sort="Index";
+				VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
+				if (VorgangsView.Count==0)
+				{	MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+					VorgangsView.RowFilter="";
+				}
+				
+					DG_‹bersicht.SetDataBinding(VorgangsView,null);
+				DG_‹bersicht.Enabled =true;
+			}
 		}
 
 
@@ -3845,7 +3957,7 @@ namespace Layer8_CSW
 		#endregion
 		
 		#region Funktionen - DB
-		public KundenVerzeichnis Kunde_suchen_nach_Name (string nam)
+ 		public KundenVerzeichnis Kunde_suchen_nach_Name (string nam)
 		{
 			int Count=0;
 		
@@ -4631,17 +4743,18 @@ namespace Layer8_CSW
 			DataSet myDataSet = new DataSet("KundenVorgaenge");
 			DataTable KundenVorgaenge = myDataSet.Tables.Add("KundenVorgaenge");
 			DataTable Kunde = myDataSet.Tables.Add("Kunde");
-			
-			Kunde.Columns.Add("Vorname",typeof(string));
-			Kunde.Columns.Add("Name",typeof(string));
 			Kunde.Columns.Add("Kundennr",typeof(int));
+			
+			Kunde.Columns.Add("Name",typeof(string));
+			Kunde.Columns.Add("Vorname",typeof(string));
 			KundenVorgaenge.Columns.Add("Kundennr",typeof(int));
 			KundenVorgaenge.Columns.Add("Vorgang",typeof(string));
 			KundenVorgaenge.Columns.Add("Index",typeof(int));
+			KundenVorgaenge.Columns.Add("Datum",typeof(DateTime));
 			KundenVorgaenge.PrimaryKey = new DataColumn[]{KundenVorgaenge.Columns["Index"]};
 			Kunde.PrimaryKey = new DataColumn[]{Kunde.Columns["Kundennr"]};
 			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT * FROM KundeVorgang",myconnection);
-			OleDbDataAdapter myDataAdapter2 = new OleDbDataAdapter("SELECT * FROM Kunde",myconnection);
+			OleDbDataAdapter myDataAdapter2 = new OleDbDataAdapter("SELECT * FROM Kunde ORDER BY Kundennr",myconnection);
 			
 			try
 			{
@@ -4655,8 +4768,39 @@ namespace Layer8_CSW
 				MessageBox.Show(""+ex);
 				return null;
 			}
+			
+			KundenVorgaenge.Columns.Add("Name",typeof(string));
+			KundenVorgaenge.Columns.Add("Vorname",typeof(string));
+			
+			
+			
+
+			DataRow aktKD;
+			DataRow aktV;
 		
+			int kdnr;
+		for (int i = 0; i<KundenVorgaenge.Rows.Count;i++)
+			{
+				aktV = KundenVorgaenge.Rows[i];
+				//MessageBox.Show(aktV[3].ToString());
+
+				kdnr = Convert.ToInt32(aktV[0]);
+				
+				aktKD =  Kunde.Rows[kdnr-1];
 		
+			if (Convert.ToString(aktKD[1])=="")
+				{
+				aktV[4]= "Kunde nicht gefunden";
+				aktV[5]= "Kunde nicht gefunden";
+				}
+			else
+				{
+				aktV[4] = aktKD[1];
+				aktV[5] = aktKD[2];
+				}
+
+			}
+			myDataSet.Tables[1].Dispose();
 			return myDataSet;
 		}
 
