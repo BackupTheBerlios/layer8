@@ -3218,6 +3218,7 @@ namespace Layer8_CSW
 		{	
 			Ansicht=Ansichtsache.Vorgang;
 			DG_Übersicht.Enabled =false;
+			
 			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
 			VorgangsView.Sort="Index";
 			DG_Übersicht.SetDataBinding(VorgangsView,null);
@@ -5005,7 +5006,7 @@ namespace Layer8_CSW
 
 		public int Neuer_Kunde_Anlegen(Kunde K)
 		{
-			int count=0;
+			int count=1;
 			int änderungen =0;
 			Kunde myKunde = K;
 			OleDbCommand PS = new OleDbCommand("SELECT * FROM Kunde", myconnection);
@@ -5175,7 +5176,7 @@ namespace Layer8_CSW
 			
 			try	
 			{	
-				Vorgang_schreiben= new OleDbCommand("INSERT INTO KundeVorgang(Kundennr,Vorgang,Datum,Index) VALUES ("+myVor.UnserKunde.Kundennummer+", '"+myVor.Dateiname+"','"+myVor.Datum+"','"+count+"')", myconnection);
+				Vorgang_schreiben= new OleDbCommand("INSERT INTO KundeVorgang VALUES ("+myVor.UnserKunde.Kundennummer+", '"+myVor.Dateiname+"','"+myVor.Datum+"',"+count+")", myconnection);
 				änderungen =Vorgang_schreiben.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
