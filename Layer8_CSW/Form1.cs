@@ -211,6 +211,7 @@ namespace Layer8_CSW
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainFrame));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.Kunde = new System.Windows.Forms.TabPage();
+			this.LBox_Kunde = new System.Windows.Forms.ListBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.label31 = new System.Windows.Forms.Label();
 			this.txtbox_Email = new System.Windows.Forms.TextBox();
@@ -307,7 +308,6 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.LBox_Kunde = new System.Windows.Forms.ListBox();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -372,6 +372,15 @@ namespace Layer8_CSW
 			this.Kunde.TabIndex = 0;
 			this.Kunde.Text = "Kunde";
 			this.Kunde.ToolTipText = "Das ist unser Kunde und der Kunde ist König!";
+			// 
+			// LBox_Kunde
+			// 
+			this.LBox_Kunde.Location = new System.Drawing.Point(40, 344);
+			this.LBox_Kunde.Name = "LBox_Kunde";
+			this.LBox_Kunde.Size = new System.Drawing.Size(440, 121);
+			this.LBox_Kunde.TabIndex = 30;
+			this.LBox_Kunde.Visible = false;
+			this.LBox_Kunde.DoubleClick += new System.EventHandler(this.LBox_Kunde_DoubleClick);
 			// 
 			// button1
 			// 
@@ -1266,15 +1275,6 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// LBox_Kunde
-			// 
-			this.LBox_Kunde.Location = new System.Drawing.Point(40, 344);
-			this.LBox_Kunde.Name = "LBox_Kunde";
-			this.LBox_Kunde.Size = new System.Drawing.Size(440, 121);
-			this.LBox_Kunde.TabIndex = 30;
-			this.LBox_Kunde.Visible = false;
-			this.LBox_Kunde.DoubleClick += new System.EventHandler(this.LBox_Kunde_DoubleClick);
-			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1517,10 +1517,13 @@ namespace Layer8_CSW
 			/*
 			switch (K.Anrede)
 			{
-				case "Herr": this.cbox_Anrede.Text.Equals("Herr");
+				case "Herr": this.cbox_Anrede.Items.Equals("Herr");
+					break;	
+				case "Frau": this.cbox_Anrede.Items.Equals("Frau");
 					break;
-				case "Frau": this.cbox_Anrede.Text.Equals("Frau");
+				case "Firma": this.cbox_Anrede.Items.Equals("Firma");
 					break;
+
 			
 			}
 			*/	
