@@ -1,35 +1,4 @@
-<?xml version="1.0"?>
-<Vorgang>
-  <Kunde>
-    <Kuerzel />
-    <Kundennummer>0</Kundennummer>
-    <Anrede />
-    <Nachname />
-    <Vorname />
-    <Strasse />
-    <PLZ>0</PLZ>
-    <Ort />
-    <Telefon />
-    <Fax />
-    <eMail />
-  </Kunde>
-  <Bauvorhaben>
-    <Vorgangsbezeichnung>Angebot</Vorgangsbezeichnung>
-    <Typ>A</Typ>
-    <Vorgangsnummer>1</Vorgangsnummer>
-    <Datum>30.02.2003</Datum>
-    <BauNName>na</BauNName>
-    <BauVName>na</BauVName>
-    <BauStrasse>Baustrasse 15</BauStrasse>
-    <BauPLZ>49148</BauPLZ>
-    <BauOrt>Baustelle</BauOrt>
-    <Netto>10,5</Netto>
-    <MwSt>1,65</MwSt>
-    <Brutto>9,47</Brutto>
-    <Rabatt>5</Rabatt>
-    <Dateiname>testDatei.xml</Dateiname>
-  </Bauvorhaben>
-  <PosListe>
+<?xml version="1.0"?><PosListe>
   <Positionen>
     <Raum>Scheisshaus</Raum>
     <Position>M101</Position>
@@ -45031,4 +45000,3 @@
     <Gesamtpreis>200.90</Gesamtpreis>
   </Positionen>
 </PosListe>
-</Vorgang>
