@@ -8,7 +8,7 @@
 // | Version 1.10	  | 26.10.03	   | 02:30	  | CSW			   |  DataGrid (Löschen&Bearbeiten) / Fläche berechnen (Dialog) / 
 // | Version 1.101	  | 26.10.03	   | 18:18    | CSW			   |  Mini-Bug-Fix beim DataGrid, Doppelklick auf ZellenRahmen hat jetzt gleichen Effekt wie Doppelklick auf Zeilenkopf (Thx@Casi)
 // | Version 1.11	  | 26.10.03	   | 23:41    | CH			   |  Neue ZPositon anlegen
-
+// | Version 1.12	  | 27.10.03	   | 22:53	  | CSW			   |  DateTimePicker eingebaut und VG.Datum entsprechend geändert
 using System;
 using System.Drawing;
 using System.Collections;
@@ -157,6 +157,7 @@ namespace Layer8_CSW
 		public string kürzelstring;
 		public string positionsnummerstring;
 		private int DG_aktZeile;
+		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -252,6 +253,8 @@ namespace Layer8_CSW
 			this.txtbox_VornameTab2 = new System.Windows.Forms.TextBox();
 			this.txtbox_NameTab2 = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
+			this.pos_Speichern = new System.Windows.Forms.Button();
+			this.Pos_anlegen = new System.Windows.Forms.Button();
 			this.button_Flaeche = new System.Windows.Forms.Button();
 			this.button_loeschen = new System.Windows.Forms.Button();
 			this.label21 = new System.Windows.Forms.Label();
@@ -294,8 +297,7 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.Pos_anlegen = new System.Windows.Forms.Button();
-			this.pos_Speichern = new System.Windows.Forms.Button();
+			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -618,6 +620,7 @@ namespace Layer8_CSW
 			// 
 			// Bauvorhaben
 			// 
+			this.Bauvorhaben.Controls.Add(this.dateTimePicker_Bau);
 			this.Bauvorhaben.Controls.Add(this.label24);
 			this.Bauvorhaben.Controls.Add(this.txtbox_Datum);
 			this.Bauvorhaben.Controls.Add(this.label22);
@@ -652,10 +655,12 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Datum
 			// 
-			this.txtbox_Datum.Location = new System.Drawing.Point(112, 192);
+			this.txtbox_Datum.Location = new System.Drawing.Point(248, 192);
 			this.txtbox_Datum.Name = "txtbox_Datum";
+			this.txtbox_Datum.Size = new System.Drawing.Size(208, 20);
 			this.txtbox_Datum.TabIndex = 15;
-			this.txtbox_Datum.Text = "";
+			this.txtbox_Datum.TabStop = false;
+			this.txtbox_Datum.Text = "Bin durch was Besseres ersetzt worden :-(";
 			// 
 			// label22
 			// 
@@ -827,6 +832,23 @@ namespace Layer8_CSW
 			this.Positionen.TabIndex = 1;
 			this.Positionen.Text = "Positionen";
 			this.Positionen.ToolTipText = "Hier finden sich die Rechnungspositionen";
+			// 
+			// pos_Speichern
+			// 
+			this.pos_Speichern.Location = new System.Drawing.Point(856, 160);
+			this.pos_Speichern.Name = "pos_Speichern";
+			this.pos_Speichern.TabIndex = 23;
+			this.pos_Speichern.Text = "Speichern";
+			this.pos_Speichern.Click += new System.EventHandler(this.pos_Speichern_Click);
+			// 
+			// Pos_anlegen
+			// 
+			this.Pos_anlegen.Location = new System.Drawing.Point(744, 160);
+			this.Pos_anlegen.Name = "Pos_anlegen";
+			this.Pos_anlegen.Size = new System.Drawing.Size(88, 23);
+			this.Pos_anlegen.TabIndex = 22;
+			this.Pos_anlegen.Text = "Neue Position";
+			this.Pos_anlegen.Click += new System.EventHandler(this.Pos_anlegen_Click);
 			// 
 			// button_Flaeche
 			// 
@@ -1101,9 +1123,6 @@ namespace Layer8_CSW
 			this.txtbox_Posnummer.Tag = "Yo Man";
 			this.txtbox_Posnummer.Text = "";
 			this.txtbox_Posnummer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_Posnummer_KeyPress);
-			//this.txtbox_Posnummer.TextChanged += new System.EventHandler(this.txtbox_Posnummer_TextChanged);
-			//this.txtbox_Posnummer.Leave += new System.EventHandler(this.txtbox_Posnummer_Leave);
-			
 			// 
 			// Zahlung
 			// 
@@ -1226,22 +1245,14 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// Pos_anlegen
+			// dateTimePicker_Bau
 			// 
-			this.Pos_anlegen.Location = new System.Drawing.Point(744, 160);
-			this.Pos_anlegen.Name = "Pos_anlegen";
-			this.Pos_anlegen.Size = new System.Drawing.Size(88, 23);
-			this.Pos_anlegen.TabIndex = 22;
-			this.Pos_anlegen.Text = "Neue Position";
-			this.Pos_anlegen.Click += new System.EventHandler(this.Pos_anlegen_Click);
-			// 
-			// pos_Speichern
-			// 
-			this.pos_Speichern.Location = new System.Drawing.Point(856, 160);
-			this.pos_Speichern.Name = "pos_Speichern";
-			this.pos_Speichern.TabIndex = 23;
-			this.pos_Speichern.Text = "Speichern";
-			this.pos_Speichern.Click += new System.EventHandler(this.pos_Speichern_Click);
+			this.dateTimePicker_Bau.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePicker_Bau.Location = new System.Drawing.Point(112, 192);
+			this.dateTimePicker_Bau.Name = "dateTimePicker_Bau";
+			this.dateTimePicker_Bau.Size = new System.Drawing.Size(104, 20);
+			this.dateTimePicker_Bau.TabIndex = 17;
+			this.dateTimePicker_Bau.ValueChanged += new System.EventHandler(this.dateTimePicker_Bau_ValueChanged);
 			// 
 			// MainFrame
 			// 
@@ -1450,6 +1461,8 @@ namespace Layer8_CSW
 			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
 			VG.XML_lesen();
 			dataGrid_Vorgang.ReadOnly=true;
+			dateTimePicker_Bau.Value=VG.Datum;
+
 		
 		}
 
@@ -1983,6 +1996,11 @@ namespace Layer8_CSW
 			this.position_Anzeigen(VG.aktPos);
 		}
 
+		private void dateTimePicker_Bau_ValueChanged(object sender, System.EventArgs e)
+		{
+			VG.Datum = dateTimePicker_Bau.Value;
+		}
+
 		/* private void txtbox_Posnummer_TextChanged(object sender, System.EventArgs e)
 		{
 			if (!this.position_neu)
@@ -2246,7 +2264,7 @@ public class Vorgang
 	// zweites Tab (Bauvorhaben)
 	private string m_Typ;
 	
-	private string m_Datum; // Hier ein DatenFormat raussuchen und einfügen !!!
+	private DateTime m_Datum; // Hier ein DatenFormat raussuchen und einfügen !!!
 	private string m_BauNName; // extra für Hegi
 	private string m_BauVName;
 	private string m_BauStrasse;
@@ -2297,7 +2315,7 @@ public class Vorgang
 		set{this.m_Typ=value;}
 	}
 		
-	public string Datum // Hier ein DatenFormat raussuchen und einfügen !!!
+	public DateTime Datum // Hier ein DatenFormat raussuchen und einfügen !!!
 	{
 		get {return m_Datum;}
 		set {this.m_Datum=value;}
@@ -2373,7 +2391,7 @@ public class Vorgang
 		UnserKunde = new Kunde();
 		aktPos = new Position();
 		
-		m_Datum= "30.02.2003" ; // Hier ein DatenFormat raussuchen und einfügen !!!
+		m_Datum= DateTime.Today; // Hier ein DatenFormat raussuchen und einfügen !!!
 		m_BauNName="na"; //damit es initialisiert wird und keinen Terror macht
 		m_BauVName="na";
 		m_BauStrasse="Baustrasse 15";
@@ -2491,7 +2509,8 @@ public class Vorgang
 				W.WriteEndElement();
 
 				W.WriteStartElement("Datum");
-				W.WriteString(Datum);
+				string Datumstring = Convert.ToString(Datum);
+				W.WriteString(Datumstring);
 				W.WriteEndElement();
 
 				W.WriteStartElement("BauNName");
@@ -2582,7 +2601,7 @@ public class Vorgang
 		Vorgangsbezeichnung= R.ReadElementString();	
 		Typ=R.ReadElementString();
 		Vorgangsnummer=Convert.ToInt32(R.ReadElementString());
-		Datum=R.ReadElementString();
+		Datum=Convert.ToDateTime(R.ReadElementString());
 		BauNName=R.ReadElementString();
 		BauVName=R.ReadElementString();
 		BauStrasse=R.ReadElementString();
@@ -3366,6 +3385,23 @@ public class Position
 			return änderungen;
 		
 		}
+		public int Kunde_in_transienten_Zustand_versetzen(Kunde K)
+		{
+			int änderungen =0;
+			Kunde myKunde = K;
+			OleDbCommand Kunde_löschen= null ;
+			try	
+			{	
+				Kunde_löschen= new OleDbCommand("DELETE FROM Kunde WHERE Kundennr="+myKunde.Kundennummer+"" ,myconnection);
+				änderungen =Kunde_löschen.ExecuteNonQuery();
+			}
+			catch (Exception ex){MessageBox.Show(""+ex);}
+			return änderungen;
+		
+		}
+        
+
+
         public Position Pos_suchen_nach_Posnummer (string Pos)
 		{
        
@@ -3404,10 +3440,10 @@ public class Position
 			return null;
 		}
 
-		public int Neue_Pos_Anlegen(Position K)
+		public string Neue_Pos_Anlegen(Position K)
 		{
 			int count=0;
-			int änderungen =0;
+			string änderungen ="";
 			Position myPos = K;
 			OleDbCommand PS = new OleDbCommand("SELECT * FROM RechPos", myconnection);
 		
@@ -3427,10 +3463,12 @@ public class Position
 			OleDbCommand Pos_anlegen= null ;
 			try	
 			{	
-				Pos_anlegen= new OleDbCommand("INSERT INTO RechPos(PosNummer,Langtext,Kurztext,preis,Einheit, MKosten,LKosten) VALUES ('Z"+count+"', '"+myPos.Langtext+"','"+myPos.Kurztext+"',"+myPos.EPreis+",'"+myPos.Einheit+"',"+myPos.realMatKosten+","+myPos.realLohnKosten+")", myconnection);
-				änderungen =Pos_anlegen.ExecuteNonQuery();
+				Pos_anlegen= new OleDbCommand("INSERT INTO RechPos(PosNummer,Langtext,Kurztext,preis,Einheit, MKosten,LKosten) VALUES ('Z"+(count*10)+"', '"+myPos.Langtext+"','"+myPos.Kurztext+"','"+myPos.EPreis+"','"+myPos.Einheit+"',"+myPos.realMatKosten+","+myPos.realLohnKosten+")", myconnection);
+				Pos_anlegen.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
+			änderungen="Z"+(count+10);
+			MessageBox.Show(""+änderungen);
 			return änderungen;
 		
 		}
