@@ -32,6 +32,7 @@
 // | Version 1.242b   | 25.11.03	   | 13:16    | CSW			   |  Position übernehmen drin, DB (RechPos) geändert
 // | Version 1.243    | 25.11.03	   | 19:59    | Casi		   |  DB, Vorname und Nachname in KundeVorgang eingefügt und DB-Methoden aktualisiert
 // | Version 1.244    | 26.11.03	   | 01:32	  | CSW			   |  KontextMenü für das Vorgangs-DataGrid fertig, dadruch geänderter Workflow beim ändern&löschen, einfügen funktioniert noch nicht so richtig
+// | Version 1.244b   | 26.11.03	   | 18:54    | CSW			   |  "alle_Vorgaenge_eines_Kunden_ausgeben()" an die neue DB angepasst, hat er nich automatisch übernommen.
 using System;
 using System.Text;
 using System.Drawing;
@@ -5234,7 +5235,7 @@ namespace Layer8_CSW
 			try	
 			{	
 				Vorgang_schreiben= new OleDbCommand("INSERT INTO KundeVorgang VALUES ("+myVor.UnserKunde.Kundennummer+", '"+myVor.Dateiname+"','"+myVor.Datum+"',"+count+",'"+myVor.UnserKunde.VName+"','"+myVor.UnserKunde.NName+"')", myconnection);
-				änderungen =Vorgang_schreiben.ExecuteNonQuery();
+				änderungen = Vorgang_schreiben.ExecuteNonQuery();
 			}
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
@@ -5323,33 +5324,32 @@ namespace Layer8_CSW
 			//KundenVorgaenge.Columns.Add("Vorname",typeof(string));
 			
 			
-			
+			// Hab es drin gelassen damit Du den Quelltext lesen kannst, wie man in einem DataSet auf die Zeilen zugreifen kann 
 
-			DataRow aktKD;
-			DataRow aktV;
-		
-			int kdnr;
-		for (int i = 0; i<KundenVorgaenge.Rows.Count;i++)
-			{
-				aktV = KundenVorgaenge.Rows[i];
-				//MessageBox.Show(aktV[3].ToString());
-
-				kdnr = Convert.ToInt32(aktV[0]);
-				
-				aktKD =  Kunde.Rows[kdnr-1];
-		
-			if (Convert.ToString(aktKD[1])=="")
-				{
-				aktV[4]= "Kunde nicht gefunden";
-				aktV[5]= "Kunde nicht gefunden";
-				}
-			else
-				{
-				aktV[4] = aktKD[1];
-				aktV[5] = aktKD[2];
-				}
-
-			}
+//			DataRow aktKD;
+//			DataRow aktV;
+//		
+//			int kdnr;
+//		for (int i = 0; i<KundenVorgaenge.Rows.Count;i++)
+//			{
+//				aktV = KundenVorgaenge.Rows[i];  // die i-te Zeile
+//
+//				kdnr = Convert.ToInt32(aktV[0]);
+//				
+//				aktKD =  Kunde.Rows[kdnr-1];
+//		
+//			if (Convert.ToString(aktKD[1])=="")
+//				{
+//				aktV[4]= "Kunde nicht gefunden";   // 4 ist hier der Spaltenindex
+//				aktV[5]= "Kunde nicht gefunden";
+//				}
+//			else
+//				{
+//				aktV[4] = aktKD[1];
+//				aktV[5] = aktKD[2];
+//				}
+//
+//			}
 			myDataSet.Tables[1].Dispose();
 			return myDataSet;
 		}
