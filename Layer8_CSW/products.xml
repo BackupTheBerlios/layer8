@@ -1,20 +1,2 @@
-<?xml version="1.0"?><PosListe>
-  <Positionen>
-    <Raum>Klo</Raum>
-    <Position>010</Position>
-    <Kurztext>An- Abfahrt</Kurztext>
-    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
-    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
-    <Fläche>151</Fläche>
-    <Gesamtpreis>4530</Gesamtpreis>
-  </Positionen>
-  <Positionen>
-    <Raum />
-    <Position>M01</Position>
-    <Kurztext>Flasche öffnen</Kurztext>
-    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
-    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
-    <Fläche>1451</Fläche>
-    <Gesamtpreis>145100</Gesamtpreis>
-  </Positionen>
-</PosListe>
+<?xml version="1.0" standalone="yes"?>
+<PosListe />

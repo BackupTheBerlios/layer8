@@ -2400,6 +2400,7 @@ namespace Layer8_CSW
 		private void button_XmlSchreiben_Click(object sender, System.EventArgs e) //- CSW 18.10.03 17:00
 		{
 			VG.XML_schreiben();
+			UnsereDb.VorgangKunde_in_DB_schreiben(VG);
 		}
 		
 		private void kunde_Anzeigen (Kunde K) //- CH 18.10.03 19:34
@@ -5147,7 +5148,7 @@ namespace Layer8_CSW
 		
 		public int VorgangKunde_in_DB_schreiben(Vorgang V)
 		{
-			/// Diese Methode schreibt, den Namen des übergebenen Vorganmgs und den zugehörigen Kunden in die DB.
+			/// Diese Methode schreibt, den Namen des übergebenen Vorgangs und den zugehörigen Kunden in die DB.
 			/// Die Methode liefert einen int zurück, der die Anzahl der geänderten Datensätze beschreibt.
 			/// 
  
@@ -5155,7 +5156,7 @@ namespace Layer8_CSW
 			int änderungen=0; 
 			int count=0;
 			Vorgang myVor = V;
-			OleDbCommand KV = new OleDbCommand("SELECT * FROM RechPos", myconnection);
+			OleDbCommand KV = new OleDbCommand("SELECT * FROM KundeVorgang", myconnection);
 			OleDbCommand Vorgang_schreiben= null ;
 			OleDbDataReader dataReaderKV = null;
 		
