@@ -1,0 +1,70 @@
+﻿<?xml version="1.0"?>
+<Vorgang>
+  <Kunde>
+    <Kuerzel>CA</Kuerzel>
+    <Kundennummer>2</Kundennummer>
+    <Anrede>Herr Prof. DR</Anrede>
+    <Nachname>Jürck</Nachname>
+    <Vorname>Carsten</Vorname>
+    <Strasse>Kurt-Schumacher Str. 1</Strasse>
+    <PLZ>45966</PLZ>
+    <Ort>Gladbeck</Ort>
+    <Telefon>02043 / 47966</Telefon>
+    <Fax>02043/ 205787</Fax>
+    <eMail>casij@web.de</eMail>
+  </Kunde>
+  <Bauvorhaben>
+    <Vorgangsbezeichnung>asasd a s</Vorgangsbezeichnung>
+    <Typ>A</Typ>
+    <Vorgangsnummer>1</Vorgangsnummer>
+    <Datum>21.11.2003 00:00:00</Datum>
+    <BauNName>na</BauNName>
+    <BauVName>na</BauVName>
+    <BauStrasse>Baustrasse 15</BauStrasse>
+    <BauPLZ>49148</BauPLZ>
+    <BauOrt>Baustelle</BauOrt>
+    <Netto>1112</Netto>
+    <MwSt>16</MwSt>
+    <Brutto>1289,9200</Brutto>
+    <Rabatt>0</Rabatt>
+    <Dateiname>test3</Dateiname>
+  </Bauvorhaben>
+  <PosListe>
+  <Positionen>
+    <Raum />
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>12</Fläche>
+    <Gesamtpreis>360</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>12</Fläche>
+    <Gesamtpreis>360</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>12</Fläche>
+    <Gesamtpreis>360</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>021</Position>
+    <Kurztext>Fl. Abstemmen ab 6 qm</Kurztext>
+    <Langtext>Abstemmen wie in Pos 020 beschrieben, jedoch ab 6 qm.(Nur auf Anweiisung der örtlichen Bauleitung)</Langtext>
+    <Preis_x002F_Einheit>32</Preis_x002F_Einheit>
+    <Fläche>1</Fläche>
+    <Gesamtpreis>32</Gesamtpreis>
+  </Positionen>
+</PosListe>
+</Vorgang>

@@ -3109,7 +3109,7 @@ namespace Layer8_CSW
 							cMenu_KundenDG.MenuItems.Add("Kunden übernehmen",new System.EventHandler(Kunde_übernehmen_aus_Übersicht));	
 							break;
 						case Ansichtsache.Vorgang:
-							cMenu_KundenDG.MenuItems.Add("Vorgang laden (Dummy)");
+							cMenu_KundenDG.MenuItems.Add("Vorgang laden",new System.EventHandler(Vorgang_laden_aus_Übersicht));
 							break;
 						case Ansichtsache.Maurer:
 							cMenu_KundenDG.MenuItems.Add("Position übernehmen",new System.EventHandler(Position_übernehmen_aus_Übersicht));
@@ -3482,6 +3482,24 @@ namespace Layer8_CSW
 			}
 					
 	}	
+			
+		private void Vorgang_laden_aus_Übersicht (object sender, System.EventArgs e)
+		{
+			
+			
+			VG = new Vorgang();
+			VG.Dateiname = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,1]);
+			VG.hat_Namen=true;
+			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
+			VG.XML_lesen();
+			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			dataGrid_Vorgang.ReadOnly=true;
+			dateTimePicker_Bau.Value=VG.Datum;
+			kunde_Anzeigen(VG.UnserKunde);
+			ZahlungsTab_aktualisieren();
+			tabControl1.SelectedTab = Zahlung;
+			// Bauvorhaben-Tabseite aktualisieren
+		}	
 
 }
 
@@ -3907,11 +3925,12 @@ namespace Layer8_CSW
 
 	
 		public void XML_schreiben()  // Methode um alle aktuellen Daten in ein XML-Dokument zu schreiben - CSW 18.10.03 17:00
-		{	string Datei = Vorgangsnamen_basteln();
+		{	
+			string Datei = Vorgangsnamen_basteln();
 			
 			Betrag_berechnen();
 			PosListe.WriteXml(@"..\..\products.xml");	
-			XmlTextWriter W = new XmlTextWriter(@"..\..\Daten\"+Datei,null);
+			XmlTextWriter W = new XmlTextWriter(@"..\..\Daten\"+Datei+".xml",null);
 			XmlTextReader R = new XmlTextReader(@"..\..\products.xml");
 			R.Read();
 			R.Read();
@@ -4048,10 +4067,10 @@ namespace Layer8_CSW
 	
 		public void XML_lesen() // Methode um alle Daten einzulesen, hier brauchte ich dat DataBinding nochmal für alles - CSW 18.10.03 17:00
 		{
-				if (hat_Namen==true)
+				if (this.hat_Namen==true)
 			{
-				string Datei = Vorgangsnamen_basteln();
-				XmlTextReader R = new XmlTextReader(@"..\..\Daten\"+Datei);		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
+				
+				XmlTextReader R = new XmlTextReader(@"..\..\Daten\"+this.Dateiname+".xml");		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
 		
 				R.Read();
 				R.Read();
@@ -4171,11 +4190,12 @@ namespace Layer8_CSW
 
 
 		public string Vorgangsnamen_basteln ()
-		{StringBuilder Name;
+		{	StringBuilder Name;
 			StringBuilder Dummy;
-		 DateTime jetzt = DateTime.Now;
+			DateTime jetzt = DateTime.Now;
 		
 			if (hat_Namen == false)
+			
 			{
 				hat_Namen=true;
 				Name = new StringBuilder(Vorgangstyp,80);
@@ -4205,7 +4225,7 @@ namespace Layer8_CSW
 				Name.Replace(">","");
 				Name.Replace("|","");
 				//MessageBox.Show(Name.ToString());
-				Name.Append(".xml");
+				
 				Dateiname = Name.ToString();
 				return Dateiname;
 			}

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<Vorgang>
+  <Kunde>
+    <Kuerzel>Cau</Kuerzel>
+    <Kundennummer>1</Kundennummer>
+    <Anrede>Herr</Anrede>
+    <Nachname>Huse</Nachname>
+    <Vorname>Fred</Vorname>
+    <Strasse>Musterstrasse</Strasse>
+    <PLZ>45666</PLZ>
+    <Ort>Musterstadt</Ort>
+    <Telefon>34543543</Telefon>
+    <Fax>36545645</Fax>
+    <eMail>fgdfgdsf@fdsg.de</eMail>
+  </Kunde>
+  <Bauvorhaben>
+    <Vorgangsbezeichnung />
+    <Typ>A</Typ>
+    <Vorgangsnummer>1</Vorgangsnummer>
+    <Datum>21.11.2003 00:00:00</Datum>
+    <BauNName>na</BauNName>
+    <BauVName>na</BauVName>
+    <BauStrasse>Baustrasse 15</BauStrasse>
+    <BauPLZ>49148</BauPLZ>
+    <BauOrt>Baustelle</BauOrt>
+    <Netto>149630</Netto>
+    <MwSt>16</MwSt>
+    <Brutto>173570,8000</Brutto>
+    <Rabatt>0</Rabatt>
+    <Dateiname>test2</Dateiname>
+  </Bauvorhaben>
+  <PosListe>
+  <Positionen>
+    <Raum>Klo</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>151</Fläche>
+    <Gesamtpreis>4530</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>1451</Fläche>
+    <Gesamtpreis>145100</Gesamtpreis>
+  </Positionen>
+</PosListe>
+</Vorgang>
