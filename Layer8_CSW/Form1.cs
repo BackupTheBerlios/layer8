@@ -3073,9 +3073,109 @@ public class Position
 
 			return Verzeichnis;
 		}
+		public DataSet alle_Kunden_ausgebenDS()
+			/// Diese Methode erfordert keinen Übergabewert, sie liefert alle in der DB 
+			/// gespeicherten Kunden in einem dataSet nur für Waller zurück.
+		{
+		
+		
+			DataSet myDataSet = new DataSet("Kunden");
+			MessageBox.Show("DataDet erzeugt");
+			DataTable Kunden = myDataSet.Tables.Add("Kunden");
+			Kunden.Columns.Add("Kundennummer",typeof(int));
+			Kunden.Columns.Add("Kuerzel",typeof(string));
+			Kunden.Columns.Add("Firma",typeof(string));
+			Kunden.Columns.Add("Anrede",typeof(string));
+			Kunden.Columns.Add("Name",typeof(string));
+			Kunden.Columns.Add("Vorname",typeof(string));
+			Kunden.Columns.Add("Strasse",typeof(string));
+			Kunden.Columns.Add("Ort",typeof(string));
+			Kunden.Columns.Add("PLZ",typeof(int));
+			Kunden.Columns.Add("Kontonr",typeof(int));
+			Kunden.Columns.Add("BLZ",typeof(int));
+			Kunden.Columns.Add("Bank",typeof(string));
+			Kunden.Columns.Add("Telefon",typeof(string));
+			Kunden.Columns.Add("Fax",typeof(string));
+			Kunden.Columns.Add("eMail",typeof(string));
+			Kunden.PrimaryKey = new DataColumn[]{Kunden.Columns["Kundenummer"]};
+			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM Kunde",myconnection);
+			try
+			{
+				myDataAdapter.Fill(myDataSet,"Kunden");
+			}
+			catch(Exception ex)
+			{
+				
+				MessageBox.Show(""+ex);
+				return null;
+			}
+		
+		
+			return myDataSet;
+		}
+		public DataSet alle_Postionen_ausgebenDS()
+		{
+		
+		
+			DataSet myDataSet = new DataSet("Positionen");
+			MessageBox.Show("DataDet erzeugt");
+			DataTable MPos = myDataSet.Tables.Add("MPos");
+			DataTable FPos = myDataSet.Tables.Add("FPos");
+			DataTable ZPos = myDataSet.Tables.Add("ZPos");
+			MPos.Columns.Add("PosNummer",typeof(string));
+			MPos.PrimaryKey = new DataColumn[]{MPos.Columns["PosNummer"]};
+			OleDbDataAdapter myDataAdapterMPos= new OleDbDataAdapter("SELECT *  FROM RechPos WHERE PosNummer LIKE 'M%'" ,myconnection);
+			FPos.Columns.Add("PosNummer",typeof(string));
+			FPos.PrimaryKey = new DataColumn[]{FPos.Columns["PosNummer"]};
+			OleDbDataAdapter myDataAdapterFPos= new OleDbDataAdapter("SELECT *  FROM RechPos WHERE PosNummer LIKE 'F%'" ,myconnection);
+			ZPos.Columns.Add("PosNummer",typeof(string));
+			ZPos.PrimaryKey = new DataColumn[]{ZPos.Columns["PosNummer"]};
+			OleDbDataAdapter myDataAdapterZPos= new OleDbDataAdapter("SELECT *  FROM RechPos WHERE PosNummer LIKE 'Z%'" ,myconnection);
+			
+			try
+			{
+				myDataAdapterMPos.Fill(myDataSet,"MPos");
+			}
+			catch(Exception ex)
+			{
+				
+				MessageBox.Show(""+ex);
+				return null;
+			}
+			try
+			{
+				myDataAdapterFPos.Fill(myDataSet,"FPos");
+			}
+			catch(Exception ex)
+			{
+				
+				MessageBox.Show(""+ex);
+				return null;
+			}
+			try
+			{
+				myDataAdapterZPos.Fill(myDataSet,"ZPos");
+			}
+			catch(Exception ex)
+			{
+				
+				MessageBox.Show(""+ex);
+				return null;
+			}
+		    
+			
+			
+			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
+			MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
+			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
+
+			return myDataSet;
+		}
+		
+		
 		public KundenVerzeichnis alle_Kunden_ausgeben ()
-		/// Diese Methode erfordert keinen Übergabewert, sie liefert alle in der DB 
-		/// gespeicherten Kunden in einem KundenVerzeichnis:DictonaryBase zurück.
+			/// Diese Methode erfordert keinen Übergabewert, sie liefert alle in der DB 
+			/// gespeicherten Kunden in einem KundenVerzeichnis:DictonaryBase zurück.
 		{
 			int Count=0;
 		
@@ -3135,7 +3235,6 @@ public class Position
 
 			return Verzeichnis;
 		}
-
 		public Kunde Kunde_suchen_nach_Kundennummer (int Kundennummer)
 		{
        
@@ -3286,7 +3385,7 @@ public class Position
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
 		
-        public int Kunde_aendern_Name(string name,Kunde k)
+		public int Kunde_aendern_Name(string name,Kunde k)
 		{
 			/// Diese Methode schreibt den neuen Namen(Heirat?) des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -3394,7 +3493,7 @@ public class Position
 			return änderungen;
 		}
 		
-        public int Kunde_aendern_Bank(string Bank,Kunde k)
+		public int Kunde_aendern_Bank(string Bank,Kunde k)
 		{
 			/// Diese Methode schreibt den neue Bank des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -3426,7 +3525,7 @@ public class Position
 			return änderungen;
 		}
 		
-        public int Kunde_aendern_Fax(string Fax,Kunde k)
+		public int Kunde_aendern_Fax(string Fax,Kunde k)
 		{
 			/// Diese Methode schreibt die neue Faxnummer(Irrtum beim ersten Eintrag?) des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -3472,7 +3571,7 @@ public class Position
 
 		public int Neuer_Kunde_Anlegen(Kunde K)
 		{
-		    int count=0;
+			int count=0;
 			int änderungen =0;
 			Kunde myKunde = K;
 			OleDbCommand PS = new OleDbCommand("SELECT * FROM Kunde", myconnection);
@@ -3489,7 +3588,7 @@ public class Position
 			{
 				count++;
 			}
-            dataReaderPS.Close();
+			dataReaderPS.Close();
 			OleDbCommand Kunde_anlegen= null ;
 			try	
 			{	
@@ -3510,14 +3609,17 @@ public class Position
 				Kunde_löschen= new OleDbCommand("DELETE FROM Kunde WHERE Kundennr="+myKunde.Kundennummer+"" ,myconnection);
 				änderungen =Kunde_löschen.ExecuteNonQuery();
 			}
-			catch (Exception ex){MessageBox.Show(""+ex);}
+			catch (Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return 0;}
 			return änderungen;
 		
 		}
         
 
 
-        public Position Pos_suchen_nach_Posnummer (string Pos)
+		public Position Pos_suchen_nach_Posnummer (string Pos)
 		{
        
 			Position myPos = new Position();
@@ -3527,7 +3629,11 @@ public class Position
 			{	
 				dataReader4 = suchePos.ExecuteReader();
 			}
-			catch(Exception ex){MessageBox.Show(""+ex);}
+			catch(Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return null;
+			}
 		
 			if(dataReader4.Read())
 			{
@@ -3568,7 +3674,10 @@ public class Position
 			{
 				dataReaderPS = PS.ExecuteReader();
 			}
-			catch(Exception ex){MessageBox.Show(""+ex);}
+			catch(Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return "";}
 		
 			while (dataReaderPS.Read())
 			{
@@ -3642,10 +3751,10 @@ public class Position
 			/// 
 		{
 			int count=0;
-		   Kunde myKunde = K;
+			Kunde myKunde = K;
 			
 			OleDbCommand sucheAlleVorgänge= new OleDbCommand("SELECT * FROM KundeVorgang WHERE Kundennr="+myKunde.Kundennummer+"", myconnection);
-		OleDbDataReader dataReaderCount = null;
+			OleDbDataReader dataReaderCount = null;
 		
 			try 
 			{
@@ -3653,12 +3762,13 @@ public class Position
 			}
 			catch(Exception ex){MessageBox.Show(""+ex);}
 		
-			while (dataReaderCount.Read()){
-			count++;
+			while (dataReaderCount.Read())
+			{
+				count++;
 			}
 			dataReaderCount.Close();
-			 string[] Vorgänge =new string[count];
-            count=0;
+			string[] Vorgänge =new string[count];
+			count=0;
 			OleDbDataReader dataReaderAV = null;
 		
 			try 
@@ -3671,7 +3781,7 @@ public class Position
 			{
 				if (!(dataReaderAV.IsDBNull(1)))
 					Vorgänge[count] = dataReaderAV.GetString(1);
-					count++;
+				count++;
 			}
 
 			dataReaderAV.Close();
