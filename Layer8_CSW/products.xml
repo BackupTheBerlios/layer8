@@ -2,20 +2,146 @@
 <PosListe>
   <Positionen>
     <Raum />
-    <Position>F01</Position>
-    <Kurztext>Flasche öffnen</Kurztext>
-    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
-    <Preis_x002F_Einheit>10</Preis_x002F_Einheit>
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
     <Fläche>0</Fläche>
     <Gesamtpreis>0</Gesamtpreis>
   </Positionen>
   <Positionen>
     <Raum />
-    <Position>M01</Position>
-    <Kurztext>Flasche öffnen</Kurztext>
-    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
-    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
     <Fläche>0</Fläche>
     <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position />
+    <Kurztext />
+    <Langtext />
+    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum>556</Raum>
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>5</Fläche>
+    <Gesamtpreis>150</Gesamtpreis>
   </Positionen>
 </PosListe>

@@ -30,8 +30,8 @@
 // | Version 1.241    | 22.11.03	   | 12:16	  | Casi		   |  Druckvorschau implementiert
 // | Version 1.242a   | 25.11.03	   | 01:25    | CSW            |  Hab dat KontextMenü schon vorbereitet und die Übernahme des Kunden drin, Rest morgen
 // | Version 1.242b   | 25.11.03	   | 13:16    | CSW			   |  Position übernehmen drin, DB (RechPos) geändert
-// | Version 1.243    | 25.11.03	   | 19:59    | Casi		   |  DB, Vorname und nachname in KundeVorgang eingefügt und DB-Methoden aktualisiert
-
+// | Version 1.243    | 25.11.03	   | 19:59    | Casi		   |  DB, Vorname und Nachname in KundeVorgang eingefügt und DB-Methoden aktualisiert
+// | Version 1.244    | 26.11.03	   | 01:32	  | CSW			   |  KontextMenü für das Vorgangs-DataGrid fertig, dadruch geänderter Workflow beim ändern&löschen, einfügen funktioniert noch nicht so richtig
 using System;
 using System.Text;
 using System.Drawing;
@@ -60,6 +60,15 @@ namespace Layer8_CSW
 		private System.ComponentModel.Container components = null;
 		
 		# region Labels
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label33;
+		private System.Windows.Forms.Label label36;
+		private System.Windows.Forms.Label label37;
+		private System.Windows.Forms.Label label35;
+		private System.Windows.Forms.Label label38;
+		private System.Windows.Forms.Label label39;
+		private System.Windows.Forms.Label label40;
+		private System.Windows.Forms.Label label34;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
@@ -151,6 +160,28 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn5;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn6;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn7;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle1;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn8;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn9;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn10;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn11;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn12;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn13;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn14;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle3;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle4;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleKundenÜbersicht;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn15;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn16;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn17;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn18;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn19;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn20;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn21;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn22;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn23;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
 		#endregion
 		#region Tab
 		private System.Windows.Forms.TabPage Positionen;
@@ -193,28 +224,7 @@ namespace Layer8_CSW
 		private System.Windows.Forms.RadioButton radio_M;
 		private System.Windows.Forms.RadioButton radio_Z;
 		private System.Windows.Forms.DataGrid DG_Übersicht;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle1;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn8;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn9;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn10;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn11;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn12;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn13;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn14;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle3;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle4;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleKundenÜbersicht;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn15;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn16;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn17;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn18;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn19;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn20;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn21;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn22;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn23;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
+		
 		private System.Windows.Forms.ContextMenu cMenu_KundenDG;
 		private System.Windows.Forms.TextBox txtbox_PlzBau;
 		private System.Windows.Forms.TextBox txtbox_OrtBau;
@@ -242,15 +252,12 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn26;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn27;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn28;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.Label label33;
-		private System.Windows.Forms.TextBox txtBox_Übersicht_Kundenauswahl;
-		private System.Windows.Forms.Label label34;
+		
 		private System.Windows.Forms.Button button_Übersicht_Kunden_suchen;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn29;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn30;
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn31;
-		private System.Windows.Forms.Label label35;
+		private System.Windows.Forms.TextBox txtBox_Übersicht_Kundenauswahl;
 		private System.Windows.Forms.TextBox txtBox_Übersicht_Vorgang_suchen;
 		private System.Windows.Forms.Button button_Übersicht_Vorgang_suchen;
 		private System.Windows.Forms.MenuItem menuItem16;
@@ -261,19 +268,15 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGrid DG_Nachkalkulation;
 		private System.Windows.Forms.TextBox txtBox_realMatKosten;
 		private System.Windows.Forms.TextBox txtBox_realLohnKosten;
-		private System.Windows.Forms.Label label36;
-		private System.Windows.Forms.Label label37;
-		private System.Windows.Forms.TextBox txtBox_realGesamtKosten;
-		private System.Windows.Forms.Label label38;
+	
 		private System.Windows.Forms.TextBox txtBox_NettoRechbetrag;
-		private System.Windows.Forms.Label label39;
-		private System.Windows.Forms.Label label40;
+		private System.Windows.Forms.TextBox txtBox_realGesamtKosten;
 		private System.Windows.Forms.TextBox txtBox_Gewinn;
-		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.MenuItem menuDruckenPrintPreview;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
+		private System.Windows.Forms.ContextMenu cMenu_VorgangDG;
 
 		public enum Ansichtsache {Fliesen, Maurer, Zusatz, Kunden, Vorgang, Noppes };
 		public Ansichtsache Ansicht; 
@@ -464,7 +467,6 @@ namespace Layer8_CSW
 			this.button_Übersicht_Vorgänge_anzeigen = new System.Windows.Forms.Button();
 			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.Nachkalkulation = new System.Windows.Forms.TabPage();
-			this.button2 = new System.Windows.Forms.Button();
 			this.txtBox_Gewinn = new System.Windows.Forms.TextBox();
 			this.label40 = new System.Windows.Forms.Label();
 			this.label39 = new System.Windows.Forms.Label();
@@ -498,6 +500,7 @@ namespace Layer8_CSW
 			this.menuDruckenPageSetup = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPrintPreview = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPrint = new System.Windows.Forms.MenuItem();
+			this.cMenu_VorgangDG = new System.Windows.Forms.ContextMenu();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Positionen.SuspendLayout();
@@ -985,7 +988,7 @@ namespace Layer8_CSW
 			this.dataGrid_Vorgang.TabIndex = 14;
 			this.dataGrid_Vorgang.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
 																										 this.dataGridTableStyle2});
-			this.dataGrid_Vorgang.DoubleClick += new System.EventHandler(this.dataGrid_Vorgang_DoubleClick);
+			this.dataGrid_Vorgang.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dataGrid_Vorgang_MouseUp);
 			this.dataGrid_Vorgang.CurrentCellChanged += new System.EventHandler(this.dataGrid_Vorgang_CurrentCellChanged);
 			// 
 			// dataGridTableStyle2
@@ -1931,7 +1934,6 @@ namespace Layer8_CSW
 			// 
 			// Nachkalkulation
 			// 
-			this.Nachkalkulation.Controls.Add(this.button2);
 			this.Nachkalkulation.Controls.Add(this.txtBox_Gewinn);
 			this.Nachkalkulation.Controls.Add(this.label40);
 			this.Nachkalkulation.Controls.Add(this.label39);
@@ -1948,15 +1950,6 @@ namespace Layer8_CSW
 			this.Nachkalkulation.Size = new System.Drawing.Size(988, 590);
 			this.Nachkalkulation.TabIndex = 5;
 			this.Nachkalkulation.Text = "Nachkalkulation";
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(344, 40);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(128, 56);
-			this.button2.TabIndex = 11;
-			this.button2.Text = "button2";
-			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// txtBox_Gewinn
 			// 
@@ -2246,90 +2239,50 @@ namespace Layer8_CSW
 			
 			ZahlungsTab_aktualisieren();
 			Ansicht = Ansichtsache.Noppes;
-		}
 
-
-		/* public void Daten_binden()//CSW
-		{
-		// CSW 17.10.03 14:30 hab DataBinding wieder reingenommen, bei den Kunden sachen gibt es NullpointerExceptions, hab es deshalb erstmal rausgelassen
-			
-			// Hier sind die DataBindings der Kunden-TabSeite - im Konstruktor sind die DummyDaten wieder aktiv - CSW 18.10.03 17:00
-			cbox_Anrede.DataBindings.Add("Text",VG.UnserKunde,"Anrede");
-			this.txtbox_Name.DataBindings.Add("Text",VG.UnserKunde,"NName");
-			txtbox_Telefonnummer.DataBindings.Add("Text",VG.UnserKunde,"Telefonnummer");
-			txtbox_PLZ.DataBindings.Add("Text",VG.UnserKunde,"PLZ");
-			txtbox_Ort.DataBindings.Add("Text",VG.UnserKunde,"Ort");
-			txtbox_Strasse.DataBindings.Add("Text",VG.UnserKunde,"Strasse");
-			txtbox_Vorname.DataBindings.Add("Text",VG.UnserKunde,"VName");
-			txtbox_Kundennummer.DataBindings.Add("Text",VG.UnserKunde,"Kundennummer");
-			txtbox_Kürzel.DataBindings.Add("Text",VG.UnserKunde,"Kuerzel");
-			txtbox_Fax.DataBindings.Add("Text",VG.UnserKunde,"Fax");
-			txtbox_Email.DataBindings.Add("Text",VG.UnserKunde,"Email");
-
-			txtbox_Gesamtpreis.DataBindings.Add("Text",VG.aktPos,"GPreis");
-			txtbox_Fläche.DataBindings.Add("Text",VG.aktPos,"Flaeche");
-			txtbox_Einzelpreis.DataBindings.Add("Text",VG.aktPos,"EPreis");
-			txtbox_Langtext.DataBindings.Add("Text",VG.aktPos,"Langtext");
-			txtbox_Kurztext.DataBindings.Add("Text",VG.aktPos,"Kurztext");
-			txtbox_Posnummer.DataBindings.Add("Text",VG.aktPos,"Positionsnummer");
-			txtbox_Raum.DataBindings.Add("Text",VG.aktPos,"Raum");
-
-			txtbox_PlzTab2.DataBindings.Add("Text",VG,"BauPLZ");
-			txtbox_OrtTab2.DataBindings.Add("Text",VG,"BauOrt");
-			txtbox_StrasseTab2.DataBindings.Add("Text",VG,"BauStrasse");
-			txtbox_VornameTab2.DataBindings.Add("Text",VG,"BauVName");
-			txtbox_NameTab2.DataBindings.Add("Text",VG,"BauNName");
-			txtbox_VNummer.DataBindings.Add("Text",VG,"Vorgangsnummer");
-			txtbox_VBezeichnung.DataBindings.Add("Text",VG,"Vorgangsbezeichnung");
-			txtbox_Datum.DataBindings.Add("Text",VG,"Datum");
-			txtbox_Netto.DataBindings.Add("Text",VG,"Netto");
-			txtbox_Mwst.DataBindings.Add("Text",VG,"MwSt");
-			txtbox_Rabatt.DataBindings.Add("Text",VG,"Rabatt");
-			txtbox_Brutto.DataBindings.Add("Text",VG,"Brutto");
-
-
-		}
 		
+			
+		}
+
+
+	#region auskommentiert
+		/*private void txtbox_Posnummer_Leave(object sender, System.EventArgs e)
+		{
+			if (this.position_anlegen)
+			{
+				string tempPosnummer = this.txtbox_Posnummer.Text;
+				tempPosnummer.ToLower();
+				tempPosnummer.Trim();
+				this.positionsnummerstring.ToLower();
+				this.positionsnummerstring.Trim();
+				// bool test = string.Equals(this.kürzelstring, tempKürzel);
+				if (this.positionsnummerstring != tempPosnummer)
+				{
+					VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(this.txtbox_Posnummer.Text);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (VG.aktPos != null)
+					{
+						MessageBox.Show("Es existiert bereits eine Position mit diesem Kürzel");
+					}
+					else this.position_Anzeigen(VG.aktPos);		
+				}
+			}
+		}*/
+
+		/* private void txtbox_Posnummer_TextChanged(object sender, System.EventArgs e)
+		{
+			if (!this.position_neu)
+			{
+				if (this.position_anlegen)
+				{
+					this.positionsnummerstring = this.txtbox_Posnummer.Text;
+				}
+			}
+		}
 		*/
+	#endregion
 
 
-
-		private void button_Übernehmen_Click(object sender, System.EventArgs e) //CSW
-		{
-			if(txtbox_Posnummer.Text!="")
-		 {
-
-			 if (this.position_anlegen)
-			 {}
-			
-			 else 
-			 {
-
-				 dataGrid_Vorgang.Enabled=true;   // That's the trick! Damit der am Anfang nicht so lange lädt bis die erste Position angezeigt wird
-				 if(Daten_in_aktPos_schreiben())	 // Eine DummyMethode, damit ich schon Daten ändern kann (hab doch ne Prüfung drin, deshalb die if-Abfrage)
-				 {
-					 if (DG_Zeile_bearbeiten==false) // boolsches Flag - im Bearbeiten Modus ist das DataGrid disabled
-					 {	
-						 VG.Daten_hinzufuegen();	   //	Einfügen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
-					 }
-					 else 
-					 {
-						 VG.Daten_wiedereinfügen();  // Wird eigentlich an der alten Stelle bearbeitet
-						 DG_Zeile_bearbeiten=false;						
-						 button_loeschen.Visible=false;
-					
-						 // alte Formatierung wiederherstellen
-						 dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
-					 }
-				 }
-		
-				 dataGrid_Vorgang.ReadOnly=true;  // Ich weiß nicht warum aber mit diesem "Trick" läuft es schneller
-			 }
-
-			 ZahlungsTab_aktualisieren();
-		 }
-		else MessageBox.Show("Mit der Positionsnummer stimmt etwas nicht.","Es ist ein Fehler aufgetreten.");
-		}
+	#region Textbox_irgenwas
 		private void txtbox_Kürzel_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
 			if (!this.bearbeiten_flag)
@@ -2386,226 +2339,6 @@ namespace Layer8_CSW
 			}
 		}
 
-		private void button_XmlLesen_Click(object sender, System.EventArgs e)  //- CSW 18.10.03 17:00
-		{
-			//	VG.aktPos.Positionsnummer=VG.aktPos.Positionsnummer+1; dat war mal meine Demonstration des DataBindingProblems
-			//	Positionen.CreateControl();
-			
-			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
-			VG.XML_lesen();
-			dataGrid_Vorgang.ReadOnly=true;
-			dateTimePicker_Bau.Value=VG.Datum;
-
-		
-		}
-
-		private void button_XmlSchreiben_Click(object sender, System.EventArgs e) //- CSW 18.10.03 17:00
-		{
-			VG.XML_schreiben();
-			UnsereDb.VorgangKunde_in_DB_schreiben(VG);
-		}
-		
-		private void kunde_Anzeigen (Kunde K) //- CH 18.10.03 19:34
-		{
-			this.txtbox_Kürzel.Text = K.Kuerzel;
-			this.kürzelstring = this.txtbox_Kürzel.Text;
-			this.txtbox_Name.Text = K.NName;
-			
-			if (K.Kundennummer == 0)
-				this.txtbox_Kundennummer.Text = null;
-			else this.txtbox_Kundennummer.Text = ""+K.Kundennummer;
-			
-			
-			this.txtbox_Ort.Text = K.Ort;
-			
-	
-			if (K.PLZ == 0)
-				this.txtbox_PLZ.Text = null;
-			else this.txtbox_PLZ.Text = ""+K.PLZ;
-				
-			this.txtbox_Strasse.Text = K.Strasse;
-			this.txtbox_Vorname.Text = K.VName;
-			this.txtbox_Telefonnummer.Text = K.Telefonnummer;
-			this.txtbox_Fax.Text = K.Fax;
-			this.txtbox_Email.Text = K.Email;
-			switch (K.Anrede)
-			{
-				case "Herr": this.cbox_Anrede.SelectedIndex = 0;
-					break;	
-				case "Frau": this.cbox_Anrede.SelectedIndex = 1;
-					break;
-				case "Firma": this.cbox_Anrede.SelectedIndex = 2;
-					break;
-
-			
-			}
-				
-		}
-		
-
-		private void position_Anzeigen (Position K) //- CH 22.10.03 14:34
-		{
-			this.txtbox_Posnummer.Text = K.Positionsnummer;
-			this.txtbox_Kurztext.Text = K.Kurztext;
-			this.txtbox_Langtext.Text = K.Langtext;	
-			this.txtbox_Einzelpreis.Text = ""+K.EPreis;
-			this.txtbox_Fläche.Text = ""+K.Flaeche;
-			this.txtbox_Gesamtpreis.Text = ""+K.GPreis;
-			this.txtbox_Raum.Text = K.Raum;		
-		}
-
-
-		private void bauvorhaben_Anzeigen (Vorgang V) //- CH 12.11.03 17:11
-		{
-			this.txtbox_VNummer.Text = ""+V.Vorgangsnummer;
-			this.txtbox_VBezeichnung.Text = V.Vorgangsbezeichnung;
-			this.dateTimePicker_Bau.Text = ""+V.Datum;	
-			this.txtbox_NameBau.Text = V.BauNName;
-			this.txtbox_VornameBau.Text = V.BauVName;
-			this.txtbox_StrasseBau.Text = V.BauStrasse;
-			this.txtbox_OrtBau.Text = V.BauOrt;
-			this.txtbox_PlzBau.Text = ""+V.BauPLZ;
-			switch (V.Typ)
-			{
-				case "Aufmaß": this.radio_Aufmaß.Select();
-					break;	
-				case "Angebot": this.radio_Angebot.Select();
-					break;
-				case "Rechnung": this.radio_Rechnung.Select();
-					break;
-			}
-		}
-
-
-		private void position_Textboxen_loeschen()
-		{
-			this.txtbox_Posnummer.Text = "";
-			this.txtbox_Kurztext.Text = "";
-			this.txtbox_Langtext.Text = "";	
-			this.txtbox_Einzelpreis.Text = "";
-			this.txtbox_Fläche.Text = "";
-			this.txtbox_Gesamtpreis.Text = "";
-			this.txtbox_Raum.Text = "";
-		}
-
-		private void position_Textboxen_auf_write () //- CH 26.10.03 21:00
-		{
-			this.txtbox_Posnummer.ReadOnly = true; //Posnummer wird automatisch von DB vergeben
-			this.txtbox_Kurztext.ReadOnly = false;
-			this.txtbox_Langtext.ReadOnly = false;	
-			this.txtbox_Einzelpreis.ReadOnly = false;
-			this.txtbox_Fläche.ReadOnly = true;  // da die Eingabe der Fläche nicht benötigt wird
-			// Gesamtpreis bleibt unverändert
-			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
-		}
-
-		private void position_Textboxen_auf_read () //- CH 26.10.03 21:00
-		{
-			this.txtbox_Posnummer.ReadOnly = false; //wieder zurück
-			this.txtbox_Kurztext.ReadOnly = true;
-			this.txtbox_Langtext.ReadOnly = true;	
-			this.txtbox_Einzelpreis.ReadOnly = true;
-			this.txtbox_Fläche.ReadOnly = false;  // jetzt wieder im normalen Modus
-			// Gesamtpreis bleibt unverändert
-			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
-		}
-
-		private void alle_kunden_textboxen_auf_write()
-		{
-			this.txtbox_Kürzel.ReadOnly = false;
-			this.txtbox_Name.ReadOnly = false;
-			// this.txtbox_Kundennummer.ReadOnly = false;
-			this.txtbox_Ort.ReadOnly = false;
-			this.txtbox_PLZ.ReadOnly = false;
-			this.txtbox_Strasse.ReadOnly = false;
-			this.txtbox_Vorname.ReadOnly = false;
-			this.txtbox_Telefonnummer.ReadOnly = false;
-			this.txtbox_Fax.ReadOnly = false;
-			this.txtbox_Email.ReadOnly = false;
-			this.kunde_Anzeigen(VG.UnserKunde);
-		}
-		
-		
-		private void alle_kunden_textboxen_Inhalt_loeschen()
-		{
-			VG.UnserKunde.Kuerzel = "";
-			VG.UnserKunde.NName = "";
-			VG.UnserKunde.Kundennummer = 0;	
-			// this.txtbox_Kundennummer.ReadOnly = false;
-			VG.UnserKunde.Ort = "";
-			VG.UnserKunde.PLZ = 0;
-			VG.UnserKunde.Strasse = "";
-			VG.UnserKunde.VName = "";
-			VG.UnserKunde.Telefonnummer = "";
-			VG.UnserKunde.Fax = "";
-			VG.UnserKunde.Email = "";
-			this.kunde_Anzeigen(VG.UnserKunde);
-		}
-
-
-		private void alle_kunden_textboxen_auf_read()
-		{
-			this.txtbox_Kürzel.ReadOnly = true;
-			this.txtbox_Name.ReadOnly = true;
-			// this.txtbox_Kundennummer.ReadOnly = true;
-			this.txtbox_Ort.ReadOnly = true;
-			this.txtbox_PLZ.ReadOnly = true;
-			this.txtbox_Strasse.ReadOnly = true;
-			this.txtbox_Vorname.ReadOnly = true;
-			this.txtbox_Telefonnummer.ReadOnly = true;
-			this.txtbox_Fax.ReadOnly = true;
-			this.txtbox_Email.ReadOnly = true;
-			this.kunde_Anzeigen(VG.UnserKunde);
-		}
-	
-
-		private void button_Speichern_Click(object sender, System.EventArgs e)
-		{
-
-			/*	if (this.txtbox_Kürzel.Text.Equals(""))
-				{
-					MessageBox.Show("Bitte geben Sie zuerst ein Kürzel ein");
-				}
-
-				else
-				{     */
-			this.bearbeiten_flag = false;
-
-			if (this.neuer_Kunde)
-			{
-				this.neuer_Kunde = false;
-				UnsereDb.Neuer_Kunde_Anlegen(VG.UnserKunde);
-				this.alle_kunden_textboxen_auf_read();
-			}
-			else
-			{
-
-				// UnsereDb.Kunde_aendern_Kürzel(this.txtbox_Kürzel.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Name(this.txtbox_Name.Text,VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Ort(this.txtbox_Ort.Text, VG.UnserKunde);
-				
-				
-				string temp = this.txtbox_PLZ.Text;
-				temp.Trim();
-				if (temp != "")
-				{
-					int PLZ = Convert.ToInt32(this.txtbox_PLZ.Text);
-					UnsereDb.Kunde_aendern_PLZ(PLZ, VG.UnserKunde);
-				}
-
-				
-				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
-				this.alle_kunden_textboxen_auf_read();
-				// }
-			}
-		}
-
-	
 		private void txtbox_Kürzel_Leave(object sender, System.EventArgs e)
 		{
 			if (this.bearbeiten_flag)
@@ -2633,21 +2366,6 @@ namespace Layer8_CSW
 			}
 		}
 
-	
-		private void button1_Click(object sender, System.EventArgs e)
-		{	
-			if (this.txtbox_Kürzel.Text.Equals(""))
-			{
-				MessageBox.Show("Ja würd ich gern, wennn ein Kunde angegeben wär! Ey!");
-			}
-			else
-			{
-				this.bearbeiten_flag = true;
-				this.alle_kunden_textboxen_auf_write();
-			}
-		}
-
-	
 		private void txtbox_Name_Leave(object sender, System.EventArgs e)
 		{
 			if (this.bearbeiten_flag)
@@ -2657,13 +2375,11 @@ namespace Layer8_CSW
 			}
 		}
 
-	
 		private void txtbox_Vorname_Leave(object sender, System.EventArgs e)
 		{
 			VG.UnserKunde.VName = this.txtbox_Vorname.Text;
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
-
 
 		private void txtbox_Strasse_Leave(object sender, System.EventArgs e)
 		{
@@ -2671,14 +2387,12 @@ namespace Layer8_CSW
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-	
 		private void txtbox_Ort_Leave(object sender, System.EventArgs e)
 		{
 			VG.UnserKunde.Ort = this.txtbox_Ort.Text;
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-	
 		private void txtbox_PLZ_Leave(object sender, System.EventArgs e)
 		{
 			int temp = Convert.ToInt32(this.txtbox_PLZ.Text);
@@ -2686,28 +2400,24 @@ namespace Layer8_CSW
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-		
 		private void txtbox_Telefonnummer_Leave(object sender, System.EventArgs e)
 		{
 			VG.UnserKunde.Telefonnummer = this.txtbox_Telefonnummer.Text;
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-	
 		private void txtbox_Fax_Leave(object sender, System.EventArgs e)
 		{
 			VG.UnserKunde.Fax = this.txtbox_Fax.Text;
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-	
 		private void txtbox_Email_Leave(object sender, System.EventArgs e)
 		{
 			VG.UnserKunde.Email = this.txtbox_Email.Text;
 			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 
-		
 		private void txtbox_Kürzel_TextChanged(object sender, System.EventArgs e)
 		{
 			if (!this.neuer_Kunde)
@@ -2718,77 +2428,6 @@ namespace Layer8_CSW
 				}
 			}
 		}
-
-	
-		private void button_Neu_Click(object sender, System.EventArgs e)
-		{
-			this.neuer_Kunde = true;
-			this.bearbeiten_flag = true;
-			this.alle_kunden_textboxen_auf_write();
-			this.alle_kunden_textboxen_Inhalt_loeschen();
-		}
-
-		
-		private void dataGrid_Vorgang_CurrentCellChanged(object sender, System.EventArgs e) //CSW - 23.10.03 00:01
-		{	
-			// Schreibt mir den aktuellen Zeilenindex in eine nette Variable, dies war das einzige verlässliche Event
-			this.DG_aktZeile=dataGrid_Vorgang.CurrentRowIndex;
-			
-		}
-
-
-		private void dataGrid_Vorgang_DoubleClick(object sender, System.EventArgs e)//CSW - Update: 26.10.03
-		{
-			if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert während noch eine Zeile bearbeitet wird.
-			{	
-				button_loeschen.Visible=true;
-				// Übernimmt die doppelt-geklickte Zeile als aktPos und löscht sie aus der PosListe
-				VG.Position_aus_Liste_ändern(DG_aktZeile);
-				// Formatierung ändern, um die Zeile hervorzuheben
-					
-				dataGridTableStyle2.SelectionBackColor=System.Drawing.Color.DarkRed;
-				dataGrid_Vorgang.Select(DG_aktZeile);
-				DG_Zeile_bearbeiten=true;
-				position_Anzeigen(VG.aktPos);
-
-				dataGrid_Vorgang.Enabled=false;
-			}
-		}
-
-		private bool Daten_in_aktPos_schreiben() //CSW - 23.10.03 01:01
-		{
-			// einfache DummyFunktion ohne jegliche Überprüfung  - UPDATE: Shit! Ohne lief dat eh nicht ordentlich :-) also soch mit Prüfung
-			// Sollte durch eine bessere ersetzt oder erweitert werden
-			// Sie errechnet auch den Gesamtpreis selbständig (!)
-			VG.aktPos.Raum=txtbox_Raum.Text;
-			VG.aktPos.Positionsnummer=txtbox_Posnummer.Text;
-			VG.aktPos.Kurztext=txtbox_Kurztext.Text;
-			VG.aktPos.Langtext=txtbox_Langtext.Text;
-			try 
-			{	
-				VG.aktPos.EPreis=Convert.ToDecimal(txtbox_Einzelpreis.Text);
-			}
-			catch	
-			{
-				MessageBox.Show("Den Preis bitte als Dezimal-Zahl angeben (z.B.: 10,50)", "Ein Fehler ist aufgetreten");
-				return false;
-			}
-
-			try 
-			{
-				VG.aktPos.Flaeche=Convert.ToDouble(txtbox_Fläche.Text);
-			}
-			catch	
-			{	
-				MessageBox.Show("Die Fläche bitte als Zahl in Quadratmeter angeben ", "Ein Fehler ist aufgetreten");
-				return false;
-			}
-			
-			VG.aktPos.GPreis= Convert.ToDecimal(VG.aktPos.Flaeche*(double)VG.aktPos.EPreis);
-			return true;
-		}
-
-		
 
 		private void txtbox_Fläche_Leave(object sender, System.EventArgs e) //CSW - 23.10.03 01:01
 		{	// Wenn ne Zahl eingegeben wird, überprüft er, ob er schon den Gesamtpreis ausrechnen kann
@@ -2854,23 +2493,13 @@ namespace Layer8_CSW
 						position_Anzeigen(VG.aktPos);
 						txtbox_Fläche.Focus();
 					}
-					else{ MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+					else
+					{
+						MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
 						this.txtbox_Posnummer.Text="";}
 				}
 			
 			}
-		}
-
-		private void button_loeschen_Click(object sender, System.EventArgs e) // CSW - 26.10.03
-		{
-			VG.Position_aus_Liste_löschen(); // löscht die "ge-highlighted-te" Zeile
-			dataGrid_Vorgang.Enabled=true;	 // und setzt die Einstellungen zurück auf Standard	
-			button_loeschen.Visible=false;
-			DG_Zeile_bearbeiten=false;
-
-		
-			dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
-			ZahlungsTab_aktualisieren();
 		}
 
 		private void txtbox_Fläche_DoubleClick(object sender, System.EventArgs e) // CSW - 26.10.03 
@@ -2898,28 +2527,364 @@ namespace Layer8_CSW
 
 		}
 
-		/*private void txtbox_Posnummer_Leave(object sender, System.EventArgs e)
+		private void txtbox_Name_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
-			if (this.position_anlegen)
+			if (!this.bearbeiten_flag)
 			{
-				string tempPosnummer = this.txtbox_Posnummer.Text;
-				tempPosnummer.ToLower();
-				tempPosnummer.Trim();
-				this.positionsnummerstring.ToLower();
-				this.positionsnummerstring.Trim();
-				// bool test = string.Equals(this.kürzelstring, tempKürzel);
-				if (this.positionsnummerstring != tempPosnummer)
+
+				if(e.KeyChar == (char)13)
 				{
-					VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(this.txtbox_Posnummer.Text);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
-					if (VG.aktPos != null)
+					e.Handled=true;
+					String name;
+					name = this.txtbox_Name.Text;
+					
+					
+					this.Verzeichnis = UnsereDb.Kunde_suchen_nach_Name(name);
+					//					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (this.Verzeichnis.Count !=0 )
 					{
-						MessageBox.Show("Es existiert bereits eine Position mit diesem Kürzel");
+						if (this.Verzeichnis.Count == 1)
+						{
+							VG.UnserKunde=Verzeichnis[0];
+							kunde_Anzeigen(VG.UnserKunde);
+						}
+						else
+						{
+							MessageBox.Show(Verzeichnis.Count+" Kunden mit diesem Nachnamen gefunden. Bitte wählen Sie aus.", "Mehrere Übereinstimmungen gefunden");
+							Kundenliste_anzeigen(Verzeichnis);
+							
+						}
 					}
-					else this.position_Anzeigen(VG.aktPos);		
+					else MessageBox.Show("Kunde nicht gefunden");
 				}
 			}
-		}*/
+		}
 
+		private void txtbox_VBezeichnung_Leave(object sender, System.EventArgs e)
+		{
+			VG.Vorgangsbezeichnung =txtbox_VBezeichnung.Text;
+		}
+
+		private void txtbox_Rabatt_Leave(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				VG.Rabatt=Convert.ToDecimal(txtbox_Rabatt.Text);
+				ZahlungsTab_aktualisieren();}
+			catch
+			{
+				MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
+				txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);}
+		}
+
+		private void txtbox_Mwst_Leave(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				VG.MwSt=Convert.ToDecimal(txtbox_Mwst.Text);
+				ZahlungsTab_aktualisieren();}
+			catch
+			{
+				MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
+				txtbox_Mwst.Text=Convert.ToString(VG.MwSt);}
+		}
+
+		private void txtbox_Posnummer_Leave(object sender, System.EventArgs e)
+		{
+			if (!this.position_anlegen)
+			{
+				
+				string posnummer;
+				posnummer = this.txtbox_Posnummer.Text;
+						
+				VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(posnummer);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+				if (VG.aktPos != null)
+				{
+					position_Anzeigen(VG.aktPos);
+				}
+				else
+				{
+					MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+					this.txtbox_Posnummer.Text="";}
+				
+
+			}
+		}
+
+		private void txtBox_Übersicht_Kundenauswahl_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+				Ansicht = Ansichtsache.Kunden;
+			if(e.KeyChar == (char)13)
+			{
+				e.Handled=true;
+				string name;
+				name = this.txtBox_Übersicht_Kundenauswahl.Text;
+			
+				DG_Übersicht.Enabled =false;
+				DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+				KundenView.Sort="Kundennr";
+				KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
+				if (KundenView.Count==0)
+				{
+						MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
+					KundenView.RowFilter="";
+				}
+				
+				DG_Übersicht.SetDataBinding(KundenView,null);
+				DG_Übersicht.Enabled =true;
+			}
+		}
+
+		private void txtBox_Übersicht_Vorgang_suchen_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+				Ansicht = Ansichtsache.Vorgang;
+			if(e.KeyChar == (char)13)
+			{
+				e.Handled=true;
+				string name;
+				name = this.txtBox_Übersicht_Vorgang_suchen.Text;
+				DG_Übersicht.Enabled =false;
+				DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+				VorgangsView.Sort="Index";
+				VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
+				if (VorgangsView.Count==0)
+				{
+						MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
+					VorgangsView.RowFilter="";
+				}
+				
+				DG_Übersicht.SetDataBinding(VorgangsView,null);
+				DG_Übersicht.Enabled =true;
+			}
+		}
+
+	#endregion
+						
+
+	#region Button_irgendwas_click
+		private void button_Übernehmen_Click(object sender, System.EventArgs e) //CSW
+		{
+			if(txtbox_Posnummer.Text!="")
+		 {
+
+			 if (this.position_anlegen)
+			 {}
+			
+			 else 
+			 {
+
+				 dataGrid_Vorgang.Enabled=true;   // That's the trick! Damit der am Anfang nicht so lange lädt bis die erste Position angezeigt wird
+				 if(Daten_in_aktPos_schreiben())	 // Eine DummyMethode, damit ich schon Daten ändern kann (hab doch ne Prüfung drin, deshalb die if-Abfrage)
+				 {
+					 if (DG_Zeile_bearbeiten==false) // boolsches Flag - im Bearbeiten Modus ist das DataGrid disabled
+					 {	
+						 VG.Daten_hinzufuegen();	   //	Einfügen der "aktPos" in die PosListe, es werden also nicht direkt die TextboxInhalte genommen !
+					 }
+					 else 
+					 {
+						 VG.Daten_wiedereinfügen();  // Wird eigentlich an der alten Stelle bearbeitet
+						 DG_Zeile_bearbeiten=false;						
+						 button_loeschen.Visible=false;
+					
+						 // alte Formatierung wiederherstellen
+						 dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
+					 }
+				 }
+		
+				 dataGrid_Vorgang.ReadOnly=true;  // Ich weiß nicht warum aber mit diesem "Trick" läuft es schneller
+			 }
+
+			 ZahlungsTab_aktualisieren();
+		 }
+		else MessageBox.Show("Mit der Positionsnummer stimmt etwas nicht.","Es ist ein Fehler aufgetreten.");
+		}
+		
+		private void button_XmlLesen_Click(object sender, System.EventArgs e)  //- CSW 18.10.03 17:00
+		{
+			//	VG.aktPos.Positionsnummer=VG.aktPos.Positionsnummer+1; dat war mal meine Demonstration des DataBindingProblems
+			//	Positionen.CreateControl();
+			
+			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
+			VG.XML_lesen();
+			dataGrid_Vorgang.ReadOnly=true;
+			dateTimePicker_Bau.Value=VG.Datum;
+
+		
+		}
+
+		private void button_XmlSchreiben_Click(object sender, System.EventArgs e) //- CSW 18.10.03 17:00
+		{
+			VG.XML_schreiben();
+			UnsereDb.VorgangKunde_in_DB_schreiben(VG);
+		}
+		
+		private void button_Speichern_Click(object sender, System.EventArgs e)
+		{
+
+			/*	if (this.txtbox_Kürzel.Text.Equals(""))
+				{
+					MessageBox.Show("Bitte geben Sie zuerst ein Kürzel ein");
+				}
+
+				else
+				{     */
+			this.bearbeiten_flag = false;
+
+			if (this.neuer_Kunde)
+			{
+				this.neuer_Kunde = false;
+				UnsereDb.Neuer_Kunde_Anlegen(VG.UnserKunde);
+				this.alle_kunden_textboxen_auf_read();
+			}
+			else
+			{
+
+				// UnsereDb.Kunde_aendern_Kürzel(this.txtbox_Kürzel.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Name(this.txtbox_Name.Text,VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Ort(this.txtbox_Ort.Text, VG.UnserKunde);
+				
+				
+				string temp = this.txtbox_PLZ.Text;
+				temp.Trim();
+				if (temp != "")
+				{
+					int PLZ = Convert.ToInt32(this.txtbox_PLZ.Text);
+					UnsereDb.Kunde_aendern_PLZ(PLZ, VG.UnserKunde);
+				}
+
+				
+				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
+				this.alle_kunden_textboxen_auf_read();
+				// }
+			}
+		}
+
+		private void button1_Click(object sender, System.EventArgs e)
+		{	
+			if (this.txtbox_Kürzel.Text.Equals(""))
+			{
+				MessageBox.Show("Ja würd ich gern, wennn ein Kunde angegeben wär! Ey!");
+			}
+			else
+			{
+				this.bearbeiten_flag = true;
+				this.alle_kunden_textboxen_auf_write();
+			}
+		}
+
+		private void button_Neu_Click(object sender, System.EventArgs e)
+		{
+			this.neuer_Kunde = true;
+			this.bearbeiten_flag = true;
+			this.alle_kunden_textboxen_auf_write();
+			this.alle_kunden_textboxen_Inhalt_loeschen();
+		}
+
+		private void button_loeschen_Click(object sender, System.EventArgs e) // CSW - 26.10.03
+		{
+			VG.Position_aus_Liste_löschen(); // löscht die "ge-highlighted-te" Zeile
+			dataGrid_Vorgang.Enabled=true;	 // und setzt die Einstellungen zurück auf Standard	
+			button_loeschen.Visible=false;
+			DG_Zeile_bearbeiten=false;
+
+		
+			dataGridTableStyle2.SelectionBackColor=System.Drawing.SystemColors.ActiveCaption;
+			ZahlungsTab_aktualisieren();
+		}
+
+		private void button_allePositionen_Click(object sender, System.EventArgs e)
+		{
+			Dialog_Positionen DialogPos = new Dialog_Positionen();
+			DialogPos.ShowDialog();
+
+		}
+
+		private void button_Übersicht_alle_Kunden_Click(object sender, System.EventArgs e)
+		{	// Statt einem DataSet übernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
+			Ansicht=Ansichtsache.Kunden;
+			DG_Übersicht.Enabled =false;
+			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+			KundenView.Sort="Kundennr";
+			DG_Übersicht.SetDataBinding(KundenView,null);
+			DG_Übersicht.Enabled =true;
+		}
+
+		private void button_Übersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
+		{
+			if (radio_F.Checked)
+			{
+				Ansicht=Ansichtsache.Fliesen;
+				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"FPos");
+			}
+			else if (radio_M.Checked)
+			{
+				Ansicht=Ansichtsache.Maurer;
+				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"MPos");
+			}
+			else
+			{
+				Ansicht=Ansichtsache.Zusatz;
+				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"ZPos");
+			}
+
+		}
+
+		private void button_Übersicht_Vorgänge_anzeigen_Click(object sender, System.EventArgs e)
+		{	
+			Ansicht=Ansichtsache.Vorgang;
+			DG_Übersicht.Enabled =false;
+			
+			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+			VorgangsView.Sort="Index";
+			DG_Übersicht.SetDataBinding(VorgangsView,null);
+			DG_Übersicht.Enabled =true;	
+		}
+
+		private void button_Übersicht_Kunden_suchen_Click(object sender, System.EventArgs e)
+		{
+			Ansicht = Ansichtsache.Kunden;
+			string name;
+			name = this.txtBox_Übersicht_Kundenauswahl.Text;
+			
+			DG_Übersicht.Enabled =false;
+			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+			KundenView.Sort="Kundennr";
+			KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
+			if (KundenView.Count==0)
+			{
+					MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
+				KundenView.RowFilter="";
+			}
+			
+			DG_Übersicht.SetDataBinding(KundenView,null);
+			DG_Übersicht.Enabled =true;
+		}
+
+		private void button_Übersicht_Vorgang_suchen_Click(object sender, System.EventArgs e)
+		{	
+			Ansicht = Ansichtsache.Vorgang;
+			string name;
+			name = this.txtBox_Übersicht_Vorgang_suchen.Text;
+			DG_Übersicht.Enabled =false;
+			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
+			VorgangsView.Sort="Index";
+			VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
+			if (VorgangsView.Count==0)
+			{
+				MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
+				VorgangsView.RowFilter="";
+			}
+			
+			DG_Übersicht.SetDataBinding(VorgangsView,null);
+			DG_Übersicht.Enabled =true;
+		}
+
+		// Sind auch Buttons heissen aber nicht so ;-)
 		private void Pos_anlegen_Click(object sender, System.EventArgs e)
 		{
 			this.position_anlegen = true;
@@ -2959,135 +2924,218 @@ namespace Layer8_CSW
 			this.position_Anzeigen(VG.aktPos);
 		}
 
-		private void dateTimePicker_Bau_ValueChanged(object sender, System.EventArgs e)
-		{
-			VG.Datum = dateTimePicker_Bau.Value;
-		}
+	#endregion
 
-		private void LBox_Kunde_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			MessageBox.Show(""+LBox_Kunde.SelectedIndex);
 
-		}
-
-		private void txtbox_Name_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+	#region TabSeitenInhalte anzeigen/aktualisieren
+		private void kunde_Anzeigen (Kunde K) //- CH 18.10.03 19:34
 		{
-			if (!this.bearbeiten_flag)
+			this.txtbox_Kürzel.Text = K.Kuerzel;
+			this.kürzelstring = this.txtbox_Kürzel.Text;
+			this.txtbox_Name.Text = K.NName;
+			
+			if (K.Kundennummer == 0)
+				this.txtbox_Kundennummer.Text = null;
+			else this.txtbox_Kundennummer.Text = ""+K.Kundennummer;
+			
+			
+			this.txtbox_Ort.Text = K.Ort;
+			
+	
+			if (K.PLZ == 0)
+				this.txtbox_PLZ.Text = null;
+			else this.txtbox_PLZ.Text = ""+K.PLZ;
+				
+			this.txtbox_Strasse.Text = K.Strasse;
+			this.txtbox_Vorname.Text = K.VName;
+			this.txtbox_Telefonnummer.Text = K.Telefonnummer;
+			this.txtbox_Fax.Text = K.Fax;
+			this.txtbox_Email.Text = K.Email;
+			switch (K.Anrede)
 			{
+				case "Herr": this.cbox_Anrede.SelectedIndex = 0;
+					break;	
+				case "Frau": this.cbox_Anrede.SelectedIndex = 1;
+					break;
+				case "Firma": this.cbox_Anrede.SelectedIndex = 2;
+					break;
 
-				if(e.KeyChar == (char)13)
-				{
-					e.Handled=true;
-					String name;
-					name = this.txtbox_Name.Text;
-					
-					
-					this.Verzeichnis = UnsereDb.Kunde_suchen_nach_Name(name);
-					//					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
-					if (this.Verzeichnis.Count !=0 )
-					{
-						if (this.Verzeichnis.Count == 1)
-						{
-							VG.UnserKunde=Verzeichnis[0];
-							kunde_Anzeigen(VG.UnserKunde);
-						}
-						else
-						{
-							MessageBox.Show(Verzeichnis.Count+" Kunden mit diesem Nachnamen gefunden. Bitte wählen Sie aus.", "Mehrere Übereinstimmungen gefunden");
-							Kundenliste_anzeigen(Verzeichnis);
-							
-						}
-					}
-					else MessageBox.Show("Kunde nicht gefunden");
-				}
+			
+			}
+				
+		}
+		
+		private void position_Anzeigen (Position K) //- CH 22.10.03 14:34
+		{
+			this.txtbox_Posnummer.Text = K.Positionsnummer;
+			this.txtbox_Kurztext.Text = K.Kurztext;
+			this.txtbox_Langtext.Text = K.Langtext;	
+			this.txtbox_Einzelpreis.Text = ""+K.EPreis;
+			this.txtbox_Fläche.Text = ""+K.Flaeche;
+			this.txtbox_Gesamtpreis.Text = ""+K.GPreis;
+			this.txtbox_Raum.Text = K.Raum;		
+		}
+
+		private void bauvorhaben_Anzeigen (Vorgang V) //- CH 12.11.03 17:11
+		{
+			this.txtbox_VNummer.Text = ""+V.Vorgangsnummer;
+			this.txtbox_VBezeichnung.Text = V.Vorgangsbezeichnung;
+			this.dateTimePicker_Bau.Text = ""+V.Datum;	
+			this.txtbox_NameBau.Text = V.BauNName;
+			this.txtbox_VornameBau.Text = V.BauVName;
+			this.txtbox_StrasseBau.Text = V.BauStrasse;
+			this.txtbox_OrtBau.Text = V.BauOrt;
+			this.txtbox_PlzBau.Text = ""+V.BauPLZ;
+			switch (V.Typ)
+			{
+				case "Aufmaß": this.radio_Aufmaß.Select();
+					break;	
+				case "Angebot": this.radio_Angebot.Select();
+					break;
+				case "Rechnung": this.radio_Rechnung.Select();
+					break;
 			}
 		}
 
-		/* private void txtbox_Posnummer_TextChanged(object sender, System.EventArgs e)
-		{
-			if (!this.position_neu)
-			{
-				if (this.position_anlegen)
-				{
-					this.positionsnummerstring = this.txtbox_Posnummer.Text;
-				}
-			}
-		}
-		*/
-
-		public void Kundenliste_anzeigen (KundenVerzeichnis Verzeichnis)
-		{
-				LBox_Kunde.Visible=true;
-			LBox_Kunde.Items.Clear();
-			for(int i=0;i< Verzeichnis.Count;i++)
-			{
-				string Lboxtext = Verzeichnis[i].NName +", "+ Verzeichnis[i].VName;
-				Lboxtext += "   -   " + Verzeichnis[i].Strasse + "   -   " +  Verzeichnis[i].PLZ + " " +Verzeichnis[i].Ort;
-				LBox_Kunde.Items.Add(Lboxtext);
-			}
+		private void ZahlungsTab_aktualisieren()
+		{// könnte auch ZahlungsTab_Anzeigen heissen
+			txtbox_Mwst.Text=Convert.ToString(VG.MwSt);
+			txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);
+			txtbox_Netto.Text=string.Format( "{0:C}",VG.Netto);
+			txtbox_Brutto.Text=string.Format( "{0:C}",VG.Brutto);
 		}
 
-		private void LBox_Kunde_DoubleClick(object sender, System.EventArgs e)
-		{
-				int index = LBox_Kunde.SelectedIndex;
-			VG.UnserKunde = Verzeichnis[index];
-			kunde_Anzeigen(VG.UnserKunde);
-			LBox_Kunde.Visible=false;
-		}
-
-		private void button_allePositionen_Click(object sender, System.EventArgs e)
-		{
-			Dialog_Positionen DialogPos = new Dialog_Positionen();
-			DialogPos.ShowDialog();
-
-		}
-
-		private void cbox_Anrede_Leave(object sender, System.EventArgs e)
-		{
-			if (this.bearbeiten_flag)
-			{
-				if (this.cbox_Anrede.SelectedIndex == 0)
-					VG.UnserKunde.Anrede = "Herr";
-				if (this.cbox_Anrede.SelectedIndex == 1)
-					VG.UnserKunde.Anrede = "Frau";
-				else if (this.cbox_Anrede.SelectedIndex == 2)
-					VG.UnserKunde.Anrede = "Firma";
-
-				this.kunde_Anzeigen(VG.UnserKunde);
-			}
-		}
+	#endregion
 
 		
-		private void button_Übersicht_alle_Kunden_Click(object sender, System.EventArgs e)
-		{	// Statt einem DataSet übernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
-			Ansicht=Ansichtsache.Kunden;
-			DG_Übersicht.Enabled =false;
-			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
-			KundenView.Sort="Kundennr";
-			DG_Übersicht.SetDataBinding(KundenView,null);
-			DG_Übersicht.Enabled =true;
-		}
+	#region KontextMenü - inkl. EventHandler und DataGrid_MouseUp
+		private void Kunde_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
+		{	
+			
+			int KDNr = Convert.ToInt32( DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
+			//MessageBox.Show(Convert.ToString(KDNr));
+			VG.UnserKunde=new Kunde();
+			VG.UnserKunde=UnsereDb.Kunde_suchen_nach_Kundennummer(KDNr);
+			kunde_Anzeigen(VG.UnserKunde);
+			tabControl1.SelectedTab = Kunde;
+			
 
-		private void button_Übersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
+			
+		}
+		
+		private void Position_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
 		{
-			if (radio_F.Checked)
+			string PosNr = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
+			VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(PosNr);	
+			if (VG.aktPos != null)
 			{
-				Ansicht=Ansichtsache.Fliesen;
-				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"FPos");
-			}
-			else if (radio_M.Checked)
-			{
-				Ansicht=Ansichtsache.Maurer;
-				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"MPos");
+				position_Anzeigen(VG.aktPos);
+				tabControl1.SelectedTab = Positionen;
+				txtbox_Fläche.Focus();
 			}
 			else
 			{
-				Ansicht=Ansichtsache.Zusatz;
-				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"ZPos");
+				MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
 			}
-
+					
+		}	
+			
+		private void Vorgang_laden_aus_Übersicht (object sender, System.EventArgs e)
+		{
+			
+			
+			VG = new Vorgang();
+			VG.Dateiname = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,1]);
+			VG.hat_Namen=true;
+			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
+			VG.XML_lesen();
+			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
+			dataGrid_Vorgang.ReadOnly=true;
+			dateTimePicker_Bau.Value=VG.Datum;
+			kunde_Anzeigen(VG.UnserKunde);
+			bauvorhaben_Anzeigen(VG) ;
+			ZahlungsTab_aktualisieren();
+			tabControl1.SelectedTab = Zahlung;
+			// Bauvorhaben-Tabseite aktualisieren
 		}
 
+		private void dataGrid_Vorgang_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				System.Windows.Forms.DataGrid.HitTestInfo myHitTest;
+				myHitTest = dataGrid_Vorgang.HitTest(e.X,e.Y);
+				if (myHitTest.Type == System.Windows.Forms.DataGrid.HitTestType.Cell)
+				{
+					cMenu_VorgangDG.MenuItems.Clear();
+					cMenu_VorgangDG_Anlegen();
+					dataGrid_Vorgang.UnSelect(dataGrid_Vorgang.CurrentRowIndex);
+					dataGrid_Vorgang.CurrentRowIndex=myHitTest.Row;
+					dataGrid_Vorgang.Select(dataGrid_Vorgang.CurrentRowIndex);
+					cMenu_VorgangDG.Show(dataGrid_Vorgang,new Point(e.X,e.Y));
+				}		
+			}
+		}	
+		private void Position_bearbeiten (object sender, System.EventArgs e)
+		{
+			if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert während noch eine Zeile bearbeitet wird.
+			{	
+				button_loeschen.Visible=true;
+				// Übernimmt die doppelt-geklickte Zeile als aktPos und löscht sie aus der PosListe
+				VG.Position_aus_Liste_ändern(DG_aktZeile);
+				// Formatierung ändern, um die Zeile hervorzuheben
+					
+				dataGridTableStyle2.SelectionBackColor=System.Drawing.Color.DarkRed;
+				dataGrid_Vorgang.Select(DG_aktZeile);
+				DG_Zeile_bearbeiten=true;
+				position_Anzeigen(VG.aktPos);
+				dataGrid_Vorgang.Enabled=false;
+			}
+		}
+		private void Position_löschen (object sender, System.EventArgs e)
+		{
+			if(MessageBox.Show("Wollen sie die Position wirklich löschen?", "www.nervige-Nachfrage.de",MessageBoxButtons.YesNo)==System.Windows.Forms.DialogResult.Yes)
+			{
+				VG.Position_aus_Liste_ändern(DG_aktZeile);
+				VG.Position_aus_Liste_löschen(); 
+				ZahlungsTab_aktualisieren();
+			}
+			else MessageBox.Show("Dann halt nicht","www.nutzloser-Kommentar.de");
+			
+			
+		}
+		private void Position_einfügen (object sender, System.EventArgs e)
+		{
+		
+//			 		DataRowCollection rc; 
+//			 		DataRow myNewRow;
+//			 		//ein Array für die 7 Spalten
+//					rc = new DataRowCollection();
+				object[] rowVals = new object[7];
+			 
+			 		// Add and return the new row.
+//			 		myNewRow = rc.Add(rowVals);	
+			
+			DataRow DR = VG.PosListe.Tables[0].NewRow();
+			DR[0] = "";
+			DR[1] = "";
+			DR[2] = "";
+			DR[3] = "";
+			DR[4] = 0;
+			DR[5] = 0;
+			DR[6] = 0;
+			//			
+			
+			VG.PosListe.Tables[0].Rows.InsertAt(DR,dataGrid_Vorgang.CurrentRowIndex );// (new object[]{"",0,"","",0,0,0});
+			
+//			if(MessageBox.Show("Noch nicht implementiert", "Not Yet Done",MessageBoxButtons.OKCancel)==System.Windows.Forms.DialogResult.OK)
+//					MessageBox.Show("Wirklich noch nicht", "Not Yet Done");
+//				else
+//					MessageBox.Show("Ich schwöööär, Alder", "Glaubste nich, oder was",MessageBoxButtons.AbortRetryIgnore);
+//			//VG.PosListe.Tables[0].Rows.
+
+
+		}
 		private void DG_Übersicht_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
@@ -3098,7 +3146,7 @@ namespace Layer8_CSW
 				cMenu_KundenDG_Anlegen(); // Standard-Elemente
 
 				if (myHitTest.Type == System.Windows.Forms.DataGrid.HitTestType.Cell)
-					{
+				{
 					DG_Übersicht.UnSelect(DG_Übersicht.CurrentRowIndex);
 					DG_Übersicht.CurrentRowIndex=myHitTest.Row;
 					DG_Übersicht.Select(DG_Übersicht.CurrentRowIndex);
@@ -3129,7 +3177,7 @@ namespace Layer8_CSW
 					
 					// Use the DataGrid control's HitTest method with the x and y properties.
 					
-					}
+				}
 				cMenu_KundenDG.Show(DG_Übersicht,new Point(e.X,e.Y));
 				//if(DG_Übersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
 			}
@@ -3189,7 +3237,14 @@ namespace Layer8_CSW
 					break;
 			}
 		}
-		
+		private void cMenu_VorgangDG_Anlegen()
+		{
+			cMenu_VorgangDG.MenuItems.Add("Neue Position hier einfügen",new System.EventHandler(Position_einfügen));	
+			cMenu_VorgangDG.MenuItems.Add("Diese Position bearbeiten",new System.EventHandler(Position_bearbeiten));	
+			cMenu_VorgangDG.MenuItems.Add("-");
+			cMenu_VorgangDG.MenuItems.Add("Diese Position löschen",new System.EventHandler(Position_löschen));	
+
+		}
 		private void FPos_dummy(object sender, System.EventArgs e)
 		{
 			DG_Übersicht.Enabled =false;
@@ -3208,7 +3263,7 @@ namespace Layer8_CSW
 		}
 		private void ZPos_dummy(object sender, System.EventArgs e)
 		{
-				DG_Übersicht.Enabled =false;
+			DG_Übersicht.Enabled =false;
 			radio_Z.Checked=true;
 			this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
 			DG_Übersicht.Enabled =true;
@@ -3216,144 +3271,10 @@ namespace Layer8_CSW
 
 		}
 
-		private void button_Übersicht_Vorgänge_anzeigen_Click(object sender, System.EventArgs e)
-		{	
-			Ansicht=Ansichtsache.Vorgang;
-			DG_Übersicht.Enabled =false;
-			
-			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
-			VorgangsView.Sort="Index";
-			DG_Übersicht.SetDataBinding(VorgangsView,null);
-			DG_Übersicht.Enabled =true;	
-		}
-
-		private void ZahlungsTab_aktualisieren()
-		{
-			txtbox_Mwst.Text=Convert.ToString(VG.MwSt);
-			txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);
-			txtbox_Netto.Text=string.Format( "{0:C}",VG.Netto);
-			txtbox_Brutto.Text=string.Format( "{0:C}",VG.Brutto);
-		}
-
-		private void txtbox_Rabatt_Leave(object sender, System.EventArgs e)
-		{
-			try {VG.Rabatt=Convert.ToDecimal(txtbox_Rabatt.Text);
-				ZahlungsTab_aktualisieren();}
-			catch{MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
-				txtbox_Rabatt.Text=Convert.ToString(VG.Rabatt);}
-		}
-
-		private void txtbox_Mwst_Leave(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				VG.MwSt=Convert.ToDecimal(txtbox_Mwst.Text);
-				ZahlungsTab_aktualisieren();}
-			catch{MessageBox.Show("Bitte den Rabatt ohne % eingeben","Ein Fehler ist aufgetreten"); 
-					txtbox_Mwst.Text=Convert.ToString(VG.MwSt);}
-		}
-
-		private void txtbox_Posnummer_Leave(object sender, System.EventArgs e)
-		{
-			if (!this.position_anlegen)
-			{
-				
-					string posnummer;
-					posnummer = this.txtbox_Posnummer.Text;
-						
-					VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(posnummer);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
-					if (VG.aktPos != null)
-					{
-						position_Anzeigen(VG.aktPos);
-					}
-					else{ MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
-					this.txtbox_Posnummer.Text="";}
-				
-
-			}
-		}
-
-		private void txtBox_Übersicht_Kundenauswahl_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{	Ansicht = Ansichtsache.Kunden;
-			if(e.KeyChar == (char)13)
-			{
-				e.Handled=true;
-				string name;
-				name = this.txtBox_Übersicht_Kundenauswahl.Text;
-			
-				DG_Übersicht.Enabled =false;
-				DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
-				KundenView.Sort="Kundennr";
-				KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
-				if (KundenView.Count==0)
-				{	MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
-						KundenView.RowFilter="";
-				}
-				
-					DG_Übersicht.SetDataBinding(KundenView,null);
-					DG_Übersicht.Enabled =true;
-			}
-		}
-
-		private void button_Übersicht_Kunden_suchen_Click(object sender, System.EventArgs e)
-		{
-			Ansicht = Ansichtsache.Kunden;
-			string name;
-			name = this.txtBox_Übersicht_Kundenauswahl.Text;
-			
-			DG_Übersicht.Enabled =false;
-			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
-			KundenView.Sort="Kundennr";
-			KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
-			if (KundenView.Count==0)
-			{	MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
-				KundenView.RowFilter="";
-			}
-			
-				DG_Übersicht.SetDataBinding(KundenView,null);
-			DG_Übersicht.Enabled =true;
-		}
-
-		private void button_Übersicht_Vorgang_suchen_Click(object sender, System.EventArgs e)
-		{	
-			Ansicht = Ansichtsache.Vorgang;
-			string name;
-			name = this.txtBox_Übersicht_Vorgang_suchen.Text;
-			DG_Übersicht.Enabled =false;
-			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
-			VorgangsView.Sort="Index";
-			VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
-			if (VorgangsView.Count==0)
-			{
-				MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
-				VorgangsView.RowFilter="";
-			}
-			
-				DG_Übersicht.SetDataBinding(VorgangsView,null);
-			DG_Übersicht.Enabled =true;
-		}
-
-		private void txtBox_Übersicht_Vorgang_suchen_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{Ansicht = Ansichtsache.Vorgang;
-			if(e.KeyChar == (char)13)
-			{
-				e.Handled=true;
-				string name;
-				name = this.txtBox_Übersicht_Vorgang_suchen.Text;
-				DG_Übersicht.Enabled =false;
-				DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
-				VorgangsView.Sort="Index";
-				VorgangsView.RowFilter = "Name LIKE '"+name+"%'" ;
-				if (VorgangsView.Count==0)
-				{	MessageBox.Show("Keine passenden Einträge gefunden.","Schade");
-					VorgangsView.RowFilter="";
-				}
-				
-					DG_Übersicht.SetDataBinding(VorgangsView,null);
-				DG_Übersicht.Enabled =true;
-			}
-		}
-
+	#endregion
+	
+		
+	#region Casi's Druck-Gerümpel
 		private void menuDruckenPageSetup_Click(object sender, System.EventArgs e)
 		{
 			try
@@ -3410,6 +3331,27 @@ namespace Layer8_CSW
 		
 		}
 
+		private void menuDruckenPrintPreview_Click(object sender, System.EventArgs e)
+		{
+			try
+			{
+				PrintDocument pd = new PrintDocument();
+				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
+				if(this.storedPageSettings != null)
+					pd.DefaultPageSettings = this.storedPageSettings;
+				PrintPreviewDialog dlg = new PrintPreviewDialog();
+				dlg.Document = pd;
+				dlg.ShowDialog();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
+	#endregion
+
+
 		private void radio_Aufmaß_CheckedChanged(object sender, System.EventArgs e)
 		{
 		if(radio_Aufmaß.Checked==true)
@@ -3428,83 +3370,186 @@ namespace Layer8_CSW
 				VG.Vorgangstyp="RE";
 		}
 
-		private void button2_Click(object sender, System.EventArgs e)
+	
+		private void LBox_Kunde_DoubleClick(object sender, System.EventArgs e)
 		{
-			VG.Vorgangsnamen_basteln();
-		}
-
-		private void txtbox_VBezeichnung_Leave(object sender, System.EventArgs e)
-		{
-			VG.Vorgangsbezeichnung =txtbox_VBezeichnung.Text;
-		}
-
-		private void menuDruckenPrintPreview_Click(object sender, System.EventArgs e)
-		{
-			try
-			{
-				PrintDocument pd = new PrintDocument();
-				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
-				if(this.storedPageSettings != null)
-					pd.DefaultPageSettings = this.storedPageSettings;
-						PrintPreviewDialog dlg = new PrintPreviewDialog();
-				dlg.Document = pd;
-				dlg.ShowDialog();
-			}
-			catch (Exception ex)
-			{
-			MessageBox.Show(ex.Message);
-			}
-		}
-
-		private void Kunde_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
-		{	
-			
-			int KDNr = Convert.ToInt32( DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
-			//MessageBox.Show(Convert.ToString(KDNr));
-			VG.UnserKunde=new Kunde();
-			VG.UnserKunde=UnsereDb.Kunde_suchen_nach_Kundennummer(KDNr);
+				int index = LBox_Kunde.SelectedIndex;
+			VG.UnserKunde = Verzeichnis[index];
 			kunde_Anzeigen(VG.UnserKunde);
-			tabControl1.SelectedTab = Kunde;
-			
+			LBox_Kunde.Visible=false;
+		}
 
+		private void LBox_Kunde_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			MessageBox.Show(""+LBox_Kunde.SelectedIndex);
+
+		}
+
+
+		private void cbox_Anrede_Leave(object sender, System.EventArgs e)
+		{
+			if (this.bearbeiten_flag)
+			{
+				if (this.cbox_Anrede.SelectedIndex == 0)
+					VG.UnserKunde.Anrede = "Herr";
+				if (this.cbox_Anrede.SelectedIndex == 1)
+					VG.UnserKunde.Anrede = "Frau";
+				else if (this.cbox_Anrede.SelectedIndex == 2)
+					VG.UnserKunde.Anrede = "Firma";
+
+				this.kunde_Anzeigen(VG.UnserKunde);
+			}
+		}
+
+		
+		private void dateTimePicker_Bau_ValueChanged(object sender, System.EventArgs e)
+		{
+			VG.Datum = dateTimePicker_Bau.Value;
+		}
+
+
+	
+	
+		private void dataGrid_Vorgang_CurrentCellChanged(object sender, System.EventArgs e) //CSW - 23.10.03 00:01
+		{	
+			// Schreibt mir den aktuellen Zeilenindex in eine nette Variable, dies war das einzige verlässliche Event
+			this.DG_aktZeile=dataGrid_Vorgang.CurrentRowIndex;
 			
+		}
+
+		public void Kundenliste_anzeigen (KundenVerzeichnis Verzeichnis)
+		{
+			LBox_Kunde.Visible=true;
+			LBox_Kunde.Items.Clear();
+			for(int i=0;i< Verzeichnis.Count;i++)
+			{
+				string Lboxtext = Verzeichnis[i].NName +", "+ Verzeichnis[i].VName;
+				Lboxtext += "   -   " + Verzeichnis[i].Strasse + "   -   " +  Verzeichnis[i].PLZ + " " +Verzeichnis[i].Ort;
+				LBox_Kunde.Items.Add(Lboxtext);
+			}
+		}
+
+		
+		private void position_Textboxen_loeschen()
+		{
+			this.txtbox_Posnummer.Text = "";
+			this.txtbox_Kurztext.Text = "";
+			this.txtbox_Langtext.Text = "";	
+			this.txtbox_Einzelpreis.Text = "";
+			this.txtbox_Fläche.Text = "";
+			this.txtbox_Gesamtpreis.Text = "";
+			this.txtbox_Raum.Text = "";
+		}
+
+		private void position_Textboxen_auf_write () //- CH 26.10.03 21:00
+		{
+			this.txtbox_Posnummer.ReadOnly = true; //Posnummer wird automatisch von DB vergeben
+			this.txtbox_Kurztext.ReadOnly = false;
+			this.txtbox_Langtext.ReadOnly = false;	
+			this.txtbox_Einzelpreis.ReadOnly = false;
+			this.txtbox_Fläche.ReadOnly = true;  // da die Eingabe der Fläche nicht benötigt wird
+			// Gesamtpreis bleibt unverändert
+			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
+		}
+
+		private void position_Textboxen_auf_read () //- CH 26.10.03 21:00
+		{
+			this.txtbox_Posnummer.ReadOnly = false; //wieder zurück
+			this.txtbox_Kurztext.ReadOnly = true;
+			this.txtbox_Langtext.ReadOnly = true;	
+			this.txtbox_Einzelpreis.ReadOnly = true;
+			this.txtbox_Fläche.ReadOnly = false;  // jetzt wieder im normalen Modus
+			// Gesamtpreis bleibt unverändert
+			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
+		}
+
+		
+		private void alle_kunden_textboxen_auf_write()
+		{
+			this.txtbox_Kürzel.ReadOnly = false;
+			this.txtbox_Name.ReadOnly = false;
+			// this.txtbox_Kundennummer.ReadOnly = false;
+			this.txtbox_Ort.ReadOnly = false;
+			this.txtbox_PLZ.ReadOnly = false;
+			this.txtbox_Strasse.ReadOnly = false;
+			this.txtbox_Vorname.ReadOnly = false;
+			this.txtbox_Telefonnummer.ReadOnly = false;
+			this.txtbox_Fax.ReadOnly = false;
+			this.txtbox_Email.ReadOnly = false;
+			this.kunde_Anzeigen(VG.UnserKunde);
 		}
 		
-		private void Position_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
+		private void alle_kunden_textboxen_Inhalt_loeschen()
 		{
-			string PosNr = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
-			VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(PosNr);	
-			if (VG.aktPos != null)
-			{
-				position_Anzeigen(VG.aktPos);
-				tabControl1.SelectedTab = Positionen;
-				txtbox_Fläche.Focus();
-			}
-			else
-			{
-				MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
-			}
-					
-	}	
-			
-		private void Vorgang_laden_aus_Übersicht (object sender, System.EventArgs e)
-		{
-			
-			
-			VG = new Vorgang();
-			VG.Dateiname = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,1]);
-			VG.hat_Namen=true;
-			dataGrid_Vorgang.Enabled=true;  // Gleicher Spass wie bei Übernehmen_click
-			VG.XML_lesen();
-			dataGrid_Vorgang.SetDataBinding(VG.PosListe, "Positionen");
-			dataGrid_Vorgang.ReadOnly=true;
-			dateTimePicker_Bau.Value=VG.Datum;
-			kunde_Anzeigen(VG.UnserKunde);
-			ZahlungsTab_aktualisieren();
-			tabControl1.SelectedTab = Zahlung;
-			// Bauvorhaben-Tabseite aktualisieren
-		}	
+			VG.UnserKunde.Kuerzel = "";
+			VG.UnserKunde.NName = "";
+			VG.UnserKunde.Kundennummer = 0;	
+			// this.txtbox_Kundennummer.ReadOnly = false;
+			VG.UnserKunde.Ort = "";
+			VG.UnserKunde.PLZ = 0;
+			VG.UnserKunde.Strasse = "";
+			VG.UnserKunde.VName = "";
+			VG.UnserKunde.Telefonnummer = "";
+			VG.UnserKunde.Fax = "";
+			VG.UnserKunde.Email = "";
+			this.kunde_Anzeigen(VG.UnserKunde);
+		}
 
+		private void alle_kunden_textboxen_auf_read()
+		{
+			this.txtbox_Kürzel.ReadOnly = true;
+			this.txtbox_Name.ReadOnly = true;
+			// this.txtbox_Kundennummer.ReadOnly = true;
+			this.txtbox_Ort.ReadOnly = true;
+			this.txtbox_PLZ.ReadOnly = true;
+			this.txtbox_Strasse.ReadOnly = true;
+			this.txtbox_Vorname.ReadOnly = true;
+			this.txtbox_Telefonnummer.ReadOnly = true;
+			this.txtbox_Fax.ReadOnly = true;
+			this.txtbox_Email.ReadOnly = true;
+			this.kunde_Anzeigen(VG.UnserKunde);
+		}
+	
+		
+		
+		private bool Daten_in_aktPos_schreiben() //CSW - 23.10.03 01:01
+		{
+			// einfache DummyFunktion ohne jegliche Überprüfung  - UPDATE: Shit! Ohne lief dat eh nicht ordentlich :-) also soch mit Prüfung
+			// Sollte durch eine bessere ersetzt oder erweitert werden
+			// Sie errechnet auch den Gesamtpreis selbständig (!)
+			VG.aktPos.Raum=txtbox_Raum.Text;
+			VG.aktPos.Positionsnummer=txtbox_Posnummer.Text;
+			VG.aktPos.Kurztext=txtbox_Kurztext.Text;
+			VG.aktPos.Langtext=txtbox_Langtext.Text;
+			try 
+			{	
+				VG.aktPos.EPreis=Convert.ToDecimal(txtbox_Einzelpreis.Text);
+			}
+			catch	
+			{
+				MessageBox.Show("Den Preis bitte als Dezimal-Zahl angeben (z.B.: 10,50)", "Ein Fehler ist aufgetreten");
+				return false;
+			}
+
+			try 
+			{
+				VG.aktPos.Flaeche=Convert.ToDouble(txtbox_Fläche.Text);
+			}
+			catch	
+			{	
+				MessageBox.Show("Die Fläche bitte als Zahl in Quadratmeter angeben ", "Ein Fehler ist aufgetreten");
+				return false;
+			}
+			
+			VG.aktPos.GPreis= Convert.ToDecimal(VG.aktPos.Flaeche*(double)VG.aktPos.EPreis);
+			return true;
+		}
+
+		
+
+
+	
+	
 }
 
 
@@ -4142,7 +4187,8 @@ namespace Layer8_CSW
 		
 		}
 
-
+		
+		
 		public void Daten_hinzufuegen() //CSW - 23.10.03 01:02 (UPDATE)
 		{	// Das ist die Kurzform von dem was dann drunter steht
 			DataRow r = PosListe.Tables[0].Rows.Add(new object[]{aktPos.Raum,aktPos.Positionsnummer,aktPos.Kurztext,aktPos.Langtext,aktPos.EPreis,aktPos.Flaeche,aktPos.GPreis});
