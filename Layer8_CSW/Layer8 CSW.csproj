@@ -113,6 +113,16 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Dialog_Positionen.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Dialog_Positionen.resx"
+                    DependentUpon = "Dialog_Positionen.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Form1.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

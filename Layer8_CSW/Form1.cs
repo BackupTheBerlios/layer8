@@ -167,6 +167,7 @@ namespace Layer8_CSW
 		private KundenVerzeichnis Verzeichnis;
 		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
 		private System.Windows.Forms.ListBox LBox_Kunde;
+		private System.Windows.Forms.Button button_allePositionen;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -308,6 +309,7 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
+			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -834,6 +836,7 @@ namespace Layer8_CSW
 			// 
 			// Positionen
 			// 
+			this.Positionen.Controls.Add(this.button_allePositionen);
 			this.Positionen.Controls.Add(this.pos_Speichern);
 			this.Positionen.Controls.Add(this.Pos_anlegen);
 			this.Positionen.Controls.Add(this.button_Flaeche);
@@ -1146,7 +1149,7 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Posnummer
 			// 
-			this.txtbox_Posnummer.Location = new System.Drawing.Point(48, 40);
+			this.txtbox_Posnummer.Location = new System.Drawing.Point(24, 40);
 			this.txtbox_Posnummer.Name = "txtbox_Posnummer";
 			this.txtbox_Posnummer.Size = new System.Drawing.Size(112, 20);
 			this.txtbox_Posnummer.TabIndex = 1;
@@ -1274,6 +1277,16 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.Name = "txtbox_Brutto";
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
+			// 
+			// button_allePositionen
+			// 
+			this.button_allePositionen.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.button_allePositionen.Location = new System.Drawing.Point(136, 40);
+			this.button_allePositionen.Name = "button_allePositionen";
+			this.button_allePositionen.Size = new System.Drawing.Size(30, 20);
+			this.button_allePositionen.TabIndex = 24;
+			this.button_allePositionen.Text = "...";
+			this.button_allePositionen.Click += new System.EventHandler(this.button_allePositionen_Click);
 			// 
 			// MainFrame
 			// 
@@ -1938,7 +1951,7 @@ namespace Layer8_CSW
 		{
 			Dialog_Fläche Dialog_F = new Dialog_Fläche();
 			Dialog_F.ShowDialog();				// Modale Darstellung
-
+			
 			if (Dialog_F.DialogResult==DialogResult.OK)		// Dialog über OK beendet
 			{	
 				string msg_boxFläche = "Folgende Fläche wurde eingeben: ";
@@ -2091,6 +2104,13 @@ namespace Layer8_CSW
 			VG.UnserKunde = Verzeichnis[index];
 			kunde_Anzeigen(VG.UnserKunde);
 			LBox_Kunde.Visible=false;
+		}
+
+		private void button_allePositionen_Click(object sender, System.EventArgs e)
+		{
+			Dialog_Positionen DialogPos = new Dialog_Positionen();
+			DialogPos.ShowDialog();
+
 		}
 
 	}
