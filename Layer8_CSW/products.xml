@@ -1,21 +1,122 @@
-<?xml version="1.0" standalone="yes"?>
-<PosListe>
+<?xml version="1.0"?><PosListe>
   <Positionen>
     <Raum />
-    <Position>010</Position>
-    <Kurztext>An- Abfahrt</Kurztext>
-    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
-    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
-    <Fläche>5</Fläche>
-    <Gesamtpreis>150</Gesamtpreis>
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
   </Positionen>
   <Positionen>
     <Raum />
-    <Position />
-    <Kurztext />
-    <Langtext />
-    <Preis_x002F_Einheit>0</Preis_x002F_Einheit>
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
     <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>M01</Position>
+    <Kurztext>Flasche öffnen</Kurztext>
+    <Langtext>Ein leckere Flasche Veltins öffnen</Langtext>
+    <Preis_x002F_Einheit>100</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>Fl.</Einheit>
     <Gesamtpreis>0</Gesamtpreis>
   </Positionen>
   <Positionen>
@@ -24,8 +125,9 @@
     <Kurztext>An- Abfahrt</Kurztext>
     <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
     <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
-    <Fläche>5</Fläche>
-    <Gesamtpreis>150</Gesamtpreis>
+    <Fläche>0</Fläche>
+    <Einheit>psh</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
   </Positionen>
   <Positionen>
     <Raum />
@@ -33,7 +135,28 @@
     <Kurztext>An- Abfahrt</Kurztext>
     <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
     <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
-    <Fläche>5</Fläche>
-    <Gesamtpreis>150</Gesamtpreis>
+    <Fläche>0</Fläche>
+    <Einheit>psh</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>psh</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
+  </Positionen>
+  <Positionen>
+    <Raum />
+    <Position>010</Position>
+    <Kurztext>An- Abfahrt</Kurztext>
+    <Langtext>An- und Abfahrtspauschale. In dieser Position sind alle Kosten der An- und Abfuhr einschließlich der Fahrgelder enthalten. Ein zusätzliches Kilometergeld wird nicht vergütet. Die Pauschale wird grundsätlich bis zu einer Höchstgrenze von 500 DM zuzüglich Mehrweertsteuer nur einmal vergütet.</Langtext>
+    <Preis_x002F_Einheit>30</Preis_x002F_Einheit>
+    <Fläche>0</Fläche>
+    <Einheit>psh</Einheit>
+    <Gesamtpreis>0</Gesamtpreis>
   </Positionen>
 </PosListe>

@@ -105,10 +105,7 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label28;
 		# endregion
-		#region Buttons
-
-
-
+		
 		#region Buttons
 		private System.Windows.Forms.Button button_Übersicht_Vorgänge_anzeigen;
 		private System.Windows.Forms.Button button_Zurück;
@@ -314,6 +311,9 @@ namespace Layer8_CSW
 		//private System.Windows.Forms.ContextMenu cMenu_VorgangDG;   die mussten nach dem CVS mergen rausgenommen werden
 		//private System.Windows.Forms.Button button_Speichern;		  die hier auch
 		private System.Windows.Forms.Button button_abbrechen;
+		private System.Windows.Forms.TextBox txtbox_Einheit;
+		private System.Windows.Forms.Label Einheit;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn32;
 
 	
 
@@ -536,6 +536,9 @@ namespace Layer8_CSW
 			this.menuDruckenPrintPreview = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPrint = new System.Windows.Forms.MenuItem();
 			this.cMenu_VorgangDG = new System.Windows.Forms.ContextMenu();
+			this.txtbox_Einheit = new System.Windows.Forms.TextBox();
+			this.Einheit = new System.Windows.Forms.Label();
+			this.dataGridTextBoxColumn32 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Positionen.SuspendLayout();
@@ -840,6 +843,8 @@ namespace Layer8_CSW
 			// 
 			// Positionen
 			// 
+			this.Positionen.Controls.Add(this.Einheit);
+			this.Positionen.Controls.Add(this.txtbox_Einheit);
 			this.Positionen.Controls.Add(this.button_allePositionen);
 			this.Positionen.Controls.Add(this.pos_Speichern);
 			this.Positionen.Controls.Add(this.Pos_anlegen);
@@ -901,7 +906,7 @@ namespace Layer8_CSW
 			// 
 			this.button_Flaeche.Cursor = System.Windows.Forms.Cursors.Arrow;
 			this.button_Flaeche.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.button_Flaeche.Location = new System.Drawing.Point(304, 112);
+			this.button_Flaeche.Location = new System.Drawing.Point(176, 112);
 			this.button_Flaeche.Name = "button_Flaeche";
 			this.button_Flaeche.Size = new System.Drawing.Size(30, 20);
 			this.button_Flaeche.TabIndex = 21;
@@ -999,6 +1004,7 @@ namespace Layer8_CSW
 																												  this.dataGridTextBoxColumn4,
 																												  this.dataGridTextBoxColumn5,
 																												  this.dataGridTextBoxColumn6,
+																												  this.dataGridTextBoxColumn32,
 																												  this.dataGridTextBoxColumn7});
 			this.dataGridTableStyle2.GridLineColor = System.Drawing.SystemColors.ActiveCaption;
 			this.dataGridTableStyle2.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
@@ -1079,17 +1085,17 @@ namespace Layer8_CSW
 			// 
 			// label14
 			// 
-			this.label14.Location = new System.Drawing.Point(184, 88);
+			this.label14.Location = new System.Drawing.Point(104, 88);
 			this.label14.Name = "label14";
 			this.label14.TabIndex = 12;
 			this.label14.Text = "Fläche/Menge";
 			// 
 			// label13
 			// 
-			this.label13.Location = new System.Drawing.Point(48, 88);
+			this.label13.Location = new System.Drawing.Point(8, 88);
 			this.label13.Name = "label13";
 			this.label13.TabIndex = 11;
-			this.label13.Text = "Einzelpreis/Stück";
+			this.label13.Text = "Einzelpreis";
 			// 
 			// txtbox_Gesamtpreis
 			// 
@@ -1102,9 +1108,9 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Fläche
 			// 
-			this.txtbox_Fläche.Location = new System.Drawing.Point(184, 112);
+			this.txtbox_Fläche.Location = new System.Drawing.Point(104, 112);
 			this.txtbox_Fläche.Name = "txtbox_Fläche";
-			this.txtbox_Fläche.Size = new System.Drawing.Size(120, 20);
+			this.txtbox_Fläche.Size = new System.Drawing.Size(72, 20);
 			this.txtbox_Fläche.TabIndex = 5;
 			this.txtbox_Fläche.Text = "";
 			this.txtbox_Fläche.DoubleClick += new System.EventHandler(this.txtbox_Fläche_DoubleClick);
@@ -1112,10 +1118,10 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Einzelpreis
 			// 
-			this.txtbox_Einzelpreis.Location = new System.Drawing.Point(48, 112);
+			this.txtbox_Einzelpreis.Location = new System.Drawing.Point(16, 112);
 			this.txtbox_Einzelpreis.Name = "txtbox_Einzelpreis";
 			this.txtbox_Einzelpreis.ReadOnly = true;
-			this.txtbox_Einzelpreis.Size = new System.Drawing.Size(112, 20);
+			this.txtbox_Einzelpreis.Size = new System.Drawing.Size(72, 20);
 			this.txtbox_Einzelpreis.TabIndex = 4;
 			this.txtbox_Einzelpreis.Text = "";
 			this.txtbox_Einzelpreis.Leave += new System.EventHandler(this.txtbox_Einzelpreis_Leave);
@@ -2163,6 +2169,30 @@ namespace Layer8_CSW
 			this.menuDruckenPrint.Text = "Print";
 			this.menuDruckenPrint.Click += new System.EventHandler(this.menuDruckenPrint_Click);
 			// 
+			// txtbox_Einheit
+			// 
+			this.txtbox_Einheit.Location = new System.Drawing.Point(224, 112);
+			this.txtbox_Einheit.Name = "txtbox_Einheit";
+			this.txtbox_Einheit.ReadOnly = true;
+			this.txtbox_Einheit.Size = new System.Drawing.Size(72, 20);
+			this.txtbox_Einheit.TabIndex = 25;
+			this.txtbox_Einheit.Text = "";
+			// 
+			// Einheit
+			// 
+			this.Einheit.Location = new System.Drawing.Point(224, 88);
+			this.Einheit.Name = "Einheit";
+			this.Einheit.Size = new System.Drawing.Size(64, 24);
+			this.Einheit.TabIndex = 26;
+			this.Einheit.Text = "Einheit";
+			// 
+			// dataGridTextBoxColumn32
+			// 
+			this.dataGridTextBoxColumn32.Format = "";
+			this.dataGridTextBoxColumn32.FormatInfo = null;
+			this.dataGridTextBoxColumn32.MappingName = "Einheit";
+			this.dataGridTextBoxColumn32.Width = 30;
+			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -2912,6 +2942,7 @@ namespace Layer8_CSW
 			VG.aktPos.Positionsnummer = this.txtbox_Posnummer.Text;
 			VG.aktPos.Kurztext = this.txtbox_Kurztext.Text;
 			VG.aktPos.Langtext = this.txtbox_Langtext.Text;
+			VG.aktPos.Einheit = this.txtbox_Einheit.Text;
 			this.position_Textboxen_auf_read();
 			decimal epreis;
 			try 
@@ -2986,6 +3017,7 @@ namespace Layer8_CSW
 			this.txtbox_Langtext.Text = K.Langtext;	
 			this.txtbox_Einzelpreis.Text = ""+K.EPreis;
 			this.txtbox_Fläche.Text = ""+K.Flaeche;
+			this.txtbox_Einheit.Text = K.Einheit;
 			this.txtbox_Gesamtpreis.Text = ""+K.GPreis;
 			this.txtbox_Raum.Text = K.Raum;		
 		}
@@ -3146,7 +3178,8 @@ namespace Layer8_CSW
 			DR[3] = "-";
 			DR[4] = 0;
 			DR[5] = 0;
-			DR[6] = 0;
+			DR[6] = "-";
+			DR[7] = 0;
 			//			
 			
 			derEine.Rows.InsertAt(DR,DG_aktZeile );
@@ -3642,6 +3675,7 @@ namespace Layer8_CSW
 			this.txtbox_Einzelpreis.Text = "";
 			this.txtbox_Fläche.Text = "";
 			this.txtbox_Gesamtpreis.Text = "";
+			this.txtbox_Einheit.Text ="";
 			this.txtbox_Raum.Text = "";
 		}
 
@@ -3651,6 +3685,7 @@ namespace Layer8_CSW
 			this.txtbox_Kurztext.ReadOnly = false;
 			this.txtbox_Langtext.ReadOnly = false;	
 			this.txtbox_Einzelpreis.ReadOnly = false;
+			this.txtbox_Einheit.ReadOnly =false;
 			this.txtbox_Fläche.ReadOnly = true;  // da die Eingabe der Fläche nicht benötigt wird
 			// Gesamtpreis bleibt unverändert
 			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
@@ -3662,6 +3697,7 @@ namespace Layer8_CSW
 			this.txtbox_Kurztext.ReadOnly = true;
 			this.txtbox_Langtext.ReadOnly = true;	
 			this.txtbox_Einzelpreis.ReadOnly = true;
+			this.txtbox_Einheit.ReadOnly =true;
 			this.txtbox_Fläche.ReadOnly = false;  // jetzt wieder im normalen Modus
 			// Gesamtpreis bleibt unverändert
 			// bei ZPositions eingabe wird keine Raum benötigt, daher würde es nur verwirren, wenn man hier eine Eingabe zulassen würde.		
@@ -3725,6 +3761,7 @@ namespace Layer8_CSW
 			VG.aktPos.Positionsnummer=txtbox_Posnummer.Text;
 			VG.aktPos.Kurztext=txtbox_Kurztext.Text;
 			VG.aktPos.Langtext=txtbox_Langtext.Text;
+			VG.aktPos.Einheit=txtbox_Einheit.Text;
 			try 
 			{	
 				VG.aktPos.EPreis=Convert.ToDecimal(txtbox_Einzelpreis.Text);
@@ -4268,6 +4305,7 @@ namespace Layer8_CSW
 			tblPos.Columns.Add("Langtext", typeof(System.String));
 			tblPos.Columns.Add("Preis/Einheit", typeof(System.Decimal));
 			tblPos.Columns.Add("Fläche", typeof(System.Double));
+			tblPos.Columns.Add("Einheit", typeof(System.String));
 			tblPos.Columns.Add("Gesamtpreis", typeof(System.Decimal));
 
 			this.PosListe.Tables.Add(tblPos);
@@ -4492,7 +4530,7 @@ namespace Layer8_CSW
 		
 		public void Daten_hinzufuegen() //CSW - 23.10.03 01:02 (UPDATE)
 		{	// Das ist die Kurzform von dem was dann drunter steht
-			DataRow r = PosListe.Tables[0].Rows.Add(new object[]{aktPos.Raum,aktPos.Positionsnummer,aktPos.Kurztext,aktPos.Langtext,aktPos.EPreis,aktPos.Flaeche,aktPos.GPreis});
+			DataRow r = PosListe.Tables[0].Rows.Add(new object[]{aktPos.Raum,aktPos.Positionsnummer,aktPos.Kurztext,aktPos.Langtext,aktPos.EPreis,aktPos.Flaeche,aktPos.Einheit,aktPos.GPreis});
 				
 
 
@@ -4529,7 +4567,8 @@ namespace Layer8_CSW
 				bearbeiteteZeile[3]=aktPos.Langtext;
 				bearbeiteteZeile[4]=aktPos.EPreis;
 				bearbeiteteZeile[5]=aktPos.Flaeche;
-				bearbeiteteZeile[6]=aktPos.GPreis;
+				bearbeiteteZeile[6]=aktPos.Einheit;
+				bearbeiteteZeile[7]=aktPos.GPreis;
 			} 
 			catch (Exception ex)
 			{
@@ -4648,7 +4687,8 @@ namespace Layer8_CSW
 				aktPos.Langtext=Convert.ToString(R[3]);
 				aktPos.EPreis=Convert.ToDecimal(R[4]);
 				aktPos.Flaeche=Convert.ToDouble(R[5]);
-				aktPos.GPreis=Convert.ToDecimal(R[6]);
+				aktPos.Einheit=Convert.ToString(R[6]);
+				aktPos.GPreis=Convert.ToDecimal(R[7]);
 
 				
 			}
@@ -4664,7 +4704,7 @@ namespace Layer8_CSW
 		{decimal summe=0;
 		
 			foreach (DataRow DR in PosListe.Tables[0].Rows	)
-			{ summe += Convert.ToDecimal(DR[6]);}
+			{ summe += Convert.ToDecimal(DR[7]);}
 			
 			return summe;
 		}
@@ -5679,4 +5719,3 @@ namespace Layer8_CSW
 
 
 }
-#endregion
