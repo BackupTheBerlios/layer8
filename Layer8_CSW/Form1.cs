@@ -28,6 +28,8 @@
 // | Version 1.23     | 20.11.03	   | 18:18	  | Casi		   |  Erste Druckmethoden eingefügt
 // | Version 1.24	  | 21.11.03	   | 17:34    | CSW			   |  Vorgangsnamen gebastelt und Nachkalkulation vorbereitet
 // | Version 1.241    | 22.11.03	   | 12:16	  | Casi		   |  Druckvorschau implementiert
+// | Version 1.242a   | 25.11.03	   | 01:25    | CSW            |  Hab dat KontextMenü schon vorbereitet und die Übernahme des Kunden drin, Rest morgen
+// | Version 1.242b   | 25.11.03	   | 13:16    | CSW			   |  Position übernehmen drin, DB (RechPos) geändert
 using System;
 using System.Text;
 using System.Drawing;
@@ -37,6 +39,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.OleDb;
+
 
 using System.IO;
 using System.Xml;
@@ -270,7 +273,9 @@ namespace Layer8_CSW
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
 
-		
+		public enum Ansichtsache {Fliesen, Maurer, Zusatz, Kunden, Vorgang, Noppes };
+		public Ansichtsache Ansicht; 
+
 		
 		
 		public MainFrame()
@@ -2238,6 +2243,7 @@ namespace Layer8_CSW
 			this.dataGridTableStyle4.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			
 			ZahlungsTab_aktualisieren();
+			Ansicht = Ansichtsache.Noppes;
 		}
 
 
@@ -3048,8 +3054,10 @@ namespace Layer8_CSW
 			}
 		}
 
+		
 		private void button_Übersicht_alle_Kunden_Click(object sender, System.EventArgs e)
 		{	// Statt einem DataSet übernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
+			Ansicht=Ansichtsache.Kunden;
 			DG_Übersicht.Enabled =false;
 			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
 			KundenView.Sort="Kundennr";
@@ -3060,11 +3068,20 @@ namespace Layer8_CSW
 		private void button_Übersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
 		{
 			if (radio_F.Checked)
+			{
+				Ansicht=Ansichtsache.Fliesen;
 				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"FPos");
+			}
 			else if (radio_M.Checked)
+			{
+				Ansicht=Ansichtsache.Maurer;
 				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"MPos");
+			}
 			else
+			{
+				Ansicht=Ansichtsache.Zusatz;
 				DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"ZPos");
+			}
 
 		}
 
@@ -3072,26 +3089,102 @@ namespace Layer8_CSW
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-					cMenu_KundenDG.MenuItems.Clear();
+				System.Windows.Forms.DataGrid.HitTestInfo myHitTest;
+				myHitTest = DG_Übersicht.HitTest(e.X,e.Y);
+				cMenu_KundenDG.MenuItems.Clear();
 				cMenu_KundenDG_Anlegen(); // Standard-Elemente
-				if(DG_Übersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
-				{
+
+				if (myHitTest.Type == System.Windows.Forms.DataGrid.HitTestType.Cell)
+					{
+					DG_Übersicht.UnSelect(DG_Übersicht.CurrentRowIndex);
+					DG_Übersicht.CurrentRowIndex=myHitTest.Row;
+					DG_Übersicht.Select(DG_Übersicht.CurrentRowIndex);
 					cMenu_KundenDG.MenuItems.Add("-");
-					cMenu_KundenDG.MenuItems.Add("Position übernehmen (Dummy)");
-				}
+					switch (Ansicht)
+					{
+						case Ansichtsache.Fliesen:
+							cMenu_KundenDG.MenuItems.Add("Position übernehmen",new System.EventHandler(Position_übernehmen_aus_Übersicht));
+							break;
+						case Ansichtsache.Kunden:
+							cMenu_KundenDG.MenuItems.Add("Kunden übernehmen",new System.EventHandler(Kunde_übernehmen_aus_Übersicht));	
+							break;
+						case Ansichtsache.Vorgang:
+							cMenu_KundenDG.MenuItems.Add("Vorgang laden (Dummy)");
+							break;
+						case Ansichtsache.Maurer:
+							cMenu_KundenDG.MenuItems.Add("Position übernehmen",new System.EventHandler(Position_übernehmen_aus_Übersicht));
+							break;
+						case Ansichtsache.Zusatz:
+							cMenu_KundenDG.MenuItems.Add("Position übernehmen",new System.EventHandler(Position_übernehmen_aus_Übersicht));
+							break;
+						default:
+							break;
+					}
+					
+					
+					//DG_Übersicht.
+					
+					// Use the DataGrid control's HitTest method with the x and y properties.
+					
+					}
 				cMenu_KundenDG.Show(DG_Übersicht,new Point(e.X,e.Y));
+				//if(DG_Übersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
 			}
 		}
 
 		private void cMenu_KundenDG_Anlegen()
 		{
-		
-			cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
-			cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
-			cMenu_KundenDG.MenuItems.Add("-");
-			cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
-			cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
-			cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+			switch (Ansicht)
+			{
+				case Ansichtsache.Fliesen:
+					cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Aktuell: Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+				case Ansichtsache.Kunden:
+					cMenu_KundenDG.MenuItems.Add("Aktuell: alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+				case Ansichtsache.Vorgang:
+					cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("Aktuell: alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+				case Ansichtsache.Maurer:
+					cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Aktuell: Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+				case Ansichtsache.Zusatz:
+					cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Aktuell: Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+				default:
+					cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
+					cMenu_KundenDG.MenuItems.Add("alle Vorgänge",new System.EventHandler(this.button_Übersicht_Vorgänge_anzeigen_Click));
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+					cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+					break;
+			}
 		}
 		
 		private void FPos_dummy(object sender, System.EventArgs e)
@@ -3121,13 +3214,13 @@ namespace Layer8_CSW
 		}
 
 		private void button_Übersicht_Vorgänge_anzeigen_Click(object sender, System.EventArgs e)
-		{
+		{	
+			Ansicht=Ansichtsache.Vorgang;
 			DG_Übersicht.Enabled =false;
 			DataView VorgangsView = new DataView(UnsereDb.alle_Vorgaenge_eines_Kunden_ausgeben().Tables[0]);
 			VorgangsView.Sort="Index";
 			DG_Übersicht.SetDataBinding(VorgangsView,null);
 			DG_Übersicht.Enabled =true;	
-
 		}
 
 		private void ZahlungsTab_aktualisieren()
@@ -3177,7 +3270,7 @@ namespace Layer8_CSW
 		}
 
 		private void txtBox_Übersicht_Kundenauswahl_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{
+		{	Ansicht = Ansichtsache.Kunden;
 			if(e.KeyChar == (char)13)
 			{
 				e.Handled=true;
@@ -3200,6 +3293,7 @@ namespace Layer8_CSW
 
 		private void button_Übersicht_Kunden_suchen_Click(object sender, System.EventArgs e)
 		{
+			Ansicht = Ansichtsache.Kunden;
 			string name;
 			name = this.txtBox_Übersicht_Kundenauswahl.Text;
 			
@@ -3217,7 +3311,8 @@ namespace Layer8_CSW
 		}
 
 		private void button_Übersicht_Vorgang_suchen_Click(object sender, System.EventArgs e)
-		{
+		{	
+			Ansicht = Ansichtsache.Vorgang;
 			string name;
 			name = this.txtBox_Übersicht_Vorgang_suchen.Text;
 			DG_Übersicht.Enabled =false;
@@ -3235,7 +3330,7 @@ namespace Layer8_CSW
 		}
 
 		private void txtBox_Übersicht_Vorgang_suchen_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-		{
+		{Ansicht = Ansichtsache.Vorgang;
 			if(e.KeyChar == (char)13)
 			{
 				e.Handled=true;
@@ -3357,9 +3452,38 @@ namespace Layer8_CSW
 			}
 		}
 
+		private void Kunde_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
+		{	
+			
+			int KDNr = Convert.ToInt32( DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
+			//MessageBox.Show(Convert.ToString(KDNr));
+			VG.UnserKunde=new Kunde();
+			VG.UnserKunde=UnsereDb.Kunde_suchen_nach_Kundennummer(KDNr);
+			kunde_Anzeigen(VG.UnserKunde);
+			tabControl1.SelectedTab = Kunde;
+			
 
+			
+		}
 		
-	}
+		private void Position_übernehmen_aus_Übersicht (object sender, System.EventArgs e)
+		{
+			string PosNr = Convert.ToString (DG_Übersicht[DG_Übersicht.CurrentRowIndex,0]);
+			VG.aktPos = UnsereDb.Pos_suchen_nach_Posnummer(PosNr);	
+			if (VG.aktPos != null)
+			{
+				position_Anzeigen(VG.aktPos);
+				tabControl1.SelectedTab = Positionen;
+				txtbox_Fläche.Focus();
+			}
+			else
+			{
+				MessageBox.Show("Die angegebene Position konnte nicht gefunden werden","Es ist ein Fehler aufgetreten");
+			}
+					
+	}	
+
+}
 
 
 	public class Kunde 
