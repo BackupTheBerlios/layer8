@@ -19,8 +19,9 @@
 // | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbeträge in den DataGrids haben jetzt ein Währungsformat (und nur da)
 // | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der Übersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Menü verschwindet immer erst nach der 2.Auswahl
 // | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelöst: Während des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
-// | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es gäbe System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
+// | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es gäbe System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekommt von mir ein Bier ;-) 
 // | Version 1.21	  | 13.11.03	   | 00:42    | CSW			   |  Automatisches Berechnen der Beträge (Netto/Brutto) unter Berücksichtigung von MwSt und Rabatt, Darstellung im Währungsformat, Kleinere Änderungen auf der Positionsseite, Einbinden von "alle_Vorgänge" in der Übersicht
+// | Version 1.22     | 16.11.03	   | 12:30	  | CSW			   |  Filtern der Kundenübersicht nach Namen (auch Teile, Anfangsbuchstaben etc.)
 
 using System;
 using System.Drawing;
@@ -228,6 +229,8 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn28;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label33;
+		private System.Windows.Forms.TextBox txtBox_Übersicht_Kundenauswahl;
+		private System.Windows.Forms.Label label34;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -407,6 +410,7 @@ namespace Layer8_CSW
 			this.radio_F = new System.Windows.Forms.RadioButton();
 			this.button_Übersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
 			this.gBox_KundenÜbersicht = new System.Windows.Forms.GroupBox();
+			this.txtBox_Übersicht_Kundenauswahl = new System.Windows.Forms.TextBox();
 			this.button_Übersicht_Vorgänge_anzeigen = new System.Windows.Forms.Button();
 			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
@@ -426,6 +430,7 @@ namespace Layer8_CSW
 			this.menuItem13 = new System.Windows.Forms.MenuItem();
 			this.menuItem14 = new System.Windows.Forms.MenuItem();
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
+			this.label34 = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Zahlung.SuspendLayout();
@@ -1738,6 +1743,8 @@ namespace Layer8_CSW
 			// 
 			// gBox_KundenÜbersicht
 			// 
+			this.gBox_KundenÜbersicht.Controls.Add(this.label34);
+			this.gBox_KundenÜbersicht.Controls.Add(this.txtBox_Übersicht_Kundenauswahl);
 			this.gBox_KundenÜbersicht.Controls.Add(this.button_Übersicht_Vorgänge_anzeigen);
 			this.gBox_KundenÜbersicht.Controls.Add(this.button_Übersicht_alle_Kunden);
 			this.gBox_KundenÜbersicht.Location = new System.Drawing.Point(496, 16);
@@ -1746,6 +1753,15 @@ namespace Layer8_CSW
 			this.gBox_KundenÜbersicht.TabIndex = 0;
 			this.gBox_KundenÜbersicht.TabStop = false;
 			this.gBox_KundenÜbersicht.Text = "Kunden-Übersicht";
+			// 
+			// txtBox_Übersicht_Kundenauswahl
+			// 
+			this.txtBox_Übersicht_Kundenauswahl.Location = new System.Drawing.Point(360, 32);
+			this.txtBox_Übersicht_Kundenauswahl.Name = "txtBox_Übersicht_Kundenauswahl";
+			this.txtBox_Übersicht_Kundenauswahl.Size = new System.Drawing.Size(96, 20);
+			this.txtBox_Übersicht_Kundenauswahl.TabIndex = 2;
+			this.txtBox_Übersicht_Kundenauswahl.Text = "";
+			this.txtBox_Übersicht_Kundenauswahl.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Übersicht_Kundenauswahl_KeyPress);
 			// 
 			// button_Übersicht_Vorgänge_anzeigen
 			// 
@@ -1861,6 +1877,14 @@ namespace Layer8_CSW
 			// 
 			this.menuItem15.Index = 3;
 			this.menuItem15.Text = "Löschen";
+			// 
+			// label34
+			// 
+			this.label34.Location = new System.Drawing.Point(304, 32);
+			this.label34.Name = "label34";
+			this.label34.Size = new System.Drawing.Size(40, 20);
+			this.label34.TabIndex = 3;
+			this.label34.Text = "Filtern:";
 			// 
 			// MainFrame
 			// 
@@ -2869,6 +2893,24 @@ namespace Layer8_CSW
 					this.txtbox_Posnummer.Text="";}
 				
 
+			}
+		}
+
+		private void txtBox_Übersicht_Kundenauswahl_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			if(e.KeyChar == (char)13)
+			{
+				e.Handled=true;
+				String name;
+				name = this.txtBox_Übersicht_Kundenauswahl.Text;
+			
+				DG_Übersicht.Enabled =false;
+				DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+				KundenView.Sort="Kundennr";
+				KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
+
+				DG_Übersicht.SetDataBinding(KundenView,null);
+				DG_Übersicht.Enabled =true;
 			}
 		}
 
