@@ -13,7 +13,7 @@
 // | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
 // | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
 // | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
-
+// | Version 1.17	  | 30.10.03	   | 23:56    | CH			   |  ComboBox "Anrede" wird nun auch in DB geschrieben
 
 
 using System;
@@ -265,6 +265,7 @@ namespace Layer8_CSW
 			this.txtbox_VornameTab2 = new System.Windows.Forms.TextBox();
 			this.txtbox_NameTab2 = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
+			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
 			this.Pos_anlegen = new System.Windows.Forms.Button();
 			this.button_Flaeche = new System.Windows.Forms.Button();
@@ -309,7 +310,6 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -447,6 +447,7 @@ namespace Layer8_CSW
 			this.cbox_Anrede.Size = new System.Drawing.Size(104, 21);
 			this.cbox_Anrede.TabIndex = 23;
 			this.cbox_Anrede.Text = "Herr";
+			this.cbox_Anrede.Leave += new System.EventHandler(this.cbox_Anrede_Leave);
 			// 
 			// txtbox_Name
 			// 
@@ -866,6 +867,16 @@ namespace Layer8_CSW
 			this.Positionen.Text = "Positionen";
 			this.Positionen.ToolTipText = "Hier finden sich die Rechnungspositionen";
 			// 
+			// button_allePositionen
+			// 
+			this.button_allePositionen.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.button_allePositionen.Location = new System.Drawing.Point(136, 40);
+			this.button_allePositionen.Name = "button_allePositionen";
+			this.button_allePositionen.Size = new System.Drawing.Size(30, 20);
+			this.button_allePositionen.TabIndex = 24;
+			this.button_allePositionen.Text = "...";
+			this.button_allePositionen.Click += new System.EventHandler(this.button_allePositionen_Click);
+			// 
 			// pos_Speichern
 			// 
 			this.pos_Speichern.Location = new System.Drawing.Point(856, 160);
@@ -1278,16 +1289,6 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// button_allePositionen
-			// 
-			this.button_allePositionen.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.button_allePositionen.Location = new System.Drawing.Point(136, 40);
-			this.button_allePositionen.Name = "button_allePositionen";
-			this.button_allePositionen.Size = new System.Drawing.Size(30, 20);
-			this.button_allePositionen.TabIndex = 24;
-			this.button_allePositionen.Text = "...";
-			this.button_allePositionen.Click += new System.EventHandler(this.button_allePositionen_Click);
-			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1675,8 +1676,9 @@ namespace Layer8_CSW
 				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
-				// UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);			Casi ich will sie haben!
-				// UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);		Casi ich will sie haben!
+				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
 				this.alle_kunden_textboxen_auf_read();
 				// }
 			}
@@ -2111,6 +2113,21 @@ namespace Layer8_CSW
 			Dialog_Positionen DialogPos = new Dialog_Positionen();
 			DialogPos.ShowDialog();
 
+		}
+
+		private void cbox_Anrede_Leave(object sender, System.EventArgs e)
+		{
+			if (this.bearbeiten_flag)
+			{
+				if (this.cbox_Anrede.SelectedIndex == 0)
+					VG.UnserKunde.Anrede = "Herr";
+				if (this.cbox_Anrede.SelectedIndex == 1)
+					VG.UnserKunde.Anrede = "Frau";
+				else if (this.cbox_Anrede.SelectedIndex == 2)
+					VG.UnserKunde.Anrede = "Firma";
+
+				this.kunde_Anzeigen(VG.UnserKunde);
+			}
 		}
 
 	}
