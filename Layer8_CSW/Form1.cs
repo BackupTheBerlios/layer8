@@ -13,7 +13,7 @@
 // | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
 // | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
 // | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
-
+// | Version 1.16	  | 30.10.03	   | 20:00    | Casi		   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
 
 
 using System;
