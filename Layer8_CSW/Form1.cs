@@ -3356,10 +3356,16 @@ namespace Layer8_CSW
 
 		private void menuDruckenPrint_Click(object sender, System.EventArgs e)
 		{
+			if (VG.UnserKunde.Kundennummer==0)
+			{
+				MessageBox.Show("Bitte dem zudruckenden Auftrag einen Kunden zuweisen.");
+				return;
+			}
 			try
 			{
 				PrintDocument pd = new PrintDocument();
-				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
+				aktuelleSeite = 1;
+				pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
 
 				if(this.storedPageSettings != null)
 					pd.DefaultPageSettings = this.storedPageSettings;
@@ -3374,30 +3380,67 @@ namespace Layer8_CSW
 				MessageBox.Show(ex.Message);
 			}
 		}
-		protected void PrintPageEventHandler(object obj, PrintPageEventArgs ev)
-		{
-		Graphics g= ev.Graphics;
-			PaintDocument(g);
-			ev.HasMorePages = false;
 		
-		}
-		
-		private void PaintDocument(Graphics g){
-		
-			g.PageUnit = GraphicsUnit.Point; // PrintingPoints statt Pixel
+		private void pd_PrintPage(object sender, PrintPageEventArgs e){
+		    
+			string s_Anrede;
+			string s_Strasse;
+			string s_Ort;
+			string s_Kuerzel;
+			string s_Datum;
+			string s_Bauadresse;
 
-			g.DrawString("Test, Test, Test",this.maintextFont, Brushes.Black, new Rectangle(10,10,180,30));
-            g.DrawString("Test, Test, Test",this.subTextFont, Brushes.Black, new Rectangle(150,150,180,30));
-		
-		
+			int AnzahlDerPos = VG.PosListe.Tables.Count;
+            MessageBox.Show(""+AnzahlDerPos);
+			if(aktuelleSeite == 1)
+			{
+			e.Graphics.PageUnit = GraphicsUnit.Point; // PrintingPoints statt Pixel
+			
+		  
+            s_Anrede= VG.UnserKunde.Anrede.Trim();
+			s_Anrede+=" "+VG.UnserKunde.NName.Trim();
+            s_Strasse=VG.UnserKunde.Strasse.Trim();
+			s_Ort = VG.UnserKunde.PLZ.ToString();
+            s_Ort += " "+VG.UnserKunde.Ort;
+            s_Datum = VG.Datum.Day.ToString();
+			s_Datum +="."+VG.Datum.Month.ToString();
+			s_Datum +="."+VG.Datum.Year.ToString();
+			s_Kuerzel= VG.UnserKunde.Kuerzel.ToString();
+            s_Bauadresse= VG.BauStrasse.ToString();
+			s_Bauadresse+="   "+VG.BauPLZ.ToString();
+            s_Bauadresse+=" "+VG.BauOrt.ToString();
+
+			e.Graphics.DrawString(s_Anrede,this.subTextFont, Brushes.Black,92.05F, 160.1F);
+			e.Graphics.DrawString(s_Strasse,this.subTextFont, Brushes.Black, 92.05F, 160.1F+12);
+            e.Graphics.DrawString(s_Ort,this.subTextFont, Brushes.Black, 92.05F, (160.1F+12+this.subTextFont.GetHeight()));
+            e.Graphics.DrawString(s_Datum,this.subTextFont, Brushes.Black, 452.05F, 240F);
+			e.Graphics.DrawString(s_Kuerzel, this.subTextFont, Brushes.Black,452.05F, 240F+12 );
+            e.Graphics.DrawString(s_Bauadresse, this.subTextFont, Brushes.Black,92.05F, 252F+this.subTextFont.GetHeight());
+			e.HasMorePages=false;// nur zu Testzwecken
+			}
+			else
+			{ 
+					e.Graphics.DrawString("Dies ´sollte nicht dat Deckblatt sein ;-)",this.maintextFont, Brushes.Black, 10,10);
+			        e.HasMorePages=false;	
+			}
+			
+			aktuelleSeite++;
+
 		}
 
 		private void menuDruckenPrintPreview_Click(object sender, System.EventArgs e)
 		{
+     			
+			if (VG.UnserKunde.Kundennummer==0)
+			{
+			MessageBox.Show("Bitte dem zudruckenden Auftrag einen Kunden zuweisen.");
+				return;
+			}
 			try
 			{
+				aktuelleSeite=1;
 				PrintDocument pd = new PrintDocument();
-				pd.PrintPage += new PrintPageEventHandler(this.PrintPageEventHandler);
+				pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
 				if(this.storedPageSettings != null)
 					pd.DefaultPageSettings = this.storedPageSettings;
 				PrintPreviewDialog dlg = new PrintPreviewDialog();
