@@ -16,7 +16,7 @@
 // | Version 1.17	  | 30.10.03	   | 23:56    | CH			   |  ComboBox "Anrede" wird nun auch in DB geschrieben
 // | Version 1.18	  | 03.11.03	   | 22:49    | CH			   |  Fehler korrigiert (Casi)
 // | Version 1.19	  | 05.11.03	   | 00:39    | CSW            |  ‹bersichtstabseite angelegt
-
+// | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbetr‰ge in den DataGrids haben jetzt ein W‰hrungsformat (und nur da)
 using System;
 using System.Drawing;
 using System.Collections;
@@ -277,6 +277,39 @@ namespace Layer8_CSW
 			this.txtbox_Vorname = new System.Windows.Forms.TextBox();
 			this.txtbox_Kundennummer = new System.Windows.Forms.TextBox();
 			this.txtbox_K¸rzel = new System.Windows.Forms.TextBox();
+			this.‹bersicht = new System.Windows.Forms.TabPage();
+			this.DG_‹bersicht = new System.Windows.Forms.DataGrid();
+			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn10 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn11 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn12 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn13 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn14 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTableStyle3 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTableStyle4 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTableStyleKunden‹bersicht = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTextBoxColumn15 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn16 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn17 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn18 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn25 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn21 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn19 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn20 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn22 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn23 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn24 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.gBox_Pos‹bersicht = new System.Windows.Forms.GroupBox();
+			this.gBox_PosBeschr‰nken = new System.Windows.Forms.GroupBox();
+			this.radio_Z = new System.Windows.Forms.RadioButton();
+			this.radio_M = new System.Windows.Forms.RadioButton();
+			this.radio_F = new System.Windows.Forms.RadioButton();
+			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
+			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
+			this.button4 = new System.Windows.Forms.Button();
+			this.button_‹bersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.Bauvorhaben = new System.Windows.Forms.TabPage();
 			this.dateTimePicker_Bau = new System.Windows.Forms.DateTimePicker();
 			this.label24 = new System.Windows.Forms.Label();
@@ -345,52 +378,19 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.‹bersicht = new System.Windows.Forms.TabPage();
-			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
-			this.gBox_Pos‹bersicht = new System.Windows.Forms.GroupBox();
-			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
-			this.button_‹bersicht_alle_Kunden = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
-			this.gBox_PosBeschr‰nken = new System.Windows.Forms.GroupBox();
-			this.radio_F = new System.Windows.Forms.RadioButton();
-			this.radio_M = new System.Windows.Forms.RadioButton();
-			this.radio_Z = new System.Windows.Forms.RadioButton();
-			this.DG_‹bersicht = new System.Windows.Forms.DataGrid();
-			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn10 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn11 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn12 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn13 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn14 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTableStyle3 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTableStyle4 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTableStyleKunden‹bersicht = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTextBoxColumn15 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn16 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn17 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn18 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn19 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn20 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn21 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn22 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn23 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn24 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn25 = new System.Windows.Forms.DataGridTextBoxColumn();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
+			this.‹bersicht.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).BeginInit();
+			this.gBox_Pos‹bersicht.SuspendLayout();
+			this.gBox_PosBeschr‰nken.SuspendLayout();
+			this.gBox_Kunden‹bersicht.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
 			this.gbox_Vorgangstyp.SuspendLayout();
 			this.Positionen.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
 			this.Zahlung.SuspendLayout();
 			this.groupBox1.SuspendLayout();
-			this.‹bersicht.SuspendLayout();
-			this.gBox_Kunden‹bersicht.SuspendLayout();
-			this.gBox_Pos‹bersicht.SuspendLayout();
-			this.gBox_PosBeschr‰nken.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -399,10 +399,10 @@ namespace Layer8_CSW
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.Kunde);
-			this.tabControl1.Controls.Add(this.‹bersicht);
 			this.tabControl1.Controls.Add(this.Bauvorhaben);
 			this.tabControl1.Controls.Add(this.Positionen);
 			this.tabControl1.Controls.Add(this.Zahlung);
+			this.tabControl1.Controls.Add(this.‹bersicht);
 			this.tabControl1.Location = new System.Drawing.Point(16, 24);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
@@ -715,6 +715,305 @@ namespace Layer8_CSW
 			this.txtbox_K¸rzel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbox_K¸rzel_KeyPress);
 			this.txtbox_K¸rzel.TextChanged += new System.EventHandler(this.txtbox_K¸rzel_TextChanged);
 			this.txtbox_K¸rzel.Leave += new System.EventHandler(this.txtbox_K¸rzel_Leave);
+			// 
+			// ‹bersicht
+			// 
+			this.‹bersicht.Controls.Add(this.DG_‹bersicht);
+			this.‹bersicht.Controls.Add(this.gBox_Pos‹bersicht);
+			this.‹bersicht.Controls.Add(this.gBox_Kunden‹bersicht);
+			this.‹bersicht.Location = new System.Drawing.Point(4, 22);
+			this.‹bersicht.Name = "‹bersicht";
+			this.‹bersicht.Size = new System.Drawing.Size(988, 590);
+			this.‹bersicht.TabIndex = 4;
+			this.‹bersicht.Text = "‹bersicht";
+			// 
+			// DG_‹bersicht
+			// 
+			this.DG_‹bersicht.DataMember = "";
+			this.DG_‹bersicht.Enabled = false;
+			this.DG_‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.DG_‹bersicht.Location = new System.Drawing.Point(16, 160);
+			this.DG_‹bersicht.Name = "DG_‹bersicht";
+			this.DG_‹bersicht.Size = new System.Drawing.Size(960, 416);
+			this.DG_‹bersicht.TabIndex = 2;
+			this.DG_‹bersicht.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+																									 this.dataGridTableStyle1,
+																									 this.dataGridTableStyle3,
+																									 this.dataGridTableStyle4,
+																									 this.dataGridTableStyleKunden‹bersicht});
+			// 
+			// dataGridTableStyle1
+			// 
+			this.dataGridTableStyle1.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle1.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+																												  this.dataGridTextBoxColumn8,
+																												  this.dataGridTextBoxColumn9,
+																												  this.dataGridTextBoxColumn10,
+																												  this.dataGridTextBoxColumn11,
+																												  this.dataGridTextBoxColumn12,
+																												  this.dataGridTextBoxColumn13,
+																												  this.dataGridTextBoxColumn14});
+			this.dataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle1.MappingName = "MPos";
+			// 
+			// dataGridTextBoxColumn8
+			// 
+			this.dataGridTextBoxColumn8.Format = "";
+			this.dataGridTextBoxColumn8.FormatInfo = null;
+			this.dataGridTextBoxColumn8.HeaderText = ((string)(configurationAppSettings.GetValue("dataGridTextBoxColumn8.HeaderText", typeof(string))));
+			this.dataGridTextBoxColumn8.MappingName = "Posnummer";
+			this.dataGridTextBoxColumn8.Width = 50;
+			// 
+			// dataGridTextBoxColumn9
+			// 
+			this.dataGridTextBoxColumn9.Format = "";
+			this.dataGridTextBoxColumn9.FormatInfo = null;
+			this.dataGridTextBoxColumn9.HeaderText = "Kurztext";
+			this.dataGridTextBoxColumn9.MappingName = "Kurztext";
+			this.dataGridTextBoxColumn9.Width = 150;
+			// 
+			// dataGridTextBoxColumn10
+			// 
+			this.dataGridTextBoxColumn10.Format = "";
+			this.dataGridTextBoxColumn10.FormatInfo = null;
+			this.dataGridTextBoxColumn10.HeaderText = "Langtext";
+			this.dataGridTextBoxColumn10.MappingName = "Langtext";
+			this.dataGridTextBoxColumn10.Width = 400;
+			// 
+			// dataGridTextBoxColumn11
+			// 
+			this.dataGridTextBoxColumn11.Format = "C";
+			this.dataGridTextBoxColumn11.FormatInfo = null;
+			this.dataGridTextBoxColumn11.HeaderText = "Preis";
+			this.dataGridTextBoxColumn11.MappingName = "Preis";
+			this.dataGridTextBoxColumn11.Width = 75;
+			// 
+			// dataGridTextBoxColumn12
+			// 
+			this.dataGridTextBoxColumn12.Format = "";
+			this.dataGridTextBoxColumn12.FormatInfo = null;
+			this.dataGridTextBoxColumn12.HeaderText = "Einheit";
+			this.dataGridTextBoxColumn12.MappingName = "Einheit";
+			this.dataGridTextBoxColumn12.Width = 60;
+			// 
+			// dataGridTextBoxColumn13
+			// 
+			this.dataGridTextBoxColumn13.Format = "C";
+			this.dataGridTextBoxColumn13.FormatInfo = null;
+			this.dataGridTextBoxColumn13.HeaderText = "Materialkosten";
+			this.dataGridTextBoxColumn13.MappingName = "MKosten";
+			this.dataGridTextBoxColumn13.Width = 90;
+			// 
+			// dataGridTextBoxColumn14
+			// 
+			this.dataGridTextBoxColumn14.Format = "";
+			this.dataGridTextBoxColumn14.FormatInfo = null;
+			this.dataGridTextBoxColumn14.HeaderText = "Lohnkosten";
+			this.dataGridTextBoxColumn14.MappingName = "LKosten";
+			this.dataGridTextBoxColumn14.Width = 90;
+			// 
+			// dataGridTableStyle3
+			// 
+			this.dataGridTableStyle3.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle3.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle3.MappingName = "FPos";
+			// 
+			// dataGridTableStyle4
+			// 
+			this.dataGridTableStyle4.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle4.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle4.MappingName = "ZPos";
+			// 
+			// dataGridTableStyleKunden‹bersicht
+			// 
+			this.dataGridTableStyleKunden‹bersicht.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyleKunden‹bersicht.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+																																this.dataGridTextBoxColumn15,
+																																this.dataGridTextBoxColumn16,
+																																this.dataGridTextBoxColumn17,
+																																this.dataGridTextBoxColumn18,
+																																this.dataGridTextBoxColumn25,
+																																this.dataGridTextBoxColumn21,
+																																this.dataGridTextBoxColumn19,
+																																this.dataGridTextBoxColumn20,
+																																this.dataGridTextBoxColumn22,
+																																this.dataGridTextBoxColumn23,
+																																this.dataGridTextBoxColumn24});
+			this.dataGridTableStyleKunden‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyleKunden‹bersicht.MappingName = "Kunden";
+			// 
+			// dataGridTextBoxColumn15
+			// 
+			this.dataGridTextBoxColumn15.Format = "";
+			this.dataGridTextBoxColumn15.FormatInfo = null;
+			this.dataGridTextBoxColumn15.HeaderText = "KD-Nr.";
+			this.dataGridTextBoxColumn15.MappingName = "Kundennr";
+			this.dataGridTextBoxColumn15.Width = 40;
+			// 
+			// dataGridTextBoxColumn16
+			// 
+			this.dataGridTextBoxColumn16.Format = "";
+			this.dataGridTextBoxColumn16.FormatInfo = null;
+			this.dataGridTextBoxColumn16.HeaderText = "K¸rzel";
+			this.dataGridTextBoxColumn16.MappingName = "Kuerzel";
+			this.dataGridTextBoxColumn16.Width = 45;
+			// 
+			// dataGridTextBoxColumn17
+			// 
+			this.dataGridTextBoxColumn17.Format = "";
+			this.dataGridTextBoxColumn17.FormatInfo = null;
+			this.dataGridTextBoxColumn17.HeaderText = "Anrede";
+			this.dataGridTextBoxColumn17.MappingName = "Anrede";
+			this.dataGridTextBoxColumn17.Width = 55;
+			// 
+			// dataGridTextBoxColumn18
+			// 
+			this.dataGridTextBoxColumn18.Format = "";
+			this.dataGridTextBoxColumn18.FormatInfo = null;
+			this.dataGridTextBoxColumn18.HeaderText = "Name";
+			this.dataGridTextBoxColumn18.MappingName = "Name";
+			this.dataGridTextBoxColumn18.Width = 105;
+			// 
+			// dataGridTextBoxColumn25
+			// 
+			this.dataGridTextBoxColumn25.Format = "";
+			this.dataGridTextBoxColumn25.FormatInfo = null;
+			this.dataGridTextBoxColumn25.HeaderText = "Vorname";
+			this.dataGridTextBoxColumn25.MappingName = "Vorname";
+			this.dataGridTextBoxColumn25.Width = 80;
+			// 
+			// dataGridTextBoxColumn21
+			// 
+			this.dataGridTextBoxColumn21.Format = "";
+			this.dataGridTextBoxColumn21.FormatInfo = null;
+			this.dataGridTextBoxColumn21.HeaderText = "Strasse";
+			this.dataGridTextBoxColumn21.MappingName = "Strasse";
+			this.dataGridTextBoxColumn21.Width = 135;
+			// 
+			// dataGridTextBoxColumn19
+			// 
+			this.dataGridTextBoxColumn19.Format = "";
+			this.dataGridTextBoxColumn19.FormatInfo = null;
+			this.dataGridTextBoxColumn19.HeaderText = "PLZ";
+			this.dataGridTextBoxColumn19.MappingName = "PLZ";
+			this.dataGridTextBoxColumn19.Width = 45;
+			// 
+			// dataGridTextBoxColumn20
+			// 
+			this.dataGridTextBoxColumn20.Format = "";
+			this.dataGridTextBoxColumn20.FormatInfo = null;
+			this.dataGridTextBoxColumn20.HeaderText = "Ort";
+			this.dataGridTextBoxColumn20.MappingName = "Ort";
+			this.dataGridTextBoxColumn20.Width = 75;
+			// 
+			// dataGridTextBoxColumn22
+			// 
+			this.dataGridTextBoxColumn22.Format = "";
+			this.dataGridTextBoxColumn22.FormatInfo = null;
+			this.dataGridTextBoxColumn22.HeaderText = "Telefon";
+			this.dataGridTextBoxColumn22.MappingName = "Telefon";
+			this.dataGridTextBoxColumn22.Width = 102;
+			// 
+			// dataGridTextBoxColumn23
+			// 
+			this.dataGridTextBoxColumn23.Format = "";
+			this.dataGridTextBoxColumn23.FormatInfo = null;
+			this.dataGridTextBoxColumn23.HeaderText = "Fax";
+			this.dataGridTextBoxColumn23.MappingName = "Fax";
+			this.dataGridTextBoxColumn23.Width = 102;
+			// 
+			// dataGridTextBoxColumn24
+			// 
+			this.dataGridTextBoxColumn24.Format = "";
+			this.dataGridTextBoxColumn24.FormatInfo = null;
+			this.dataGridTextBoxColumn24.HeaderText = "eMail";
+			this.dataGridTextBoxColumn24.MappingName = "eMail";
+			this.dataGridTextBoxColumn24.Width = 125;
+			// 
+			// gBox_Pos‹bersicht
+			// 
+			this.gBox_Pos‹bersicht.Controls.Add(this.gBox_PosBeschr‰nken);
+			this.gBox_Pos‹bersicht.Controls.Add(this.button_‹bersicht_Pos_Anzeigen);
+			this.gBox_Pos‹bersicht.Location = new System.Drawing.Point(16, 16);
+			this.gBox_Pos‹bersicht.Name = "gBox_Pos‹bersicht";
+			this.gBox_Pos‹bersicht.Size = new System.Drawing.Size(456, 128);
+			this.gBox_Pos‹bersicht.TabIndex = 1;
+			this.gBox_Pos‹bersicht.TabStop = false;
+			this.gBox_Pos‹bersicht.Text = "Positions-‹bersicht";
+			// 
+			// gBox_PosBeschr‰nken
+			// 
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_Z);
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_M);
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_F);
+			this.gBox_PosBeschr‰nken.Location = new System.Drawing.Point(264, 16);
+			this.gBox_PosBeschr‰nken.Name = "gBox_PosBeschr‰nken";
+			this.gBox_PosBeschr‰nken.Size = new System.Drawing.Size(176, 104);
+			this.gBox_PosBeschr‰nken.TabIndex = 1;
+			this.gBox_PosBeschr‰nken.TabStop = false;
+			this.gBox_PosBeschr‰nken.Text = "Beschr‰nkung auf:";
+			// 
+			// radio_Z
+			// 
+			this.radio_Z.Location = new System.Drawing.Point(24, 72);
+			this.radio_Z.Name = "radio_Z";
+			this.radio_Z.Size = new System.Drawing.Size(130, 24);
+			this.radio_Z.TabIndex = 2;
+			this.radio_Z.Text = "Z - Zusatzpositionen";
+			// 
+			// radio_M
+			// 
+			this.radio_M.Location = new System.Drawing.Point(24, 44);
+			this.radio_M.Name = "radio_M";
+			this.radio_M.Size = new System.Drawing.Size(100, 24);
+			this.radio_M.TabIndex = 1;
+			this.radio_M.Text = "M - Maurer";
+			// 
+			// radio_F
+			// 
+			this.radio_F.Checked = true;
+			this.radio_F.Location = new System.Drawing.Point(24, 16);
+			this.radio_F.Name = "radio_F";
+			this.radio_F.TabIndex = 0;
+			this.radio_F.TabStop = true;
+			this.radio_F.Text = "F - Fliesenleger";
+			// 
+			// button_‹bersicht_Pos_Anzeigen
+			// 
+			this.button_‹bersicht_Pos_Anzeigen.Location = new System.Drawing.Point(24, 24);
+			this.button_‹bersicht_Pos_Anzeigen.Name = "button_‹bersicht_Pos_Anzeigen";
+			this.button_‹bersicht_Pos_Anzeigen.Size = new System.Drawing.Size(216, 32);
+			this.button_‹bersicht_Pos_Anzeigen.TabIndex = 0;
+			this.button_‹bersicht_Pos_Anzeigen.Text = "Positionen Anzeigen";
+			this.button_‹bersicht_Pos_Anzeigen.Click += new System.EventHandler(this.button_‹bersicht_Pos_Anzeigen_Click);
+			// 
+			// gBox_Kunden‹bersicht
+			// 
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button4);
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_alle_Kunden);
+			this.gBox_Kunden‹bersicht.Location = new System.Drawing.Point(496, 16);
+			this.gBox_Kunden‹bersicht.Name = "gBox_Kunden‹bersicht";
+			this.gBox_Kunden‹bersicht.Size = new System.Drawing.Size(480, 128);
+			this.gBox_Kunden‹bersicht.TabIndex = 0;
+			this.gBox_Kunden‹bersicht.TabStop = false;
+			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
+			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(24, 80);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(208, 32);
+			this.button4.TabIndex = 1;
+			this.button4.Text = "Alle Vorg‰nge anzeigen";
+			// 
+			// button_‹bersicht_alle_Kunden
+			// 
+			this.button_‹bersicht_alle_Kunden.Location = new System.Drawing.Point(24, 24);
+			this.button_‹bersicht_alle_Kunden.Name = "button_‹bersicht_alle_Kunden";
+			this.button_‹bersicht_alle_Kunden.Size = new System.Drawing.Size(208, 32);
+			this.button_‹bersicht_alle_Kunden.TabIndex = 0;
+			this.button_‹bersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
+			this.button_‹bersicht_alle_Kunden.Click += new System.EventHandler(this.button_‹bersicht_alle_Kunden_Click);
 			// 
 			// Bauvorhaben
 			// 
@@ -1116,7 +1415,7 @@ namespace Layer8_CSW
 			// dataGridTextBoxColumn5
 			// 
 			this.dataGridTextBoxColumn5.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn5.Format = "";
+			this.dataGridTextBoxColumn5.Format = "C";
 			this.dataGridTextBoxColumn5.FormatInfo = null;
 			this.dataGridTextBoxColumn5.HeaderText = "Preis/Einheit";
 			this.dataGridTextBoxColumn5.MappingName = "Preis/Einheit";
@@ -1127,14 +1426,14 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn6.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
 			this.dataGridTextBoxColumn6.Format = "";
 			this.dataGridTextBoxColumn6.FormatInfo = null;
-			this.dataGridTextBoxColumn6.HeaderText = "Fl‰che";
+			this.dataGridTextBoxColumn6.HeaderText = "Fl‰che / Anzahl";
 			this.dataGridTextBoxColumn6.MappingName = "Fl‰che";
 			this.dataGridTextBoxColumn6.Width = 73;
 			// 
 			// dataGridTextBoxColumn7
 			// 
 			this.dataGridTextBoxColumn7.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn7.Format = "";
+			this.dataGridTextBoxColumn7.Format = "C";
 			this.dataGridTextBoxColumn7.FormatInfo = null;
 			this.dataGridTextBoxColumn7.HeaderText = "Gesamtpreis";
 			this.dataGridTextBoxColumn7.MappingName = "Gesamtpreis";
@@ -1363,303 +1662,6 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// ‹bersicht
-			// 
-			this.‹bersicht.Controls.Add(this.DG_‹bersicht);
-			this.‹bersicht.Controls.Add(this.gBox_Pos‹bersicht);
-			this.‹bersicht.Controls.Add(this.gBox_Kunden‹bersicht);
-			this.‹bersicht.Location = new System.Drawing.Point(4, 22);
-			this.‹bersicht.Name = "‹bersicht";
-			this.‹bersicht.Size = new System.Drawing.Size(988, 590);
-			this.‹bersicht.TabIndex = 4;
-			this.‹bersicht.Text = "‹bersicht";
-			// 
-			// gBox_Kunden‹bersicht
-			// 
-			this.gBox_Kunden‹bersicht.Controls.Add(this.button4);
-			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_alle_Kunden);
-			this.gBox_Kunden‹bersicht.Location = new System.Drawing.Point(496, 16);
-			this.gBox_Kunden‹bersicht.Name = "gBox_Kunden‹bersicht";
-			this.gBox_Kunden‹bersicht.Size = new System.Drawing.Size(480, 128);
-			this.gBox_Kunden‹bersicht.TabIndex = 0;
-			this.gBox_Kunden‹bersicht.TabStop = false;
-			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
-			// 
-			// gBox_Pos‹bersicht
-			// 
-			this.gBox_Pos‹bersicht.Controls.Add(this.gBox_PosBeschr‰nken);
-			this.gBox_Pos‹bersicht.Controls.Add(this.button_‹bersicht_Pos_Anzeigen);
-			this.gBox_Pos‹bersicht.Location = new System.Drawing.Point(16, 16);
-			this.gBox_Pos‹bersicht.Name = "gBox_Pos‹bersicht";
-			this.gBox_Pos‹bersicht.Size = new System.Drawing.Size(456, 128);
-			this.gBox_Pos‹bersicht.TabIndex = 1;
-			this.gBox_Pos‹bersicht.TabStop = false;
-			this.gBox_Pos‹bersicht.Text = "Positions-‹bersicht";
-			// 
-			// button_‹bersicht_Pos_Anzeigen
-			// 
-			this.button_‹bersicht_Pos_Anzeigen.Location = new System.Drawing.Point(24, 24);
-			this.button_‹bersicht_Pos_Anzeigen.Name = "button_‹bersicht_Pos_Anzeigen";
-			this.button_‹bersicht_Pos_Anzeigen.Size = new System.Drawing.Size(216, 32);
-			this.button_‹bersicht_Pos_Anzeigen.TabIndex = 0;
-			this.button_‹bersicht_Pos_Anzeigen.Text = "Positionen Anzeigen";
-			this.button_‹bersicht_Pos_Anzeigen.Click += new System.EventHandler(this.button_‹bersicht_Pos_Anzeigen_Click);
-			// 
-			// button_‹bersicht_alle_Kunden
-			// 
-			this.button_‹bersicht_alle_Kunden.Location = new System.Drawing.Point(24, 24);
-			this.button_‹bersicht_alle_Kunden.Name = "button_‹bersicht_alle_Kunden";
-			this.button_‹bersicht_alle_Kunden.Size = new System.Drawing.Size(208, 32);
-			this.button_‹bersicht_alle_Kunden.TabIndex = 0;
-			this.button_‹bersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
-			this.button_‹bersicht_alle_Kunden.Click += new System.EventHandler(this.button_‹bersicht_alle_Kunden_Click);
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(24, 80);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(208, 32);
-			this.button4.TabIndex = 1;
-			this.button4.Text = "Alle Vorg‰nge anzeigen";
-			// 
-			// gBox_PosBeschr‰nken
-			// 
-			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_Z);
-			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_M);
-			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_F);
-			this.gBox_PosBeschr‰nken.Location = new System.Drawing.Point(264, 16);
-			this.gBox_PosBeschr‰nken.Name = "gBox_PosBeschr‰nken";
-			this.gBox_PosBeschr‰nken.Size = new System.Drawing.Size(176, 104);
-			this.gBox_PosBeschr‰nken.TabIndex = 1;
-			this.gBox_PosBeschr‰nken.TabStop = false;
-			this.gBox_PosBeschr‰nken.Text = "Beschr‰nkung auf:";
-			// 
-			// radio_F
-			// 
-			this.radio_F.Checked = true;
-			this.radio_F.Location = new System.Drawing.Point(24, 16);
-			this.radio_F.Name = "radio_F";
-			this.radio_F.TabIndex = 0;
-			this.radio_F.TabStop = true;
-			this.radio_F.Text = "F - Fliesenleger";
-			// 
-			// radio_M
-			// 
-			this.radio_M.Location = new System.Drawing.Point(24, 44);
-			this.radio_M.Name = "radio_M";
-			this.radio_M.Size = new System.Drawing.Size(100, 24);
-			this.radio_M.TabIndex = 1;
-			this.radio_M.Text = "M - Maurer";
-			// 
-			// radio_Z
-			// 
-			this.radio_Z.Location = new System.Drawing.Point(24, 72);
-			this.radio_Z.Name = "radio_Z";
-			this.radio_Z.Size = new System.Drawing.Size(130, 24);
-			this.radio_Z.TabIndex = 2;
-			this.radio_Z.Text = "Z - Zusatzpositionen";
-			// 
-			// DG_‹bersicht
-			// 
-			this.DG_‹bersicht.DataMember = "";
-			this.DG_‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.DG_‹bersicht.Location = new System.Drawing.Point(16, 160);
-			this.DG_‹bersicht.Name = "DG_‹bersicht";
-			this.DG_‹bersicht.Size = new System.Drawing.Size(960, 416);
-			this.DG_‹bersicht.TabIndex = 2;
-			this.DG_‹bersicht.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																									 this.dataGridTableStyle1,
-																									 this.dataGridTableStyle3,
-																									 this.dataGridTableStyle4,
-																									 this.dataGridTableStyleKunden‹bersicht});
-			// 
-			// dataGridTableStyle1
-			// 
-			this.dataGridTableStyle1.DataGrid = this.DG_‹bersicht;
-			this.dataGridTableStyle1.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																												  this.dataGridTextBoxColumn8,
-																												  this.dataGridTextBoxColumn9,
-																												  this.dataGridTextBoxColumn10,
-																												  this.dataGridTextBoxColumn11,
-																												  this.dataGridTextBoxColumn12,
-																												  this.dataGridTextBoxColumn13,
-																												  this.dataGridTextBoxColumn14});
-			this.dataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle1.MappingName = "MPos";
-			// 
-			// dataGridTextBoxColumn8
-			// 
-			this.dataGridTextBoxColumn8.Format = "";
-			this.dataGridTextBoxColumn8.FormatInfo = null;
-			this.dataGridTextBoxColumn8.HeaderText = ((string)(configurationAppSettings.GetValue("dataGridTextBoxColumn8.HeaderText", typeof(string))));
-			this.dataGridTextBoxColumn8.MappingName = "Posnummer";
-			this.dataGridTextBoxColumn8.Width = 50;
-			// 
-			// dataGridTextBoxColumn9
-			// 
-			this.dataGridTextBoxColumn9.Format = "";
-			this.dataGridTextBoxColumn9.FormatInfo = null;
-			this.dataGridTextBoxColumn9.HeaderText = "Kurztext";
-			this.dataGridTextBoxColumn9.MappingName = "Kurztext";
-			this.dataGridTextBoxColumn9.Width = 150;
-			// 
-			// dataGridTextBoxColumn10
-			// 
-			this.dataGridTextBoxColumn10.Format = "";
-			this.dataGridTextBoxColumn10.FormatInfo = null;
-			this.dataGridTextBoxColumn10.HeaderText = "Langtext";
-			this.dataGridTextBoxColumn10.MappingName = "Langtext";
-			this.dataGridTextBoxColumn10.Width = 400;
-			// 
-			// dataGridTextBoxColumn11
-			// 
-			this.dataGridTextBoxColumn11.Format = "C";
-			this.dataGridTextBoxColumn11.FormatInfo = null;
-			this.dataGridTextBoxColumn11.HeaderText = "Preis";
-			this.dataGridTextBoxColumn11.MappingName = "Preis";
-			this.dataGridTextBoxColumn11.Width = 75;
-			// 
-			// dataGridTextBoxColumn12
-			// 
-			this.dataGridTextBoxColumn12.Format = "";
-			this.dataGridTextBoxColumn12.FormatInfo = null;
-			this.dataGridTextBoxColumn12.HeaderText = "Einheit";
-			this.dataGridTextBoxColumn12.MappingName = "Einheit";
-			this.dataGridTextBoxColumn12.Width = 60;
-			// 
-			// dataGridTextBoxColumn13
-			// 
-			this.dataGridTextBoxColumn13.Format = "C";
-			this.dataGridTextBoxColumn13.FormatInfo = null;
-			this.dataGridTextBoxColumn13.HeaderText = "Materialkosten";
-			this.dataGridTextBoxColumn13.MappingName = "MKosten";
-			this.dataGridTextBoxColumn13.Width = 90;
-			// 
-			// dataGridTextBoxColumn14
-			// 
-			this.dataGridTextBoxColumn14.Format = "";
-			this.dataGridTextBoxColumn14.FormatInfo = null;
-			this.dataGridTextBoxColumn14.HeaderText = "Lohnkosten";
-			this.dataGridTextBoxColumn14.MappingName = "LKosten";
-			this.dataGridTextBoxColumn14.Width = 90;
-			// 
-			// dataGridTableStyle3
-			// 
-			this.dataGridTableStyle3.DataGrid = this.DG_‹bersicht;
-			this.dataGridTableStyle3.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle3.MappingName = "FPos";
-			// 
-			// dataGridTableStyle4
-			// 
-			this.dataGridTableStyle4.DataGrid = this.DG_‹bersicht;
-			this.dataGridTableStyle4.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle4.MappingName = "ZPos";
-			// 
-			// dataGridTableStyleKunden‹bersicht
-			// 
-			this.dataGridTableStyleKunden‹bersicht.DataGrid = this.DG_‹bersicht;
-			this.dataGridTableStyleKunden‹bersicht.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																																this.dataGridTextBoxColumn15,
-																																this.dataGridTextBoxColumn16,
-																																this.dataGridTextBoxColumn17,
-																																this.dataGridTextBoxColumn18,
-																																this.dataGridTextBoxColumn25,
-																																this.dataGridTextBoxColumn21,
-																																this.dataGridTextBoxColumn19,
-																																this.dataGridTextBoxColumn20,
-																																this.dataGridTextBoxColumn22,
-																																this.dataGridTextBoxColumn23,
-																																this.dataGridTextBoxColumn24});
-			this.dataGridTableStyleKunden‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyleKunden‹bersicht.MappingName = "Kunden";
-			// 
-			// dataGridTextBoxColumn15
-			// 
-			this.dataGridTextBoxColumn15.Format = "";
-			this.dataGridTextBoxColumn15.FormatInfo = null;
-			this.dataGridTextBoxColumn15.HeaderText = "KD-Nr.";
-			this.dataGridTextBoxColumn15.MappingName = "Kundennr";
-			this.dataGridTextBoxColumn15.Width = 40;
-			// 
-			// dataGridTextBoxColumn16
-			// 
-			this.dataGridTextBoxColumn16.Format = "";
-			this.dataGridTextBoxColumn16.FormatInfo = null;
-			this.dataGridTextBoxColumn16.HeaderText = "K¸rzel";
-			this.dataGridTextBoxColumn16.MappingName = "Kuerzel";
-			this.dataGridTextBoxColumn16.Width = 45;
-			// 
-			// dataGridTextBoxColumn17
-			// 
-			this.dataGridTextBoxColumn17.Format = "";
-			this.dataGridTextBoxColumn17.FormatInfo = null;
-			this.dataGridTextBoxColumn17.HeaderText = "Anrede";
-			this.dataGridTextBoxColumn17.MappingName = "Anrede";
-			this.dataGridTextBoxColumn17.Width = 55;
-			// 
-			// dataGridTextBoxColumn18
-			// 
-			this.dataGridTextBoxColumn18.Format = "";
-			this.dataGridTextBoxColumn18.FormatInfo = null;
-			this.dataGridTextBoxColumn18.HeaderText = "Name";
-			this.dataGridTextBoxColumn18.MappingName = "Name";
-			this.dataGridTextBoxColumn18.Width = 105;
-			// 
-			// dataGridTextBoxColumn19
-			// 
-			this.dataGridTextBoxColumn19.Format = "";
-			this.dataGridTextBoxColumn19.FormatInfo = null;
-			this.dataGridTextBoxColumn19.HeaderText = "PLZ";
-			this.dataGridTextBoxColumn19.MappingName = "PLZ";
-			this.dataGridTextBoxColumn19.Width = 45;
-			// 
-			// dataGridTextBoxColumn20
-			// 
-			this.dataGridTextBoxColumn20.Format = "";
-			this.dataGridTextBoxColumn20.FormatInfo = null;
-			this.dataGridTextBoxColumn20.HeaderText = "Ort";
-			this.dataGridTextBoxColumn20.MappingName = "Ort";
-			// 
-			// dataGridTextBoxColumn21
-			// 
-			this.dataGridTextBoxColumn21.Format = "";
-			this.dataGridTextBoxColumn21.FormatInfo = null;
-			this.dataGridTextBoxColumn21.HeaderText = "Strasse";
-			this.dataGridTextBoxColumn21.MappingName = "Strasse";
-			this.dataGridTextBoxColumn21.Width = 135;
-			// 
-			// dataGridTextBoxColumn22
-			// 
-			this.dataGridTextBoxColumn22.Format = "";
-			this.dataGridTextBoxColumn22.FormatInfo = null;
-			this.dataGridTextBoxColumn22.HeaderText = "Telefon";
-			this.dataGridTextBoxColumn22.MappingName = "Telefon";
-			this.dataGridTextBoxColumn22.Width = 102;
-			// 
-			// dataGridTextBoxColumn23
-			// 
-			this.dataGridTextBoxColumn23.Format = "";
-			this.dataGridTextBoxColumn23.FormatInfo = null;
-			this.dataGridTextBoxColumn23.HeaderText = "Fax";
-			this.dataGridTextBoxColumn23.MappingName = "Fax";
-			this.dataGridTextBoxColumn23.Width = 102;
-			// 
-			// dataGridTextBoxColumn24
-			// 
-			this.dataGridTextBoxColumn24.Format = "";
-			this.dataGridTextBoxColumn24.FormatInfo = null;
-			this.dataGridTextBoxColumn24.HeaderText = "eMail";
-			this.dataGridTextBoxColumn24.MappingName = "eMail";
-			this.dataGridTextBoxColumn24.Width = 125;
-			// 
-			// dataGridTextBoxColumn25
-			// 
-			this.dataGridTextBoxColumn25.Format = "";
-			this.dataGridTextBoxColumn25.FormatInfo = null;
-			this.dataGridTextBoxColumn25.HeaderText = "Vorname";
-			this.dataGridTextBoxColumn25.MappingName = "Vorname";
-			this.dataGridTextBoxColumn25.Width = 80;
-			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1672,17 +1674,17 @@ namespace Layer8_CSW
 			this.Load += new System.EventHandler(this.MainFrame_Load);
 			this.tabControl1.ResumeLayout(false);
 			this.Kunde.ResumeLayout(false);
+			this.‹bersicht.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).EndInit();
+			this.gBox_Pos‹bersicht.ResumeLayout(false);
+			this.gBox_PosBeschr‰nken.ResumeLayout(false);
+			this.gBox_Kunden‹bersicht.ResumeLayout(false);
 			this.Bauvorhaben.ResumeLayout(false);
 			this.gbox_Vorgangstyp.ResumeLayout(false);
 			this.Positionen.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
 			this.Zahlung.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
-			this.‹bersicht.ResumeLayout(false);
-			this.gBox_Kunden‹bersicht.ResumeLayout(false);
-			this.gBox_Pos‹bersicht.ResumeLayout(false);
-			this.gBox_PosBeschr‰nken.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).EndInit();
 			this.ResumeLayout(false);
 
 		}
