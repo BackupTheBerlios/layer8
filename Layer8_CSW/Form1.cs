@@ -25,8 +25,10 @@
 // | Version 1.22b    | 17.11.03	   | 17:13	  | CSW			   |  Kleine Überarbeitung (Filtern -> Suchen) + Button + MessageBox
 // | Version 1.22c    | 17.11.03       | 21:12    | Casi           |  VorgaengeKunden dataSet erweitert um die Kundennamen
 // | Version 1.22d    | 18.11.03	   | 13:25	  | CSW			   |  Casi's Erweiterungen erweitert und eingepflegt, die Übersicht ist jetzt fast fertig (nur noch Kontext Menü fehlt)
-// | Version 1.23     | 20.11.03	   | 18:18	  | Casi			   |  Erste Druckmethoden eingefügt
+// | Version 1.23     | 20.11.03	   | 18:18	  | Casi		   |  Erste Druckmethoden eingefügt
+// | Version 1.24	  | 21.11.03	   | 17:34    | CSW			   |  Vorgangsnamen gebastelt und Nachkalkulation vorbereitet
 using System;
+using System.Text;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Collections;
@@ -249,6 +251,19 @@ namespace Layer8_CSW
 		private System.Windows.Forms.MenuItem menuDruckenPageSetup;
 		private System.Windows.Forms.MenuItem menuItem19;
 		private System.Windows.Forms.MenuItem menuDruckenPrint;
+		private System.Windows.Forms.TabPage Nachkalkulation;
+		private System.Windows.Forms.DataGrid DG_Nachkalkulation;
+		private System.Windows.Forms.TextBox txtBox_realMatKosten;
+		private System.Windows.Forms.TextBox txtBox_realLohnKosten;
+		private System.Windows.Forms.Label label36;
+		private System.Windows.Forms.Label label37;
+		private System.Windows.Forms.TextBox txtBox_realGesamtKosten;
+		private System.Windows.Forms.Label label38;
+		private System.Windows.Forms.TextBox txtBox_NettoRechbetrag;
+		private System.Windows.Forms.Label label39;
+		private System.Windows.Forms.Label label40;
+		private System.Windows.Forms.TextBox txtBox_Gewinn;
+		private System.Windows.Forms.Button button2;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -446,6 +461,7 @@ namespace Layer8_CSW
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.menuItem4 = new System.Windows.Forms.MenuItem();
 			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItem16 = new System.Windows.Forms.MenuItem();
 			this.menuItem6 = new System.Windows.Forms.MenuItem();
 			this.menuItem7 = new System.Windows.Forms.MenuItem();
 			this.menuItem8 = new System.Windows.Forms.MenuItem();
@@ -456,11 +472,23 @@ namespace Layer8_CSW
 			this.menuItem13 = new System.Windows.Forms.MenuItem();
 			this.menuItem14 = new System.Windows.Forms.MenuItem();
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
-			this.menuItem16 = new System.Windows.Forms.MenuItem();
 			this.menuItem17 = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPageSetup = new System.Windows.Forms.MenuItem();
 			this.menuItem19 = new System.Windows.Forms.MenuItem();
 			this.menuDruckenPrint = new System.Windows.Forms.MenuItem();
+			this.Nachkalkulation = new System.Windows.Forms.TabPage();
+			this.DG_Nachkalkulation = new System.Windows.Forms.DataGrid();
+			this.txtBox_realMatKosten = new System.Windows.Forms.TextBox();
+			this.txtBox_realLohnKosten = new System.Windows.Forms.TextBox();
+			this.label36 = new System.Windows.Forms.Label();
+			this.label37 = new System.Windows.Forms.Label();
+			this.txtBox_realGesamtKosten = new System.Windows.Forms.TextBox();
+			this.label38 = new System.Windows.Forms.Label();
+			this.txtBox_NettoRechbetrag = new System.Windows.Forms.TextBox();
+			this.label39 = new System.Windows.Forms.Label();
+			this.label40 = new System.Windows.Forms.Label();
+			this.txtBox_Gewinn = new System.Windows.Forms.TextBox();
+			this.button2 = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Zahlung.SuspendLayout();
@@ -474,6 +502,8 @@ namespace Layer8_CSW
 			this.gBox_PosÜbersicht.SuspendLayout();
 			this.gBox_PosBeschränken.SuspendLayout();
 			this.gBox_KundenÜbersicht.SuspendLayout();
+			this.Nachkalkulation.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.DG_Nachkalkulation)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -482,10 +512,11 @@ namespace Layer8_CSW
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.Kunde);
-			this.tabControl1.Controls.Add(this.Zahlung);
 			this.tabControl1.Controls.Add(this.Positionen);
+			this.tabControl1.Controls.Add(this.Zahlung);
 			this.tabControl1.Controls.Add(this.Bauvorhaben);
 			this.tabControl1.Controls.Add(this.Übersicht);
+			this.tabControl1.Controls.Add(this.Nachkalkulation);
 			this.tabControl1.Location = new System.Drawing.Point(16, 24);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
@@ -1352,6 +1383,7 @@ namespace Layer8_CSW
 			this.txtbox_VBezeichnung.Name = "txtbox_VBezeichnung";
 			this.txtbox_VBezeichnung.TabIndex = 11;
 			this.txtbox_VBezeichnung.Text = "";
+			this.txtbox_VBezeichnung.Leave += new System.EventHandler(this.txtbox_VBezeichnung_Leave);
 			// 
 			// gbox_Vorgangstyp
 			// 
@@ -1371,6 +1403,7 @@ namespace Layer8_CSW
 			this.radio_Rechnung.Name = "radio_Rechnung";
 			this.radio_Rechnung.TabIndex = 2;
 			this.radio_Rechnung.Text = "Rechnung";
+			this.radio_Rechnung.CheckedChanged += new System.EventHandler(this.radio_Rechnung_CheckedChanged);
 			// 
 			// radio_Angebot
 			// 
@@ -1380,6 +1413,7 @@ namespace Layer8_CSW
 			this.radio_Angebot.TabIndex = 1;
 			this.radio_Angebot.TabStop = true;
 			this.radio_Angebot.Text = "Angebot";
+			this.radio_Angebot.CheckedChanged += new System.EventHandler(this.radio_Angebot_CheckedChanged);
 			// 
 			// radio_Aufmaß
 			// 
@@ -1387,6 +1421,7 @@ namespace Layer8_CSW
 			this.radio_Aufmaß.Name = "radio_Aufmaß";
 			this.radio_Aufmaß.TabIndex = 0;
 			this.radio_Aufmaß.Text = "Aufmaß";
+			this.radio_Aufmaß.CheckedChanged += new System.EventHandler(this.radio_Aufmaß_CheckedChanged);
 			// 
 			// label20
 			// 
@@ -1924,6 +1959,11 @@ namespace Layer8_CSW
 			this.menuItem5.Index = 3;
 			this.menuItem5.Text = "Schließen";
 			// 
+			// menuItem16
+			// 
+			this.menuItem16.Index = 4;
+			this.menuItem16.Text = "";
+			// 
 			// menuItem6
 			// 
 			this.menuItem6.Index = 1;
@@ -1984,11 +2024,6 @@ namespace Layer8_CSW
 			this.menuItem15.Index = 3;
 			this.menuItem15.Text = "Löschen";
 			// 
-			// menuItem16
-			// 
-			this.menuItem16.Index = 4;
-			this.menuItem16.Text = "";
-			// 
 			// menuItem17
 			// 
 			this.menuItem17.Index = 3;
@@ -2002,7 +2037,6 @@ namespace Layer8_CSW
 			// 
 			this.menuDruckenPageSetup.Index = 0;
 			this.menuDruckenPageSetup.Text = "Page Setup";
-	
 			this.menuDruckenPageSetup.Click += new System.EventHandler(this.menuDruckenPageSetup_Click);
 			// 
 			// menuItem19
@@ -2015,6 +2049,117 @@ namespace Layer8_CSW
 			this.menuDruckenPrint.Index = 2;
 			this.menuDruckenPrint.Text = "Print";
 			this.menuDruckenPrint.Click += new System.EventHandler(this.menuDruckenPrint_Click);
+			// 
+			// Nachkalkulation
+			// 
+			this.Nachkalkulation.Controls.Add(this.button2);
+			this.Nachkalkulation.Controls.Add(this.txtBox_Gewinn);
+			this.Nachkalkulation.Controls.Add(this.label40);
+			this.Nachkalkulation.Controls.Add(this.label39);
+			this.Nachkalkulation.Controls.Add(this.txtBox_NettoRechbetrag);
+			this.Nachkalkulation.Controls.Add(this.label38);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realGesamtKosten);
+			this.Nachkalkulation.Controls.Add(this.label37);
+			this.Nachkalkulation.Controls.Add(this.label36);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realLohnKosten);
+			this.Nachkalkulation.Controls.Add(this.txtBox_realMatKosten);
+			this.Nachkalkulation.Controls.Add(this.DG_Nachkalkulation);
+			this.Nachkalkulation.Location = new System.Drawing.Point(4, 22);
+			this.Nachkalkulation.Name = "Nachkalkulation";
+			this.Nachkalkulation.Size = new System.Drawing.Size(988, 590);
+			this.Nachkalkulation.TabIndex = 5;
+			this.Nachkalkulation.Text = "Nachkalkulation";
+			// 
+			// DG_Nachkalkulation
+			// 
+			this.DG_Nachkalkulation.DataMember = "";
+			this.DG_Nachkalkulation.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.DG_Nachkalkulation.Location = new System.Drawing.Point(16, 192);
+			this.DG_Nachkalkulation.Name = "DG_Nachkalkulation";
+			this.DG_Nachkalkulation.Size = new System.Drawing.Size(944, 384);
+			this.DG_Nachkalkulation.TabIndex = 0;
+			// 
+			// txtBox_realMatKosten
+			// 
+			this.txtBox_realMatKosten.Location = new System.Drawing.Point(160, 24);
+			this.txtBox_realMatKosten.Name = "txtBox_realMatKosten";
+			this.txtBox_realMatKosten.TabIndex = 1;
+			this.txtBox_realMatKosten.Text = "";
+			// 
+			// txtBox_realLohnKosten
+			// 
+			this.txtBox_realLohnKosten.Location = new System.Drawing.Point(160, 56);
+			this.txtBox_realLohnKosten.Name = "txtBox_realLohnKosten";
+			this.txtBox_realLohnKosten.TabIndex = 2;
+			this.txtBox_realLohnKosten.Text = "";
+			// 
+			// label36
+			// 
+			this.label36.Location = new System.Drawing.Point(24, 24);
+			this.label36.Name = "label36";
+			this.label36.Size = new System.Drawing.Size(112, 23);
+			this.label36.TabIndex = 3;
+			this.label36.Text = "Reale Materialkosten";
+			// 
+			// label37
+			// 
+			this.label37.Location = new System.Drawing.Point(24, 56);
+			this.label37.Name = "label37";
+			this.label37.TabIndex = 4;
+			this.label37.Text = "Reale Lohnkosten";
+			// 
+			// txtBox_realGesamtKosten
+			// 
+			this.txtBox_realGesamtKosten.Location = new System.Drawing.Point(160, 88);
+			this.txtBox_realGesamtKosten.Name = "txtBox_realGesamtKosten";
+			this.txtBox_realGesamtKosten.TabIndex = 5;
+			this.txtBox_realGesamtKosten.Text = "";
+			// 
+			// label38
+			// 
+			this.label38.Location = new System.Drawing.Point(24, 88);
+			this.label38.Name = "label38";
+			this.label38.Size = new System.Drawing.Size(112, 23);
+			this.label38.TabIndex = 6;
+			this.label38.Text = "Reale Gesamtkosten";
+			// 
+			// txtBox_NettoRechbetrag
+			// 
+			this.txtBox_NettoRechbetrag.Location = new System.Drawing.Point(160, 120);
+			this.txtBox_NettoRechbetrag.Name = "txtBox_NettoRechbetrag";
+			this.txtBox_NettoRechbetrag.TabIndex = 7;
+			this.txtBox_NettoRechbetrag.Text = "";
+			// 
+			// label39
+			// 
+			this.label39.Location = new System.Drawing.Point(24, 120);
+			this.label39.Name = "label39";
+			this.label39.Size = new System.Drawing.Size(136, 23);
+			this.label39.TabIndex = 8;
+			this.label39.Text = "Rechnungsbetrag (Netto)";
+			// 
+			// label40
+			// 
+			this.label40.Location = new System.Drawing.Point(24, 152);
+			this.label40.Name = "label40";
+			this.label40.TabIndex = 9;
+			this.label40.Text = "Gewinn";
+			// 
+			// txtBox_Gewinn
+			// 
+			this.txtBox_Gewinn.Location = new System.Drawing.Point(160, 152);
+			this.txtBox_Gewinn.Name = "txtBox_Gewinn";
+			this.txtBox_Gewinn.TabIndex = 10;
+			this.txtBox_Gewinn.Text = "";
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(344, 40);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(128, 56);
+			this.button2.TabIndex = 11;
+			this.button2.Text = "button2";
+			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// MainFrame
 			// 
@@ -2040,6 +2185,8 @@ namespace Layer8_CSW
 			this.gBox_PosÜbersicht.ResumeLayout(false);
 			this.gBox_PosBeschränken.ResumeLayout(false);
 			this.gBox_KundenÜbersicht.ResumeLayout(false);
+			this.Nachkalkulation.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.DG_Nachkalkulation)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -3160,7 +3307,34 @@ namespace Layer8_CSW
 		
 		
 		}
-		
+
+		private void radio_Aufmaß_CheckedChanged(object sender, System.EventArgs e)
+		{
+		if(radio_Aufmaß.Checked==true)
+			VG.Vorgangstyp="AUF";
+		}
+
+		private void radio_Angebot_CheckedChanged(object sender, System.EventArgs e)
+		{
+			if(radio_Angebot.Checked==true)
+				VG.Vorgangstyp="ANG";
+		}
+
+		private void radio_Rechnung_CheckedChanged(object sender, System.EventArgs e)
+		{
+			if(radio_Rechnung.Checked==true)
+				VG.Vorgangstyp="RE";
+		}
+
+		private void button2_Click(object sender, System.EventArgs e)
+		{
+			VG.Vorgangsnamen_basteln();
+		}
+
+		private void txtbox_VBezeichnung_Leave(object sender, System.EventArgs e)
+		{
+			VG.Vorgangsbezeichnung =txtbox_VBezeichnung.Text;
+		}
 
 
 		
@@ -3435,14 +3609,14 @@ namespace Layer8_CSW
 		#region Öffentliche Variablen - Vorgang
 		// erstes Tab (Kunde)
 		public Kunde UnserKunde; //bzw alle seine Variablen
-
+		public string Vorgangstyp;
 		// drittes Tab (Positionen)
 		public Position aktPos;		//@Casi: Hier bitte die Daten reinrocken
 		public DataSet PosListe;	//Die DataSource für das NittyGrittyDataGriddy
 
-		// XML File: XML-Reader bzw. XML-Writer oder so ;-)
+		
 
-
+		public bool hat_Namen;
 		#endregion
 
 		#region Properties - Vorgang
@@ -3557,12 +3731,12 @@ namespace Layer8_CSW
 			m_MwSt=16m;
 			m_Dateiname="testDatei.xml";
 			m_Vorgangsnummer=1;
-			m_Vorgangsbezeichnung="Angebot";
+			m_Vorgangsbezeichnung="";
 			m_Rabatt=0m;
 			PosListe = new DataSet("PosListe");
 			InitializeDataSet();
-		
-			
+			Vorgangstyp="ANG";
+			hat_Namen = false;
 
 		}
 		#endregion
@@ -3588,9 +3762,11 @@ namespace Layer8_CSW
 
 	
 		public void XML_schreiben()  // Methode um alle aktuellen Daten in ein XML-Dokument zu schreiben - CSW 18.10.03 17:00
-		{	Betrag_berechnen();
+		{	string Datei = Vorgangsnamen_basteln();
+			
+			Betrag_berechnen();
 			PosListe.WriteXml(@"..\..\products.xml");	
-			XmlTextWriter W = new XmlTextWriter(@"..\..\KundeX.xml",null);
+			XmlTextWriter W = new XmlTextWriter(@"..\..\Daten\"+Datei,null);
 			XmlTextReader R = new XmlTextReader(@"..\..\products.xml");
 			R.Read();
 			R.Read();
@@ -3727,69 +3903,73 @@ namespace Layer8_CSW
 	
 		public void XML_lesen() // Methode um alle Daten einzulesen, hier brauchte ich dat DataBinding nochmal für alles - CSW 18.10.03 17:00
 		{
+				if (hat_Namen==true)
+			{
+				string Datei = Vorgangsnamen_basteln();
+				XmlTextReader R = new XmlTextReader(@"..\..\Daten\"+Datei);		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
 		
-			XmlTextReader R = new XmlTextReader(@"..\..\KundeX.xml");		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
+				R.Read();
+				R.Read();
+				R.Read();
+				R.Read();
+				R.Read(); //3 Reads bis Vorgang 4 reads liefern nix, 5 reads bis Kunde, 6 Reads bis zum Kuerzel 
+				R.Read();
+				// Hier sind alle Kundendaten
+				UnserKunde.Kuerzel = R.ReadElementString();
+				UnserKunde.Kundennummer = Convert.ToInt32(R.ReadElementString());
+				UnserKunde.Anrede = R.ReadElementString();
+				UnserKunde.NName = R.ReadElementString();
+				UnserKunde.VName = R.ReadElementString();
+				UnserKunde.Strasse = R.ReadElementString();
+				UnserKunde.PLZ = Convert.ToInt32(R.ReadElementString());
+				UnserKunde.Ort = R.ReadElementString();
+				UnserKunde.Telefonnummer =R.ReadElementString();
+				UnserKunde.Fax = R.ReadElementString();
+				UnserKunde.Email = R.ReadElementString();
+				R.Read();
+				R.Read();
+				R.Read();
+				R.Read();
+				// Hier sind alle Vorgangsdaten
+				Vorgangsbezeichnung= R.ReadElementString();	
+				Typ=R.ReadElementString();
+				Vorgangsnummer=Convert.ToInt32(R.ReadElementString());
+				Datum=Convert.ToDateTime(R.ReadElementString());
+				BauNName=R.ReadElementString();
+				BauVName=R.ReadElementString();
+				BauStrasse=R.ReadElementString();
+				BauPLZ=Convert.ToInt32(R.ReadElementString());
+				BauOrt=R.ReadElementString();
+				Netto=Convert.ToDecimal(R.ReadElementString());
+				MwSt=Convert.ToDecimal(R.ReadElementString());
+				Brutto = Convert.ToDecimal(R.ReadElementString());
+				Rabatt=Convert.ToDecimal(R.ReadElementString());
+				Dateiname=R.ReadElementString();
+				R.Read();
+				R.Read();
+				R.Read();
+				// Hier wird der Rest der Datei als String (inkl. Tags) ausgelesen
+				string Inhalt = R.ReadInnerXml();
+				// Der Reader wird geschlossen (sehr wichtig)
+				R.Close();
 		
-			R.Read();
-			R.Read();
-			R.Read();
-			R.Read();
-			R.Read(); //3 Reads bis Vorgang 4 reads liefern nix, 5 reads bis Kunde, 6 Reads bis zum Kuerzel 
-			R.Read();
-			// Hier sind alle Kundendaten
-			UnserKunde.Kuerzel = R.ReadElementString();
-			UnserKunde.Kundennummer = Convert.ToInt32(R.ReadElementString());
-			UnserKunde.Anrede = R.ReadElementString();
-			UnserKunde.NName = R.ReadElementString();
-			UnserKunde.VName = R.ReadElementString();
-			UnserKunde.Strasse = R.ReadElementString();
-			UnserKunde.PLZ = Convert.ToInt32(R.ReadElementString());
-			UnserKunde.Ort = R.ReadElementString();
-			UnserKunde.Telefonnummer =R.ReadElementString();
-			UnserKunde.Fax = R.ReadElementString();
-			UnserKunde.Email = R.ReadElementString();
-			R.Read();
-			R.Read();
-			R.Read();
-			R.Read();
-			// Hier sind alle Vorgangsdaten
-			Vorgangsbezeichnung= R.ReadElementString();	
-			Typ=R.ReadElementString();
-			Vorgangsnummer=Convert.ToInt32(R.ReadElementString());
-			Datum=Convert.ToDateTime(R.ReadElementString());
-			BauNName=R.ReadElementString();
-			BauVName=R.ReadElementString();
-			BauStrasse=R.ReadElementString();
-			BauPLZ=Convert.ToInt32(R.ReadElementString());
-			BauOrt=R.ReadElementString();
-			Netto=Convert.ToDecimal(R.ReadElementString());
-			MwSt=Convert.ToDecimal(R.ReadElementString());
-			Brutto = Convert.ToDecimal(R.ReadElementString());
-			Rabatt=Convert.ToDecimal(R.ReadElementString());
-			Dateiname=R.ReadElementString();
-			R.Read();
-			R.Read();
-			R.Read();
-			// Hier wird der Rest der Datei als String (inkl. Tags) ausgelesen
-			string Inhalt = R.ReadInnerXml();
-			// Der Reader wird geschlossen (sehr wichtig)
-			R.Close();
-		
-			// products.xml wird geschrieben
-			XmlTextWriter W = new XmlTextWriter(@"..\..\products.xml",null);
-			W.WriteStartDocument();
-			W.WriteStartElement("PosListe");	// das Stammelement muss manuell geschrieben werden, auch wenn es aus der anderen Datei mitkopiert werden könnte
-			W.WriteRaw(Inhalt);					// Der String wird roh hier reingeschrieben, ich hoffe die Strings sind immer lang genug, wenn der String zu lang würde gingen Element verloren, dann müssten wir uns was überlegen
-			W.WriteEndElement();
-			W.WriteEndDocument();
-			//auch den Writer schliessen, dat ist noch viel wichtiger !!
-			W.Close();
+				// products.xml wird geschrieben
+				XmlTextWriter W = new XmlTextWriter(@"..\..\products.xml",null);
+				W.WriteStartDocument();
+				W.WriteStartElement("PosListe");	// das Stammelement muss manuell geschrieben werden, auch wenn es aus der anderen Datei mitkopiert werden könnte
+				W.WriteRaw(Inhalt);					// Der String wird roh hier reingeschrieben, ich hoffe die Strings sind immer lang genug, wenn der String zu lang würde gingen Element verloren, dann müssten wir uns was überlegen
+				W.WriteEndElement();
+				W.WriteEndDocument();
+				//auch den Writer schliessen, dat ist noch viel wichtiger !!
+				W.Close();
 		
 
-			PosListe.Tables[0].Clear(); // Löscht vorher alle Zeilen aus der DataSet.DataTable, das bremst leider mal wieder das System, arrrgh
+				PosListe.Tables[0].Clear(); // Löscht vorher alle Zeilen aus der DataSet.DataTable, das bremst leider mal wieder das System, arrrgh
 
-			PosListe.ReadXml(@"..\..\products.xml");
-			MessageBox.Show("Einlesen abgeschlossen", "XML Lesevorgang"); // kommt nachher raus bzw. wird geändert
+				PosListe.ReadXml(@"..\..\products.xml");
+				MessageBox.Show("Einlesen abgeschlossen", "XML Lesevorgang"); // kommt nachher raus bzw. wird geändert
+			}
+		else MessageBox.Show (" Es ist kein Vorgang aktiviert", "Es ist ein 'unerwarteter' Fehler aufgetreten");
 
 		
 		}
@@ -3846,8 +4026,47 @@ namespace Layer8_CSW
 
 
 		public string Vorgangsnamen_basteln ()
-		{
-			return "hassenichtgesehen";
+		{StringBuilder Name;
+			StringBuilder Dummy;
+		 DateTime jetzt = DateTime.Now;
+		
+			if (hat_Namen == false)
+			{
+				hat_Namen=true;
+				Name = new StringBuilder(Vorgangstyp,80);
+				Name.Append("_");
+				Name.Append(UnserKunde.NName);
+				
+				Dummy = new StringBuilder(UnserKunde.VName);
+					if (Dummy.Length>1)
+					Dummy.Remove(1,Dummy.Length-1);
+            	Name.Append(Dummy.ToString());
+				Name.Append("_");
+				Name.Append(Vorgangsbezeichnung);
+				Name.Append("_");
+				Name.Replace(" ","");
+				Dummy= new StringBuilder(jetzt.ToString());
+                Dummy.Replace(" ","(");
+				Dummy.Append(")");
+				Name.Append(Dummy.ToString());
+				Name.Replace(".","");
+				Name.Replace(":","");
+				Name.Replace("?","");
+				Name.Replace("/","");
+				Name.Replace(@"\","");
+				Name.Replace("*","");
+				Name.Replace("'","");
+				Name.Replace("<","");
+				Name.Replace(">","");
+				Name.Replace("|","");
+				//MessageBox.Show(Name.ToString());
+				Name.Append(".xml");
+				Dateiname = Name.ToString();
+				return Dateiname;
+			}
+			else 
+				return Dateiname;
+			
 			// Frage: Wie bekommen wir den eindeutig ??
 		}
 
