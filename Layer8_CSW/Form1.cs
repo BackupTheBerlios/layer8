@@ -13,8 +13,14 @@
 // | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingef¸gt
 // | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
 // | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
-// | Version 1.16	  | 30.10.03	   | 20:00    | Casi		   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
-
+// | Version 1.17	  | 30.10.03	   | 23:56    | CH			   |  ComboBox "Anrede" wird nun auch in DB geschrieben
+// | Version 1.18	  | 03.11.03	   | 22:49    | CH			   |  Fehler korrigiert (Casi)
+// | Version 1.19	  | 05.11.03	   | 00:39    | CSW            |  ‹bersichtstabseite angelegt
+// | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbetr‰ge in den DataGrids haben jetzt ein W‰hrungsformat (und nur da)
+// | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der ‹bersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Men¸ verschwindet immer erst nach der 2.Auswahl
+// | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelˆst: W‰hrend des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
+// | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es g‰be System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
+// Testzeile
 
 using System;
 using System.Drawing;
@@ -23,7 +29,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.OleDb;
-
 
 using System.IO;
 using System.Xml;
@@ -167,10 +172,45 @@ namespace Layer8_CSW
 		private KundenVerzeichnis Verzeichnis;
 		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
 		private System.Windows.Forms.ListBox LBox_Kunde;
+		private System.Windows.Forms.Button button_allePositionen;
+		private System.Windows.Forms.TabPage ‹bersicht;
+		private System.Windows.Forms.GroupBox gBox_Kunden‹bersicht;
+		private System.Windows.Forms.GroupBox gBox_Pos‹bersicht;
+		private System.Windows.Forms.Button button_‹bersicht_Pos_Anzeigen;
+		private System.Windows.Forms.Button button_‹bersicht_alle_Kunden;
+		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.GroupBox gBox_PosBeschr‰nken;
+		private System.Windows.Forms.RadioButton radio_F;
+		private System.Windows.Forms.RadioButton radio_M;
+		private System.Windows.Forms.RadioButton radio_Z;
+		private System.Windows.Forms.DataGrid DG_‹bersicht;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle1;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn8;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn9;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn10;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn11;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn12;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn13;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn14;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle3;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle4;
+		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleKunden‹bersicht;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn15;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn16;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn17;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn18;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn19;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn20;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn21;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn22;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn23;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
+		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
+		private System.Windows.Forms.ContextMenu cMenu_KundenDG;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
-		
+
 		
 		
 		
@@ -208,6 +248,7 @@ namespace Layer8_CSW
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Configuration.AppSettingsReader configurationAppSettings = new System.Configuration.AppSettingsReader();
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainFrame));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.Kunde = new System.Windows.Forms.TabPage();
@@ -264,6 +305,7 @@ namespace Layer8_CSW
 			this.txtbox_VornameTab2 = new System.Windows.Forms.TextBox();
 			this.txtbox_NameTab2 = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
+			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
 			this.Pos_anlegen = new System.Windows.Forms.Button();
 			this.button_Flaeche = new System.Windows.Forms.Button();
@@ -308,6 +350,40 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
+			this.‹bersicht = new System.Windows.Forms.TabPage();
+			this.DG_‹bersicht = new System.Windows.Forms.DataGrid();
+			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
+			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn10 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn11 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn12 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn13 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn14 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTableStyle3 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTableStyle4 = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTableStyleKunden‹bersicht = new System.Windows.Forms.DataGridTableStyle();
+			this.dataGridTextBoxColumn15 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn16 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn17 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn18 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn25 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn21 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn19 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn20 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn22 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn23 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.dataGridTextBoxColumn24 = new System.Windows.Forms.DataGridTextBoxColumn();
+			this.gBox_Pos‹bersicht = new System.Windows.Forms.GroupBox();
+			this.gBox_PosBeschr‰nken = new System.Windows.Forms.GroupBox();
+			this.radio_Z = new System.Windows.Forms.RadioButton();
+			this.radio_M = new System.Windows.Forms.RadioButton();
+			this.radio_F = new System.Windows.Forms.RadioButton();
+			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
+			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
+			this.button4 = new System.Windows.Forms.Button();
+			this.button_‹bersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -316,6 +392,11 @@ namespace Layer8_CSW
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
 			this.Zahlung.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.‹bersicht.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).BeginInit();
+			this.gBox_Pos‹bersicht.SuspendLayout();
+			this.gBox_PosBeschr‰nken.SuspendLayout();
+			this.gBox_Kunden‹bersicht.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -327,6 +408,7 @@ namespace Layer8_CSW
 			this.tabControl1.Controls.Add(this.Bauvorhaben);
 			this.tabControl1.Controls.Add(this.Positionen);
 			this.tabControl1.Controls.Add(this.Zahlung);
+			this.tabControl1.Controls.Add(this.‹bersicht);
 			this.tabControl1.Location = new System.Drawing.Point(16, 24);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
@@ -445,6 +527,7 @@ namespace Layer8_CSW
 			this.cbox_Anrede.Size = new System.Drawing.Size(104, 21);
 			this.cbox_Anrede.TabIndex = 23;
 			this.cbox_Anrede.Text = "Herr";
+			this.cbox_Anrede.Leave += new System.EventHandler(this.cbox_Anrede_Leave);
 			// 
 			// txtbox_Name
 			// 
@@ -834,6 +917,7 @@ namespace Layer8_CSW
 			// 
 			// Positionen
 			// 
+			this.Positionen.Controls.Add(this.button_allePositionen);
 			this.Positionen.Controls.Add(this.pos_Speichern);
 			this.Positionen.Controls.Add(this.Pos_anlegen);
 			this.Positionen.Controls.Add(this.button_Flaeche);
@@ -862,6 +946,16 @@ namespace Layer8_CSW
 			this.Positionen.TabIndex = 1;
 			this.Positionen.Text = "Positionen";
 			this.Positionen.ToolTipText = "Hier finden sich die Rechnungspositionen";
+			// 
+			// button_allePositionen
+			// 
+			this.button_allePositionen.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.button_allePositionen.Location = new System.Drawing.Point(136, 40);
+			this.button_allePositionen.Name = "button_allePositionen";
+			this.button_allePositionen.Size = new System.Drawing.Size(30, 20);
+			this.button_allePositionen.TabIndex = 24;
+			this.button_allePositionen.Text = "...";
+			this.button_allePositionen.Click += new System.EventHandler(this.button_allePositionen_Click);
 			// 
 			// pos_Speichern
 			// 
@@ -1028,7 +1122,7 @@ namespace Layer8_CSW
 			// dataGridTextBoxColumn5
 			// 
 			this.dataGridTextBoxColumn5.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn5.Format = "";
+			this.dataGridTextBoxColumn5.Format = "C";
 			this.dataGridTextBoxColumn5.FormatInfo = null;
 			this.dataGridTextBoxColumn5.HeaderText = "Preis/Einheit";
 			this.dataGridTextBoxColumn5.MappingName = "Preis/Einheit";
@@ -1039,14 +1133,14 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn6.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
 			this.dataGridTextBoxColumn6.Format = "";
 			this.dataGridTextBoxColumn6.FormatInfo = null;
-			this.dataGridTextBoxColumn6.HeaderText = "Fl‰che";
+			this.dataGridTextBoxColumn6.HeaderText = "Fl‰che / Anzahl";
 			this.dataGridTextBoxColumn6.MappingName = "Fl‰che";
 			this.dataGridTextBoxColumn6.Width = 73;
 			// 
 			// dataGridTextBoxColumn7
 			// 
 			this.dataGridTextBoxColumn7.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn7.Format = "";
+			this.dataGridTextBoxColumn7.Format = "C";
 			this.dataGridTextBoxColumn7.FormatInfo = null;
 			this.dataGridTextBoxColumn7.HeaderText = "Gesamtpreis";
 			this.dataGridTextBoxColumn7.MappingName = "Gesamtpreis";
@@ -1146,7 +1240,7 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Posnummer
 			// 
-			this.txtbox_Posnummer.Location = new System.Drawing.Point(48, 40);
+			this.txtbox_Posnummer.Location = new System.Drawing.Point(24, 40);
 			this.txtbox_Posnummer.Name = "txtbox_Posnummer";
 			this.txtbox_Posnummer.Size = new System.Drawing.Size(112, 20);
 			this.txtbox_Posnummer.TabIndex = 1;
@@ -1275,6 +1369,306 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
+			// ‹bersicht
+			// 
+			this.‹bersicht.Controls.Add(this.DG_‹bersicht);
+			this.‹bersicht.Controls.Add(this.gBox_Pos‹bersicht);
+			this.‹bersicht.Controls.Add(this.gBox_Kunden‹bersicht);
+			this.‹bersicht.Location = new System.Drawing.Point(4, 22);
+			this.‹bersicht.Name = "‹bersicht";
+			this.‹bersicht.Size = new System.Drawing.Size(988, 590);
+			this.‹bersicht.TabIndex = 4;
+			this.‹bersicht.Text = "‹bersicht";
+			// 
+			// DG_‹bersicht
+			// 
+			this.DG_‹bersicht.DataMember = "";
+			this.DG_‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.DG_‹bersicht.Location = new System.Drawing.Point(16, 160);
+			this.DG_‹bersicht.Name = "DG_‹bersicht";
+			this.DG_‹bersicht.ReadOnly = true;
+			this.DG_‹bersicht.Size = new System.Drawing.Size(960, 416);
+			this.DG_‹bersicht.TabIndex = 2;
+			this.DG_‹bersicht.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
+																									 this.dataGridTableStyle1,
+																									 this.dataGridTableStyle3,
+																									 this.dataGridTableStyle4,
+																									 this.dataGridTableStyleKunden‹bersicht});
+			this.DG_‹bersicht.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DG_‹bersicht_MouseUp);
+			// 
+			// dataGridTableStyle1
+			// 
+			this.dataGridTableStyle1.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle1.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+																												  this.dataGridTextBoxColumn8,
+																												  this.dataGridTextBoxColumn9,
+																												  this.dataGridTextBoxColumn10,
+																												  this.dataGridTextBoxColumn11,
+																												  this.dataGridTextBoxColumn12,
+																												  this.dataGridTextBoxColumn13,
+																												  this.dataGridTextBoxColumn14});
+			this.dataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle1.MappingName = "MPos";
+			// 
+			// dataGridTextBoxColumn8
+			// 
+			this.dataGridTextBoxColumn8.Format = "";
+			this.dataGridTextBoxColumn8.FormatInfo = null;
+			this.dataGridTextBoxColumn8.HeaderText = ((string)(configurationAppSettings.GetValue("dataGridTextBoxColumn8.HeaderText", typeof(string))));
+			this.dataGridTextBoxColumn8.MappingName = "Posnummer";
+			this.dataGridTextBoxColumn8.Width = 50;
+			// 
+			// dataGridTextBoxColumn9
+			// 
+			this.dataGridTextBoxColumn9.Format = "";
+			this.dataGridTextBoxColumn9.FormatInfo = null;
+			this.dataGridTextBoxColumn9.HeaderText = "Kurztext";
+			this.dataGridTextBoxColumn9.MappingName = "Kurztext";
+			this.dataGridTextBoxColumn9.Width = 150;
+			// 
+			// dataGridTextBoxColumn10
+			// 
+			this.dataGridTextBoxColumn10.Format = "";
+			this.dataGridTextBoxColumn10.FormatInfo = null;
+			this.dataGridTextBoxColumn10.HeaderText = "Langtext";
+			this.dataGridTextBoxColumn10.MappingName = "Langtext";
+			this.dataGridTextBoxColumn10.Width = 400;
+			// 
+			// dataGridTextBoxColumn11
+			// 
+			this.dataGridTextBoxColumn11.Format = "C";
+			this.dataGridTextBoxColumn11.FormatInfo = null;
+			this.dataGridTextBoxColumn11.HeaderText = "Preis";
+			this.dataGridTextBoxColumn11.MappingName = "Preis";
+			this.dataGridTextBoxColumn11.Width = 75;
+			// 
+			// dataGridTextBoxColumn12
+			// 
+			this.dataGridTextBoxColumn12.Format = "";
+			this.dataGridTextBoxColumn12.FormatInfo = null;
+			this.dataGridTextBoxColumn12.HeaderText = "Einheit";
+			this.dataGridTextBoxColumn12.MappingName = "Einheit";
+			this.dataGridTextBoxColumn12.Width = 60;
+			// 
+			// dataGridTextBoxColumn13
+			// 
+			this.dataGridTextBoxColumn13.Format = "C";
+			this.dataGridTextBoxColumn13.FormatInfo = null;
+			this.dataGridTextBoxColumn13.HeaderText = "Materialkosten";
+			this.dataGridTextBoxColumn13.MappingName = "MKosten";
+			this.dataGridTextBoxColumn13.Width = 90;
+			// 
+			// dataGridTextBoxColumn14
+			// 
+			this.dataGridTextBoxColumn14.Format = "";
+			this.dataGridTextBoxColumn14.FormatInfo = null;
+			this.dataGridTextBoxColumn14.HeaderText = "Lohnkosten";
+			this.dataGridTextBoxColumn14.MappingName = "LKosten";
+			this.dataGridTextBoxColumn14.Width = 90;
+			// 
+			// dataGridTableStyle3
+			// 
+			this.dataGridTableStyle3.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle3.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle3.MappingName = "FPos";
+			// 
+			// dataGridTableStyle4
+			// 
+			this.dataGridTableStyle4.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyle4.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyle4.MappingName = "ZPos";
+			// 
+			// dataGridTableStyleKunden‹bersicht
+			// 
+			this.dataGridTableStyleKunden‹bersicht.DataGrid = this.DG_‹bersicht;
+			this.dataGridTableStyleKunden‹bersicht.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
+																																this.dataGridTextBoxColumn15,
+																																this.dataGridTextBoxColumn16,
+																																this.dataGridTextBoxColumn17,
+																																this.dataGridTextBoxColumn18,
+																																this.dataGridTextBoxColumn25,
+																																this.dataGridTextBoxColumn21,
+																																this.dataGridTextBoxColumn19,
+																																this.dataGridTextBoxColumn20,
+																																this.dataGridTextBoxColumn22,
+																																this.dataGridTextBoxColumn23,
+																																this.dataGridTextBoxColumn24});
+			this.dataGridTableStyleKunden‹bersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+			this.dataGridTableStyleKunden‹bersicht.MappingName = "Kunden";
+			// 
+			// dataGridTextBoxColumn15
+			// 
+			this.dataGridTextBoxColumn15.Format = "";
+			this.dataGridTextBoxColumn15.FormatInfo = null;
+			this.dataGridTextBoxColumn15.HeaderText = "KD-Nr.";
+			this.dataGridTextBoxColumn15.MappingName = "Kundennr";
+			this.dataGridTextBoxColumn15.Width = 40;
+			// 
+			// dataGridTextBoxColumn16
+			// 
+			this.dataGridTextBoxColumn16.Format = "";
+			this.dataGridTextBoxColumn16.FormatInfo = null;
+			this.dataGridTextBoxColumn16.HeaderText = "K¸rzel";
+			this.dataGridTextBoxColumn16.MappingName = "Kuerzel";
+			this.dataGridTextBoxColumn16.Width = 45;
+			// 
+			// dataGridTextBoxColumn17
+			// 
+			this.dataGridTextBoxColumn17.Format = "";
+			this.dataGridTextBoxColumn17.FormatInfo = null;
+			this.dataGridTextBoxColumn17.HeaderText = "Anrede";
+			this.dataGridTextBoxColumn17.MappingName = "Anrede";
+			this.dataGridTextBoxColumn17.Width = 55;
+			// 
+			// dataGridTextBoxColumn18
+			// 
+			this.dataGridTextBoxColumn18.Format = "";
+			this.dataGridTextBoxColumn18.FormatInfo = null;
+			this.dataGridTextBoxColumn18.HeaderText = "Name";
+			this.dataGridTextBoxColumn18.MappingName = "Name";
+			this.dataGridTextBoxColumn18.Width = 105;
+			// 
+			// dataGridTextBoxColumn25
+			// 
+			this.dataGridTextBoxColumn25.Format = "";
+			this.dataGridTextBoxColumn25.FormatInfo = null;
+			this.dataGridTextBoxColumn25.HeaderText = "Vorname";
+			this.dataGridTextBoxColumn25.MappingName = "Vorname";
+			this.dataGridTextBoxColumn25.Width = 80;
+			// 
+			// dataGridTextBoxColumn21
+			// 
+			this.dataGridTextBoxColumn21.Format = "";
+			this.dataGridTextBoxColumn21.FormatInfo = null;
+			this.dataGridTextBoxColumn21.HeaderText = "Strasse";
+			this.dataGridTextBoxColumn21.MappingName = "Strasse";
+			this.dataGridTextBoxColumn21.Width = 135;
+			// 
+			// dataGridTextBoxColumn19
+			// 
+			this.dataGridTextBoxColumn19.Format = "";
+			this.dataGridTextBoxColumn19.FormatInfo = null;
+			this.dataGridTextBoxColumn19.HeaderText = "PLZ";
+			this.dataGridTextBoxColumn19.MappingName = "PLZ";
+			this.dataGridTextBoxColumn19.Width = 45;
+			// 
+			// dataGridTextBoxColumn20
+			// 
+			this.dataGridTextBoxColumn20.Format = "";
+			this.dataGridTextBoxColumn20.FormatInfo = null;
+			this.dataGridTextBoxColumn20.HeaderText = "Ort";
+			this.dataGridTextBoxColumn20.MappingName = "Ort";
+			this.dataGridTextBoxColumn20.Width = 75;
+			// 
+			// dataGridTextBoxColumn22
+			// 
+			this.dataGridTextBoxColumn22.Format = "";
+			this.dataGridTextBoxColumn22.FormatInfo = null;
+			this.dataGridTextBoxColumn22.HeaderText = "Telefon";
+			this.dataGridTextBoxColumn22.MappingName = "Telefon";
+			this.dataGridTextBoxColumn22.Width = 102;
+			// 
+			// dataGridTextBoxColumn23
+			// 
+			this.dataGridTextBoxColumn23.Format = "";
+			this.dataGridTextBoxColumn23.FormatInfo = null;
+			this.dataGridTextBoxColumn23.HeaderText = "Fax";
+			this.dataGridTextBoxColumn23.MappingName = "Fax";
+			this.dataGridTextBoxColumn23.Width = 102;
+			// 
+			// dataGridTextBoxColumn24
+			// 
+			this.dataGridTextBoxColumn24.Format = "";
+			this.dataGridTextBoxColumn24.FormatInfo = null;
+			this.dataGridTextBoxColumn24.HeaderText = "eMail";
+			this.dataGridTextBoxColumn24.MappingName = "eMail";
+			this.dataGridTextBoxColumn24.Width = 125;
+			// 
+			// gBox_Pos‹bersicht
+			// 
+			this.gBox_Pos‹bersicht.Controls.Add(this.gBox_PosBeschr‰nken);
+			this.gBox_Pos‹bersicht.Controls.Add(this.button_‹bersicht_Pos_Anzeigen);
+			this.gBox_Pos‹bersicht.Location = new System.Drawing.Point(16, 16);
+			this.gBox_Pos‹bersicht.Name = "gBox_Pos‹bersicht";
+			this.gBox_Pos‹bersicht.Size = new System.Drawing.Size(456, 128);
+			this.gBox_Pos‹bersicht.TabIndex = 1;
+			this.gBox_Pos‹bersicht.TabStop = false;
+			this.gBox_Pos‹bersicht.Text = "Positions-‹bersicht";
+			// 
+			// gBox_PosBeschr‰nken
+			// 
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_Z);
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_M);
+			this.gBox_PosBeschr‰nken.Controls.Add(this.radio_F);
+			this.gBox_PosBeschr‰nken.Location = new System.Drawing.Point(264, 16);
+			this.gBox_PosBeschr‰nken.Name = "gBox_PosBeschr‰nken";
+			this.gBox_PosBeschr‰nken.Size = new System.Drawing.Size(176, 104);
+			this.gBox_PosBeschr‰nken.TabIndex = 1;
+			this.gBox_PosBeschr‰nken.TabStop = false;
+			this.gBox_PosBeschr‰nken.Text = "Beschr‰nkung auf:";
+			// 
+			// radio_Z
+			// 
+			this.radio_Z.Location = new System.Drawing.Point(24, 72);
+			this.radio_Z.Name = "radio_Z";
+			this.radio_Z.Size = new System.Drawing.Size(130, 24);
+			this.radio_Z.TabIndex = 2;
+			this.radio_Z.Text = "Z - Zusatzpositionen";
+			// 
+			// radio_M
+			// 
+			this.radio_M.Location = new System.Drawing.Point(24, 44);
+			this.radio_M.Name = "radio_M";
+			this.radio_M.Size = new System.Drawing.Size(100, 24);
+			this.radio_M.TabIndex = 1;
+			this.radio_M.Text = "M - Maurer";
+			// 
+			// radio_F
+			// 
+			this.radio_F.Checked = true;
+			this.radio_F.Location = new System.Drawing.Point(24, 16);
+			this.radio_F.Name = "radio_F";
+			this.radio_F.TabIndex = 0;
+			this.radio_F.TabStop = true;
+			this.radio_F.Text = "F - Fliesenleger";
+			// 
+			// button_‹bersicht_Pos_Anzeigen
+			// 
+			this.button_‹bersicht_Pos_Anzeigen.Location = new System.Drawing.Point(24, 24);
+			this.button_‹bersicht_Pos_Anzeigen.Name = "button_‹bersicht_Pos_Anzeigen";
+			this.button_‹bersicht_Pos_Anzeigen.Size = new System.Drawing.Size(216, 32);
+			this.button_‹bersicht_Pos_Anzeigen.TabIndex = 0;
+			this.button_‹bersicht_Pos_Anzeigen.Text = "Positionen Anzeigen";
+			this.button_‹bersicht_Pos_Anzeigen.Click += new System.EventHandler(this.button_‹bersicht_Pos_Anzeigen_Click);
+			// 
+			// gBox_Kunden‹bersicht
+			// 
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button4);
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_alle_Kunden);
+			this.gBox_Kunden‹bersicht.Location = new System.Drawing.Point(496, 16);
+			this.gBox_Kunden‹bersicht.Name = "gBox_Kunden‹bersicht";
+			this.gBox_Kunden‹bersicht.Size = new System.Drawing.Size(480, 128);
+			this.gBox_Kunden‹bersicht.TabIndex = 0;
+			this.gBox_Kunden‹bersicht.TabStop = false;
+			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
+			// 
+			// button4
+			// 
+			this.button4.Location = new System.Drawing.Point(24, 80);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(208, 32);
+			this.button4.TabIndex = 1;
+			this.button4.Text = "Alle Vorg‰nge anzeigen";
+			// 
+			// button_‹bersicht_alle_Kunden
+			// 
+			this.button_‹bersicht_alle_Kunden.Location = new System.Drawing.Point(24, 24);
+			this.button_‹bersicht_alle_Kunden.Name = "button_‹bersicht_alle_Kunden";
+			this.button_‹bersicht_alle_Kunden.Size = new System.Drawing.Size(208, 32);
+			this.button_‹bersicht_alle_Kunden.TabIndex = 0;
+			this.button_‹bersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
+			this.button_‹bersicht_alle_Kunden.Click += new System.EventHandler(this.button_‹bersicht_alle_Kunden_Click);
+			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1293,6 +1687,11 @@ namespace Layer8_CSW
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
 			this.Zahlung.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
+			this.‹bersicht.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.DG_‹bersicht)).EndInit();
+			this.gBox_Pos‹bersicht.ResumeLayout(false);
+			this.gBox_PosBeschr‰nken.ResumeLayout(false);
+			this.gBox_Kunden‹bersicht.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1305,7 +1704,6 @@ namespace Layer8_CSW
 		static void Main() 
 		{
 			Application.Run(new MainFrame());
-
 		   
 		}
 
@@ -1331,13 +1729,17 @@ namespace Layer8_CSW
 			TT_Kundenseite.ReshowDelay = 300;	//Zeitverzˆgerung zwischen Tooltips 2er verschiedener Elemente
 			// Force the ToolTip text to be displayed whether or not the form is active.
 			TT_Kundenseite.ShowAlways = true;
-      		// Set up the ToolTip text 
+			// Set up the ToolTip text 
 			TT_Kundenseite.SetToolTip(this.txtbox_K¸rzel, "Bitte das K¸rzel des Kunden angeben");
 			TT_Kundenseite.SetToolTip(this.txtbox_Kundennummer, "Die Kundennummer des aktuellen Kunden");
 			TT_Kundenseite.SetToolTip(this.txtbox_Name, "Der Nachname des aktuellen Kunden");
 			TT_Kundenseite.SetToolTip(this.txtbox_Vorname, "Der Vorname des aktuellen Kunden");
 			
+			// TableStyles f¸r das ‹bersichts-DataGrid, hab ich aus der Initialize Component kopiert
+			this.dataGridTableStyle3.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
+			this.dataGridTableStyle4.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			
+		
 		}
 
 
@@ -1430,9 +1832,10 @@ namespace Layer8_CSW
 					String kuerz;
 					kuerz = this.txtbox_K¸rzel.Text;
 				
-					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
-					if (VG.UnserKunde != null)
+					Kunde temp = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (temp != null)
 					{
+						VG.UnserKunde = temp;
 						kunde_Anzeigen(VG.UnserKunde);
 					}
 					else MessageBox.Show("Kunde nicht gefunden");
@@ -1663,8 +2066,9 @@ namespace Layer8_CSW
 				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
-				// UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);			Casi ich will sie haben!
-				// UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);		Casi ich will sie haben!
+				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
+				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
 				this.alle_kunden_textboxen_auf_read();
 				// }
 			}
@@ -1804,20 +2208,20 @@ namespace Layer8_CSW
 
 		private void dataGrid_Vorgang_DoubleClick(object sender, System.EventArgs e)//CSW - Update: 26.10.03
 		{
-				if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert w‰hrend noch eine Zeile bearbeitet wird.
-				{	
-					button_loeschen.Visible=true;
-					// ‹bernimmt die doppelt-geklickte Zeile als aktPos und lˆscht sie aus der PosListe
-					VG.Position_aus_Liste_‰ndern(DG_aktZeile);
-					// Formatierung ‰ndern, um die Zeile hervorzuheben
+			if (DG_Zeile_bearbeiten==false) //so ist der Doppelklick deaktiviert w‰hrend noch eine Zeile bearbeitet wird.
+			{	
+				button_loeschen.Visible=true;
+				// ‹bernimmt die doppelt-geklickte Zeile als aktPos und lˆscht sie aus der PosListe
+				VG.Position_aus_Liste_‰ndern(DG_aktZeile);
+				// Formatierung ‰ndern, um die Zeile hervorzuheben
 					
-					dataGridTableStyle2.SelectionBackColor=System.Drawing.Color.DarkRed;
-					dataGrid_Vorgang.Select(DG_aktZeile);
-					DG_Zeile_bearbeiten=true;
-					position_Anzeigen(VG.aktPos);
+				dataGridTableStyle2.SelectionBackColor=System.Drawing.Color.DarkRed;
+				dataGrid_Vorgang.Select(DG_aktZeile);
+				DG_Zeile_bearbeiten=true;
+				position_Anzeigen(VG.aktPos);
 
-					dataGrid_Vorgang.Enabled=false;
-				}
+				dataGrid_Vorgang.Enabled=false;
+			}
 		}
 
 		private bool Daten_in_aktPos_schreiben() //CSW - 23.10.03 01:01
@@ -1830,23 +2234,24 @@ namespace Layer8_CSW
 			VG.aktPos.Kurztext=txtbox_Kurztext.Text;
 			VG.aktPos.Langtext=txtbox_Langtext.Text;
 			try 
-				{	
+			{	
 				VG.aktPos.EPreis=Convert.ToDecimal(txtbox_Einzelpreis.Text);
-				}
+			}
 			catch	
-				{
+			{
 				MessageBox.Show("Den Preis bitte als Dezimal-Zahl angeben (z.B.: 10,50)", "Ein Fehler ist aufgetreten");
 				return false;
-				}
+			}
 
-			try {
+			try 
+			{
 				VG.aktPos.Flaeche=Convert.ToDouble(txtbox_Fl‰che.Text);
-				}
+			}
 			catch	
-				{	
+			{	
 				MessageBox.Show("Die Fl‰che bitte als Zahl in Quadratmeter angeben ", "Ein Fehler ist aufgetreten");
 				return false;
-				}
+			}
 			
 			VG.aktPos.GPreis= Convert.ToDecimal(VG.aktPos.Flaeche*(double)VG.aktPos.EPreis);
 			return true;
@@ -1869,8 +2274,9 @@ namespace Layer8_CSW
 				
 				}
 		
-				catch{
-						txtbox_Gesamtpreis.Text="";
+				catch
+				{
+					txtbox_Gesamtpreis.Text="";
 				}
 			}
 		}
@@ -1939,7 +2345,7 @@ namespace Layer8_CSW
 		{
 			Dialog_Fl‰che Dialog_F = new Dialog_Fl‰che();
 			Dialog_F.ShowDialog();				// Modale Darstellung
-
+			
 			if (Dialog_F.DialogResult==DialogResult.OK)		// Dialog ¸ber OK beendet
 			{	
 				string msg_boxFl‰che = "Folgende Fl‰che wurde eingeben: ";
@@ -2044,7 +2450,7 @@ namespace Layer8_CSW
 					
 					
 					this.Verzeichnis = UnsereDb.Kunde_suchen_nach_Name(name);
-//					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					//					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde ge‰ndert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
 					if (this.Verzeichnis.Count !=0 )
 					{
 						if (this.Verzeichnis.Count == 1)
@@ -2077,7 +2483,8 @@ namespace Layer8_CSW
 		*/
 
 		public void Kundenliste_anzeigen (KundenVerzeichnis Verzeichnis)
-		{	LBox_Kunde.Visible=true;
+		{
+				LBox_Kunde.Visible=true;
 			LBox_Kunde.Items.Clear();
 			for(int i=0;i< Verzeichnis.Count;i++)
 			{
@@ -2088,12 +2495,109 @@ namespace Layer8_CSW
 		}
 
 		private void LBox_Kunde_DoubleClick(object sender, System.EventArgs e)
-		{	int index = LBox_Kunde.SelectedIndex;
+		{
+				int index = LBox_Kunde.SelectedIndex;
 			VG.UnserKunde = Verzeichnis[index];
 			kunde_Anzeigen(VG.UnserKunde);
 			LBox_Kunde.Visible=false;
 		}
 
+		private void button_allePositionen_Click(object sender, System.EventArgs e)
+		{
+			Dialog_Positionen DialogPos = new Dialog_Positionen();
+			DialogPos.ShowDialog();
+
+		}
+
+		private void cbox_Anrede_Leave(object sender, System.EventArgs e)
+		{
+			if (this.bearbeiten_flag)
+			{
+				if (this.cbox_Anrede.SelectedIndex == 0)
+					VG.UnserKunde.Anrede = "Herr";
+				if (this.cbox_Anrede.SelectedIndex == 1)
+					VG.UnserKunde.Anrede = "Frau";
+				else if (this.cbox_Anrede.SelectedIndex == 2)
+					VG.UnserKunde.Anrede = "Firma";
+
+				this.kunde_Anzeigen(VG.UnserKunde);
+			}
+		}
+
+		private void button_‹bersicht_alle_Kunden_Click(object sender, System.EventArgs e)
+		{	// Statt einem DataSet ¸bernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
+			DG_‹bersicht.Enabled =false;
+			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+			KundenView.Sort="Kundennr";
+			DG_‹bersicht.SetDataBinding(KundenView,null);
+			DG_‹bersicht.Enabled =true;
+		}
+
+		private void button_‹bersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
+		{
+			if (radio_F.Checked)
+				DG_‹bersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"FPos");
+			else if (radio_M.Checked)
+				DG_‹bersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"MPos");
+			else
+				DG_‹bersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"ZPos");
+
+		}
+
+		private void DG_‹bersicht_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+					cMenu_KundenDG.MenuItems.Clear();
+				cMenu_KundenDG_Anlegen(); // Standard-Elemente
+				if(DG_‹bersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
+				{
+						
+					
+					cMenu_KundenDG.MenuItems.Add("-");
+					cMenu_KundenDG.MenuItems.Add("Position ¸bernehmen (Dummy)");
+				}
+				cMenu_KundenDG.Show(DG_‹bersicht,new Point(e.X,e.Y));
+			}
+		}
+
+		private void cMenu_KundenDG_Anlegen()
+		{
+		
+			cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_‹bersicht_alle_Kunden_Click));
+			cMenu_KundenDG.MenuItems.Add("-");
+			cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
+			cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
+			cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
+		}
+		
+		private void FPos_dummy(object sender, System.EventArgs e)
+		{
+			DG_‹bersicht.Enabled =false;
+			radio_F.Checked=true;
+			this.button_‹bersicht_Pos_Anzeigen_Click(sender, e);
+			DG_‹bersicht.Enabled =true;	
+
+		}
+		private void MPos_dummy(object sender, System.EventArgs e)
+		{
+			DG_‹bersicht.Enabled =false;
+			radio_M.Checked=true;
+			this.button_‹bersicht_Pos_Anzeigen_Click(sender, e);
+			DG_‹bersicht.Enabled =true;
+
+		}
+		private void ZPos_dummy(object sender, System.EventArgs e)
+		{
+				DG_‹bersicht.Enabled =false;
+			radio_Z.Checked=true;
+			this.button_‹bersicht_Pos_Anzeigen_Click(sender, e);
+			DG_‹bersicht.Enabled =true;
+			
+
+		}
+
+		
 	}
 
 
@@ -2330,621 +2834,621 @@ namespace Layer8_CSW
 	
 	
 	
-#endregion
-
-
-public class Vorgang
-{
-	#region Private Variablen - Vorgang
-	//allgemeine Variablen
-	private string m_Dateiname;
-	private DataRow bearbeiteteZeile;
-
-	// zweites Tab (Bauvorhaben)
-	private string m_Typ;
-	
-	private DateTime m_Datum; // Hier ein DatenFormat raussuchen und einf¸gen !!!
-	private string m_BauNName; // extra f¸r Hegi
-	private string m_BauVName;
-	private string m_BauStrasse;
-	private int m_BauPLZ;
-	private string m_BauOrt;
-	private int m_Vorgangsnummer;
-	private string m_Vorgangsbezeichnung; // evt. sowas wie Renovierung Umbau Sanierung oder so
-
-	// drittes Tab	(Positionen)
-			
-	private decimal m_Netto;
-	private decimal m_Brutto;
-	private decimal m_MwSt;
-	private int m_Rabatt;
-	// Zus‰tzlich die Variablen aus Position (Langtext/Kurztext/Preis/ etc.)
-
 	#endregion
+
+
+	public class Vorgang
+	{
+		#region Private Variablen - Vorgang
+		//allgemeine Variablen
+		private string m_Dateiname;
+		private DataRow bearbeiteteZeile;
+
+		// zweites Tab (Bauvorhaben)
+		private string m_Typ;
+	
+		private DateTime m_Datum; // Hier ein DatenFormat raussuchen und einf¸gen !!!
+		private string m_BauNName; // extra f¸r Hegi
+		private string m_BauVName;
+		private string m_BauStrasse;
+		private int m_BauPLZ;
+		private string m_BauOrt;
+		private int m_Vorgangsnummer;
+		private string m_Vorgangsbezeichnung; // evt. sowas wie Renovierung Umbau Sanierung oder so
+
+		// drittes Tab	(Positionen)
+			
+		private decimal m_Netto;
+		private decimal m_Brutto;
+		private decimal m_MwSt;
+		private int m_Rabatt;
+		// Zus‰tzlich die Variablen aus Position (Langtext/Kurztext/Preis/ etc.)
+
+		#endregion
 		 
-	#region ÷ffentliche Variablen - Vorgang
-	// erstes Tab (Kunde)
-	public Kunde UnserKunde; //bzw alle seine Variablen
+		#region ÷ffentliche Variablen - Vorgang
+		// erstes Tab (Kunde)
+		public Kunde UnserKunde; //bzw alle seine Variablen
 
-	// drittes Tab (Positionen)
-	public Position aktPos;		//@Casi: Hier bitte die Daten reinrocken
-	public DataSet PosListe;	//Die DataSource f¸r das NittyGrittyDataGriddy
+		// drittes Tab (Positionen)
+		public Position aktPos;		//@Casi: Hier bitte die Daten reinrocken
+		public DataSet PosListe;	//Die DataSource f¸r das NittyGrittyDataGriddy
 
-	// XML File: XML-Reader bzw. XML-Writer oder so ;-)
+		// XML File: XML-Reader bzw. XML-Writer oder so ;-)
 
 
-	#endregion
+		#endregion
 
-	#region Properties - Vorgang
+		#region Properties - Vorgang
 		
-	public string BauNName
-	{
-		get{return m_BauNName;}
-		set{this.m_BauNName=value;}
-	}
+		public string BauNName
+		{
+			get{return m_BauNName;}
+			set{this.m_BauNName=value;}
+		}
 
-	public string BauVName
-	{
-		get{return m_BauVName;}
-		set{this.m_BauVName=value;}
-	}
-	public string Typ
-	{
-		get {return m_Typ;}
-		set{this.m_Typ=value;}
-	}
+		public string BauVName
+		{
+			get{return m_BauVName;}
+			set{this.m_BauVName=value;}
+		}
+		public string Typ
+		{
+			get {return m_Typ;}
+			set{this.m_Typ=value;}
+		}
 		
-	public DateTime Datum // Hier ein DatenFormat raussuchen und einf¸gen !!!
-	{
-		get {return m_Datum;}
-		set {this.m_Datum=value;}
-	}
+		public DateTime Datum // Hier ein DatenFormat raussuchen und einf¸gen !!!
+		{
+			get {return m_Datum;}
+			set {this.m_Datum=value;}
+		}
 
-	public string BauStrasse
-	{
-		get {return m_BauStrasse;}
-		set{this.m_BauStrasse=value;}
-	}
+		public string BauStrasse
+		{
+			get {return m_BauStrasse;}
+			set{this.m_BauStrasse=value;}
+		}
 
-	public int BauPLZ
-	{
-		get {return m_BauPLZ;}
-		set{this.m_BauPLZ=value;}
-	}
+		public int BauPLZ
+		{
+			get {return m_BauPLZ;}
+			set{this.m_BauPLZ=value;}
+		}
 
-	public string BauOrt
-	{
-		get {return m_BauOrt;}
-		set{this.m_BauOrt=value;}
-	}
+		public string BauOrt
+		{
+			get {return m_BauOrt;}
+			set{this.m_BauOrt=value;}
+		}
 
-	public decimal Netto
-	{
-		get {return m_Netto;}
-		set{this.m_Netto=value;}
-	}
+		public decimal Netto
+		{
+			get {return m_Netto;}
+			set{this.m_Netto=value;}
+		}
 
-	public decimal Brutto
-	{
-		get {return m_Brutto;}
-		set{this.m_Brutto=value;}
-	}
+		public decimal Brutto
+		{
+			get {return m_Brutto;}
+			set{this.m_Brutto=value;}
+		}
 
-	public decimal MwSt
-	{
-		get {return m_MwSt;}
-		set{this.m_MwSt=value;}
-	}
+		public decimal MwSt
+		{
+			get {return m_MwSt;}
+			set{this.m_MwSt=value;}
+		}
 
-	public string Dateiname
-	{
-		get {return m_Dateiname;}
-		set{this.m_Dateiname=value;}
-	}
+		public string Dateiname
+		{
+			get {return m_Dateiname;}
+			set{this.m_Dateiname=value;}
+		}
 
-	public int Vorgangsnummer
-	{
-		get {return m_Vorgangsnummer;}
-		set {this.m_Vorgangsnummer=value;}
-	}
+		public int Vorgangsnummer
+		{
+			get {return m_Vorgangsnummer;}
+			set {this.m_Vorgangsnummer=value;}
+		}
 
-	public string Vorgangsbezeichnung
-	{
-		get {return m_Vorgangsbezeichnung ;}
-		set{this.m_Vorgangsbezeichnung=value;}
-	}
+		public string Vorgangsbezeichnung
+		{
+			get {return m_Vorgangsbezeichnung ;}
+			set{this.m_Vorgangsbezeichnung=value;}
+		}
 
-	public int Rabatt
-	{
-		get {return m_Rabatt;}
-		set{this.m_Rabatt=value;}
-	}
+		public int Rabatt
+		{
+			get {return m_Rabatt;}
+			set{this.m_Rabatt=value;}
+		}
 
 
-	#endregion
+		#endregion
 
-	#region Konstruktoren/Destruktoren - Vorgang
-	public Vorgang ()
-	{
-		m_Typ= "A";
-		UnserKunde = new Kunde();
-		aktPos = new Position();
+		#region Konstruktoren/Destruktoren - Vorgang
+		public Vorgang ()
+		{
+			m_Typ= "A";
+			UnserKunde = new Kunde();
+			aktPos = new Position();
 		
-		m_Datum= DateTime.Today; // Hier ein DatenFormat raussuchen und einf¸gen !!!
-		m_BauNName="na"; //damit es initialisiert wird und keinen Terror macht
-		m_BauVName="na";
-		m_BauStrasse="Baustrasse 15";
-		m_BauPLZ=49148;
-		m_BauOrt="Baustelle";
-		m_Netto= 10.5m;
-		m_Brutto=9.47m;
-		m_MwSt=1.65m;
-		m_Dateiname="testDatei.xml";
-		m_Vorgangsnummer=1;
-		m_Vorgangsbezeichnung="Angebot";
-		m_Rabatt=5;
-		PosListe = new DataSet("PosListe");
-		InitializeDataSet();
+			m_Datum= DateTime.Today; // Hier ein DatenFormat raussuchen und einf¸gen !!!
+			m_BauNName="na"; //damit es initialisiert wird und keinen Terror macht
+			m_BauVName="na";
+			m_BauStrasse="Baustrasse 15";
+			m_BauPLZ=49148;
+			m_BauOrt="Baustelle";
+			m_Netto= 10.5m;
+			m_Brutto=9.47m;
+			m_MwSt=1.65m;
+			m_Dateiname="testDatei.xml";
+			m_Vorgangsnummer=1;
+			m_Vorgangsbezeichnung="Angebot";
+			m_Rabatt=5;
+			PosListe = new DataSet("PosListe");
+			InitializeDataSet();
 		
 			
 
-	}
-	#endregion
+		}
+		#endregion
 
-	#region Funktionen - Vorgang
+		#region Funktionen - Vorgang
 		
-	private void InitializeDataSet() // CSW: Anlegen der Struktur des DataSets
-	{
+		private void InitializeDataSet() // CSW: Anlegen der Struktur des DataSets
+		{
 		
-		// Tabelle f¸rs DataSet anlegen
-		DataTable tblPos = new DataTable("Positionen");
+			// Tabelle f¸rs DataSet anlegen
+			DataTable tblPos = new DataTable("Positionen");
 			
-		tblPos.Columns.Add("Raum", typeof(System.String));
-		tblPos.Columns.Add("Position", typeof(System.String));
-		tblPos.Columns.Add("Kurztext", typeof(System.String));
-		tblPos.Columns.Add("Langtext", typeof(System.String));
-		tblPos.Columns.Add("Preis/Einheit", typeof(System.Decimal));
-		tblPos.Columns.Add("Fl‰che", typeof(System.Double));
-		tblPos.Columns.Add("Gesamtpreis", typeof(System.Decimal));
+			tblPos.Columns.Add("Raum", typeof(System.String));
+			tblPos.Columns.Add("Position", typeof(System.String));
+			tblPos.Columns.Add("Kurztext", typeof(System.String));
+			tblPos.Columns.Add("Langtext", typeof(System.String));
+			tblPos.Columns.Add("Preis/Einheit", typeof(System.Decimal));
+			tblPos.Columns.Add("Fl‰che", typeof(System.Double));
+			tblPos.Columns.Add("Gesamtpreis", typeof(System.Decimal));
 
-		this.PosListe.Tables.Add(tblPos);
-	}
+			this.PosListe.Tables.Add(tblPos);
+		}
 
 	
-	public void XML_schreiben()  // Methode um alle aktuellen Daten in ein XML-Dokument zu schreiben - CSW 18.10.03 17:00
-	{
-		PosListe.WriteXml(@"..\..\products.xml");	
-		XmlTextWriter W = new XmlTextWriter(@"..\..\KundeX.xml",null);
-		XmlTextReader R = new XmlTextReader(@"..\..\products.xml");
-		R.Read();
-		R.Read();
-		R.Read();
-		W.Formatting = Formatting.Indented; //Einr¸ckung festlegen
+		public void XML_schreiben()  // Methode um alle aktuellen Daten in ein XML-Dokument zu schreiben - CSW 18.10.03 17:00
+		{
+			PosListe.WriteXml(@"..\..\products.xml");	
+			XmlTextWriter W = new XmlTextWriter(@"..\..\KundeX.xml",null);
+			XmlTextReader R = new XmlTextReader(@"..\..\products.xml");
+			R.Read();
+			R.Read();
+			R.Read();
+			W.Formatting = Formatting.Indented; //Einr¸ckung festlegen
 		
-		W.WriteStartDocument();
+			W.WriteStartDocument();
 		
-		W.WriteStartElement("Vorgang");
+			W.WriteStartElement("Vorgang");
 			W.WriteStartElement("Kunde");
 
-				W.WriteStartElement("Kuerzel");
-				W.WriteString(UnserKunde.Kuerzel);
-				W.WriteEndElement();
+			W.WriteStartElement("Kuerzel");
+			W.WriteString(UnserKunde.Kuerzel);
+			W.WriteEndElement();
 				
-				W.WriteStartElement("Kundennummer");
-				W.WriteString(""+UnserKunde.Kundennummer);
-				W.WriteEndElement();	
+			W.WriteStartElement("Kundennummer");
+			W.WriteString(""+UnserKunde.Kundennummer);
+			W.WriteEndElement();	
 				
-				W.WriteStartElement("Anrede");
-				W.WriteString(UnserKunde.Anrede);
-				W.WriteEndElement();
+			W.WriteStartElement("Anrede");
+			W.WriteString(UnserKunde.Anrede);
+			W.WriteEndElement();
 				
-				W.WriteStartElement("Nachname");
-				W.WriteString(UnserKunde.NName);
-				W.WriteEndElement();
+			W.WriteStartElement("Nachname");
+			W.WriteString(UnserKunde.NName);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Vorname");
-				W.WriteString(UnserKunde.VName);
-				W.WriteEndElement();
+			W.WriteStartElement("Vorname");
+			W.WriteString(UnserKunde.VName);
+			W.WriteEndElement();
 		
-				W.WriteStartElement("Strasse");
-				W.WriteString(UnserKunde.Strasse);
-				W.WriteEndElement();
+			W.WriteStartElement("Strasse");
+			W.WriteString(UnserKunde.Strasse);
+			W.WriteEndElement();
 		
-				W.WriteStartElement("PLZ");
-				W.WriteString(""+UnserKunde.PLZ);
-				W.WriteEndElement();
+			W.WriteStartElement("PLZ");
+			W.WriteString(""+UnserKunde.PLZ);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Ort");
-				W.WriteString(UnserKunde.Ort);
-				W.WriteEndElement();
+			W.WriteStartElement("Ort");
+			W.WriteString(UnserKunde.Ort);
+			W.WriteEndElement();
 
 				
-				W.WriteStartElement("Telefon");
-				W.WriteString(UnserKunde.Telefonnummer);
-				W.WriteEndElement();
+			W.WriteStartElement("Telefon");
+			W.WriteString(UnserKunde.Telefonnummer);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Fax");
-				W.WriteString(UnserKunde.Fax);
-				W.WriteEndElement();
+			W.WriteStartElement("Fax");
+			W.WriteString(UnserKunde.Fax);
+			W.WriteEndElement();
 
-				W.WriteStartElement("eMail");
-				W.WriteString(UnserKunde.Email);
-				W.WriteEndElement();
+			W.WriteStartElement("eMail");
+			W.WriteString(UnserKunde.Email);
+			W.WriteEndElement();
 
 			W.WriteEndElement();
 		
 			W.WriteStartElement("Bauvorhaben");
 			
-				W.WriteStartElement("Vorgangsbezeichnung");
-				W.WriteString(Vorgangsbezeichnung);
-				W.WriteEndElement();
+			W.WriteStartElement("Vorgangsbezeichnung");
+			W.WriteString(Vorgangsbezeichnung);
+			W.WriteEndElement();
 		
-				W.WriteStartElement("Typ");
-				W.WriteString(Typ);
-				W.WriteEndElement();
+			W.WriteStartElement("Typ");
+			W.WriteString(Typ);
+			W.WriteEndElement();
 		
-				W.WriteStartElement("Vorgangsnummer");
-				W.WriteString(""+Vorgangsnummer);
-				W.WriteEndElement();
+			W.WriteStartElement("Vorgangsnummer");
+			W.WriteString(""+Vorgangsnummer);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Datum");
-				string Datumstring = Convert.ToString(Datum);
-				W.WriteString(Datumstring);
-				W.WriteEndElement();
+			W.WriteStartElement("Datum");
+			string Datumstring = Convert.ToString(Datum);
+			W.WriteString(Datumstring);
+			W.WriteEndElement();
 
-				W.WriteStartElement("BauNName");
-				W.WriteString(BauNName);
-				W.WriteEndElement();
+			W.WriteStartElement("BauNName");
+			W.WriteString(BauNName);
+			W.WriteEndElement();
 
-				W.WriteStartElement("BauVName");
-				W.WriteString(BauVName);
-				W.WriteEndElement();
+			W.WriteStartElement("BauVName");
+			W.WriteString(BauVName);
+			W.WriteEndElement();
 
-				W.WriteStartElement("BauStrasse");
-				W.WriteString(BauStrasse);
-				W.WriteEndElement();
+			W.WriteStartElement("BauStrasse");
+			W.WriteString(BauStrasse);
+			W.WriteEndElement();
 
-				W.WriteStartElement("BauPLZ");
-				W.WriteString(""+BauPLZ);
-				W.WriteEndElement();
+			W.WriteStartElement("BauPLZ");
+			W.WriteString(""+BauPLZ);
+			W.WriteEndElement();
 
-				W.WriteStartElement("BauOrt");
-				W.WriteString(BauOrt);
-				W.WriteEndElement();
+			W.WriteStartElement("BauOrt");
+			W.WriteString(BauOrt);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Netto");
-				W.WriteString(""+Netto);
-				W.WriteEndElement();
+			W.WriteStartElement("Netto");
+			W.WriteString(""+Netto);
+			W.WriteEndElement();
 				
-				W.WriteStartElement("MwSt");
-				W.WriteString(""+MwSt);
-				W.WriteEndElement();
+			W.WriteStartElement("MwSt");
+			W.WriteString(""+MwSt);
+			W.WriteEndElement();
 
-				W.WriteStartElement("Brutto");
-				W.WriteString(""+Brutto);
-				W.WriteEndElement();
+			W.WriteStartElement("Brutto");
+			W.WriteString(""+Brutto);
+			W.WriteEndElement();
 
 
-				W.WriteStartElement("Rabatt");
-				W.WriteString(""+Rabatt);
-				W.WriteEndElement();
+			W.WriteStartElement("Rabatt");
+			W.WriteString(""+Rabatt);
+			W.WriteEndElement();
 	
 
-				W.WriteStartElement("Dateiname");
-				W.WriteString(Dateiname);
-				W.WriteEndElement();
+			W.WriteStartElement("Dateiname");
+			W.WriteString(Dateiname);
+			W.WriteEndElement();
 
 			W.WriteEndElement();
 			
 			W.WriteNode(R,false); // Die PosListe wird eingelesen
 		
-		W.WriteEndElement();
-		W.WriteEndDocument();
-		W.Close();
-		R.Close();
-		MessageBox.Show("Speichern abgeschlossen", "XML Schreibvorgang");
-		// Schreiben des DataSets 
+			W.WriteEndElement();
+			W.WriteEndDocument();
+			W.Close();
+			R.Close();
+			MessageBox.Show("Speichern abgeschlossen", "XML Schreibvorgang");
+			// Schreiben des DataSets 
 	
 		
-	}
+		}
 
 	
-	public void XML_lesen() // Methode um alle Daten einzulesen, hier brauchte ich dat DataBinding nochmal f¸r alles - CSW 18.10.03 17:00
-	{
+		public void XML_lesen() // Methode um alle Daten einzulesen, hier brauchte ich dat DataBinding nochmal f¸r alles - CSW 18.10.03 17:00
+		{
 		
-		XmlTextReader R = new XmlTextReader(@"..\..\KundeX.xml");		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
+			XmlTextReader R = new XmlTextReader(@"..\..\KundeX.xml");		// genau wie beim Schreiben nur sind die Dateinamen vertauscht, die Positionen werden nachher in products.xml geschrieben und am Ende der Methode ins DataSet gelesen
 		
-		R.Read();
-		R.Read();
-		R.Read();
-		R.Read();
-		R.Read(); //3 Reads bis Vorgang 4 reads liefern nix, 5 reads bis Kunde, 6 Reads bis zum Kuerzel 
-		R.Read();
-		// Hier sind alle Kundendaten
-		UnserKunde.Kuerzel = R.ReadElementString();
-		UnserKunde.Kundennummer = Convert.ToInt32(R.ReadElementString());
-		UnserKunde.Anrede = R.ReadElementString();
-		UnserKunde.NName = R.ReadElementString();
-		UnserKunde.VName = R.ReadElementString();
-		UnserKunde.Strasse = R.ReadElementString();
-		UnserKunde.PLZ = Convert.ToInt32(R.ReadElementString());
-		UnserKunde.Ort = R.ReadElementString();
-		UnserKunde.Telefonnummer =R.ReadElementString();
-		UnserKunde.Fax = R.ReadElementString();
-		UnserKunde.Email = R.ReadElementString();
-		R.Read();
-		R.Read();
-		R.Read();
-		R.Read();
-		// Hier sind alle Vorgangsdaten
-		Vorgangsbezeichnung= R.ReadElementString();	
-		Typ=R.ReadElementString();
-		Vorgangsnummer=Convert.ToInt32(R.ReadElementString());
-		Datum=Convert.ToDateTime(R.ReadElementString());
-		BauNName=R.ReadElementString();
-		BauVName=R.ReadElementString();
-		BauStrasse=R.ReadElementString();
-		BauPLZ=Convert.ToInt32(R.ReadElementString());
-		BauOrt=R.ReadElementString();
-		Netto=Convert.ToDecimal(R.ReadElementString());
-		MwSt=Convert.ToDecimal(R.ReadElementString());
-		Brutto = Convert.ToDecimal(R.ReadElementString());
-		Rabatt=Convert.ToInt32(R.ReadElementString());
-		Dateiname=R.ReadElementString();
-		R.Read();
-		R.Read();
-		R.Read();
-		// Hier wird der Rest der Datei als String (inkl. Tags) ausgelesen
-		string Inhalt = R.ReadInnerXml();
-		// Der Reader wird geschlossen (sehr wichtig)
-		R.Close();
+			R.Read();
+			R.Read();
+			R.Read();
+			R.Read();
+			R.Read(); //3 Reads bis Vorgang 4 reads liefern nix, 5 reads bis Kunde, 6 Reads bis zum Kuerzel 
+			R.Read();
+			// Hier sind alle Kundendaten
+			UnserKunde.Kuerzel = R.ReadElementString();
+			UnserKunde.Kundennummer = Convert.ToInt32(R.ReadElementString());
+			UnserKunde.Anrede = R.ReadElementString();
+			UnserKunde.NName = R.ReadElementString();
+			UnserKunde.VName = R.ReadElementString();
+			UnserKunde.Strasse = R.ReadElementString();
+			UnserKunde.PLZ = Convert.ToInt32(R.ReadElementString());
+			UnserKunde.Ort = R.ReadElementString();
+			UnserKunde.Telefonnummer =R.ReadElementString();
+			UnserKunde.Fax = R.ReadElementString();
+			UnserKunde.Email = R.ReadElementString();
+			R.Read();
+			R.Read();
+			R.Read();
+			R.Read();
+			// Hier sind alle Vorgangsdaten
+			Vorgangsbezeichnung= R.ReadElementString();	
+			Typ=R.ReadElementString();
+			Vorgangsnummer=Convert.ToInt32(R.ReadElementString());
+			Datum=Convert.ToDateTime(R.ReadElementString());
+			BauNName=R.ReadElementString();
+			BauVName=R.ReadElementString();
+			BauStrasse=R.ReadElementString();
+			BauPLZ=Convert.ToInt32(R.ReadElementString());
+			BauOrt=R.ReadElementString();
+			Netto=Convert.ToDecimal(R.ReadElementString());
+			MwSt=Convert.ToDecimal(R.ReadElementString());
+			Brutto = Convert.ToDecimal(R.ReadElementString());
+			Rabatt=Convert.ToInt32(R.ReadElementString());
+			Dateiname=R.ReadElementString();
+			R.Read();
+			R.Read();
+			R.Read();
+			// Hier wird der Rest der Datei als String (inkl. Tags) ausgelesen
+			string Inhalt = R.ReadInnerXml();
+			// Der Reader wird geschlossen (sehr wichtig)
+			R.Close();
 		
-		// products.xml wird geschrieben
-		XmlTextWriter W = new XmlTextWriter(@"..\..\products.xml",null);
-		W.WriteStartDocument();
-		W.WriteStartElement("PosListe");	// das Stammelement muss manuell geschrieben werden, auch wenn es aus der anderen Datei mitkopiert werden kˆnnte
-		W.WriteRaw(Inhalt);					// Der String wird roh hier reingeschrieben, ich hoffe die Strings sind immer lang genug, wenn der String zu lang w¸rde gingen Element verloren, dann m¸ssten wir uns was ¸berlegen
-		W.WriteEndElement();
-		W.WriteEndDocument();
-		//auch den Writer schliessen, dat ist noch viel wichtiger !!
-		W.Close();
+			// products.xml wird geschrieben
+			XmlTextWriter W = new XmlTextWriter(@"..\..\products.xml",null);
+			W.WriteStartDocument();
+			W.WriteStartElement("PosListe");	// das Stammelement muss manuell geschrieben werden, auch wenn es aus der anderen Datei mitkopiert werden kˆnnte
+			W.WriteRaw(Inhalt);					// Der String wird roh hier reingeschrieben, ich hoffe die Strings sind immer lang genug, wenn der String zu lang w¸rde gingen Element verloren, dann m¸ssten wir uns was ¸berlegen
+			W.WriteEndElement();
+			W.WriteEndDocument();
+			//auch den Writer schliessen, dat ist noch viel wichtiger !!
+			W.Close();
 		
 
-		PosListe.Tables[0].Clear(); // Lˆscht vorher alle Zeilen aus der DataSet.DataTable, das bremst leider mal wieder das System, arrrgh
+			PosListe.Tables[0].Clear(); // Lˆscht vorher alle Zeilen aus der DataSet.DataTable, das bremst leider mal wieder das System, arrrgh
 
-		PosListe.ReadXml(@"..\..\products.xml");
-		MessageBox.Show("Einlesen abgeschlossen", "XML Lesevorgang"); // kommt nachher raus bzw. wird ge‰ndert
+			PosListe.ReadXml(@"..\..\products.xml");
+			MessageBox.Show("Einlesen abgeschlossen", "XML Lesevorgang"); // kommt nachher raus bzw. wird ge‰ndert
 
 		
-	}
+		}
 
 
-	public void Daten_hinzufuegen() //CSW - 23.10.03 01:02 (UPDATE)
-	{	// Das ist die Kurzform von dem was dann drunter steht
-		DataRow r = PosListe.Tables[0].Rows.Add(new object[]{aktPos.Raum,aktPos.Positionsnummer,aktPos.Kurztext,aktPos.Langtext,aktPos.EPreis,aktPos.Flaeche,aktPos.GPreis});
+		public void Daten_hinzufuegen() //CSW - 23.10.03 01:02 (UPDATE)
+		{	// Das ist die Kurzform von dem was dann drunter steht
+			DataRow r = PosListe.Tables[0].Rows.Add(new object[]{aktPos.Raum,aktPos.Positionsnummer,aktPos.Kurztext,aktPos.Langtext,aktPos.EPreis,aktPos.Flaeche,aktPos.GPreis});
 				
 
 
-					//		// Ist nur Copy&Paste&Assimilate
-					//		DataRowCollection rc; 
-					//		DataRow myNewRow;
-					//		// ein Array f¸r die 7 Spalten
-					//		rc =PosListe.Tables[0].Rows;
-					//		object[] rowVals = new object[7];
-					//		
-					//		rowVals[0] = aktPos.Raum;
-					//		rowVals[1] = aktPos.Positionsnummer;
-					//		rowVals[2] = aktPos.Kurztext;
-					//		rowVals[3] = aktPos.Langtext;
-					//		rowVals[4] = aktPos.EPreis;
-					//		rowVals[5] = aktPos.Flaeche;
-					//		rowVals[6] = aktPos.GPreis;
-					//		// Add and return the new row.
-					//		myNewRow = rc.Add(rowVals);			
-	}
+			//		// Ist nur Copy&Paste&Assimilate
+			//		DataRowCollection rc; 
+			//		DataRow myNewRow;
+			//		// ein Array f¸r die 7 Spalten
+			//		rc =PosListe.Tables[0].Rows;
+			//		object[] rowVals = new object[7];
+			//		
+			//		rowVals[0] = aktPos.Raum;
+			//		rowVals[1] = aktPos.Positionsnummer;
+			//		rowVals[2] = aktPos.Kurztext;
+			//		rowVals[3] = aktPos.Langtext;
+			//		rowVals[4] = aktPos.EPreis;
+			//		rowVals[5] = aktPos.Flaeche;
+			//		rowVals[6] = aktPos.GPreis;
+			//		// Add and return the new row.
+			//		myNewRow = rc.Add(rowVals);			
+		}
 
 		
-	public void Daten_wiedereinf¸gen() //CSW - 25.10.03 01:02 
-	{			
-		// an der Position, an der die Position auch vorher stand werden die einzelnen Spalten ge‰ndert
+		public void Daten_wiedereinf¸gen() //CSW - 25.10.03 01:02 
+		{			
+			// an der Position, an der die Position auch vorher stand werden die einzelnen Spalten ge‰ndert
 									
-					bearbeiteteZeile[0]=aktPos.Raum;
-					bearbeiteteZeile[1]=aktPos.Positionsnummer;
-					bearbeiteteZeile[2]=aktPos.Kurztext;
-					bearbeiteteZeile[3]=aktPos.Langtext;
-					bearbeiteteZeile[4]=aktPos.EPreis;
-					bearbeiteteZeile[5]=aktPos.Flaeche;
-					bearbeiteteZeile[6]=aktPos.GPreis;
+			bearbeiteteZeile[0]=aktPos.Raum;
+			bearbeiteteZeile[1]=aktPos.Positionsnummer;
+			bearbeiteteZeile[2]=aktPos.Kurztext;
+			bearbeiteteZeile[3]=aktPos.Langtext;
+			bearbeiteteZeile[4]=aktPos.EPreis;
+			bearbeiteteZeile[5]=aktPos.Flaeche;
+			bearbeiteteZeile[6]=aktPos.GPreis;
 					
-	}
+		}
 
 
 
 
-	public bool speichern ()
-	{
-		return true;
-		// laut Brainstorming war hier Vorgang X als Parameter geplant, 
-		// hab keine Verwendung daf¸r gehabt
-	}
+		public bool speichern ()
+		{
+			return true;
+			// laut Brainstorming war hier Vorgang X als Parameter geplant, 
+			// hab keine Verwendung daf¸r gehabt
+		}
 
 
-	public string Vorgangsnamen_basteln ()
-	{
-		return "hassenichtgesehen";
-		// Frage: Wie bekommen wir den eindeutig ??
-	}
+		public string Vorgangsnamen_basteln ()
+		{
+			return "hassenichtgesehen";
+			// Frage: Wie bekommen wir den eindeutig ??
+		}
 
 	
-	public bool ˆffnen (string DatName)
-	{
-		return true;
-	}
+		public bool ˆffnen (string DatName)
+		{
+			return true;
+		}
 
 
-	public void Rechnung_erstellen (Vorgang X)
-	{
-		// Hier weiﬂ ich auch nicht was dat soll, wenn es sich nicht auf "this" bezieht
-		// Wenn es ne Klassenfunktion werden soll, m¸ssen wir es noch static machen
-	}
+		public void Rechnung_erstellen (Vorgang X)
+		{
+			// Hier weiﬂ ich auch nicht was dat soll, wenn es sich nicht auf "this" bezieht
+			// Wenn es ne Klassenfunktion werden soll, m¸ssen wir es noch static machen
+		}
 
 
-	public void Vorgang_drucken ()
-	{
-		// Ich bezweifle zwar, dat wir dazu ne Methode brauchen, aber drin ist sie schon mal
-	}
+		public void Vorgang_drucken ()
+		{
+			// Ich bezweifle zwar, dat wir dazu ne Methode brauchen, aber drin ist sie schon mal
+		}
 		
 
-	public void Angebot_erstellen()
-	{
-	}
+		public void Angebot_erstellen()
+		{
+		}
 	
 
-	public void Aufmass_erstellen()
-	{
-	}
+		public void Aufmass_erstellen()
+		{
+		}
 	
 
-	public void Relation_in_DB ()
-	{
-		// Die Verbindung Kunde-Vorgang muss ja irgendwo gespeichert werden
+		public void Relation_in_DB ()
+		{
+			// Die Verbindung Kunde-Vorgang muss ja irgendwo gespeichert werden
+		}
+
+
+		public void Position_aus_Liste_‰ndern (int Zeile)//CSW - 23.10.03 01:02
+		{
+			// Bekommt den Index einer Zeile des DataSets/DataGrids, liest die einzelnen Werte aus und lˆscht dann die Zeile aus der Tabelle
+			// In der n‰chsten Version f¸gt er sie evt auch da wieder ein, wo sie hingehˆrt. (Mal sehen ob dat geht)
+			// Update: wurde realisiert !
+			// Diese Methode stellt nur die Daten aus der DataGrid Zeile dar.
+
+			DataRow R =PosListe.Tables[0].Rows[Zeile];
+			aktPos.Raum = Convert.ToString(R[0]);
+			aktPos.Positionsnummer = Convert.ToString(R[1]);
+			aktPos.Kurztext=Convert.ToString(R[2]);
+			aktPos.Langtext=Convert.ToString(R[3]);
+			aktPos.EPreis=Convert.ToDecimal(R[4]);
+			aktPos.Flaeche=Convert.ToDouble(R[5]);
+			aktPos.GPreis=Convert.ToDecimal(R[6]);
+
+			bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
+		}
+
+		public void Position_aus_Liste_lˆschen()
+		{
+			bearbeiteteZeile.Delete();
+		}
+
+		#endregion
 	}
 
 
-	public void Position_aus_Liste_‰ndern (int Zeile)//CSW - 23.10.03 01:02
+
+	public class Position
 	{
-		// Bekommt den Index einer Zeile des DataSets/DataGrids, liest die einzelnen Werte aus und lˆscht dann die Zeile aus der Tabelle
-		// In der n‰chsten Version f¸gt er sie evt auch da wieder ein, wo sie hingehˆrt. (Mal sehen ob dat geht)
-		// Update: wurde realisiert !
-		// Diese Methode stellt nur die Daten aus der DataGrid Zeile dar.
-
-		DataRow R =PosListe.Tables[0].Rows[Zeile];
-		aktPos.Raum = Convert.ToString(R[0]);
-		aktPos.Positionsnummer = Convert.ToString(R[1]);
-		aktPos.Kurztext=Convert.ToString(R[2]);
-		aktPos.Langtext=Convert.ToString(R[3]);
-		aktPos.EPreis=Convert.ToDecimal(R[4]);
-		aktPos.Flaeche=Convert.ToDouble(R[5]);
-		aktPos.GPreis=Convert.ToDecimal(R[6]);
-
-		bearbeiteteZeile= PosListe.Tables[0].Rows[Zeile];
-	}
-
-	public void Position_aus_Liste_lˆschen()
-	{
-	bearbeiteteZeile.Delete();
-	}
-
-	#endregion
-}
-
-
-
-public class Position
-{
-	#region Private Variablen - Position
-	private string m_Raum;
-	private double m_Flaeche;
-	private string m_Positionsnummer; 		// definiert die DB (M|F|Z)
+		#region Private Variablen - Position
+		private string m_Raum;
+		private double m_Flaeche;
+		private string m_Positionsnummer; 		// definiert die DB (M|F|Z)
 	
-	private string m_Kurztext;
-	private string m_Langtext;
-	private decimal m_EPreis;
-	private decimal m_GPreis; // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
-	private string m_Einheit;
-	private	decimal m_realMatKosten;
-	private decimal m_realLohnKosten;
-	private decimal m_realGesamtKosten; 		//= Fl‰che*(realMatKosten+realLohnKosten)
-	#endregion
+		private string m_Kurztext;
+		private string m_Langtext;
+		private decimal m_EPreis;
+		private decimal m_GPreis; // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
+		private string m_Einheit;
+		private	decimal m_realMatKosten;
+		private decimal m_realLohnKosten;
+		private decimal m_realGesamtKosten; 		//= Fl‰che*(realMatKosten+realLohnKosten)
+		#endregion
 
-	#region Properties - Position
-	public string Raum
-	{
-		get{return m_Raum;}
-		set{this.m_Raum=value;}
-	}
-	public string Einheit
-	{
-		get{return m_Einheit;}
-		set{this.m_Einheit=value;}
-	}
-	public double Flaeche
-	{
-		get{return m_Flaeche;}
-		set{this.m_Flaeche = value;}
-	}
+		#region Properties - Position
+		public string Raum
+		{
+			get{return m_Raum;}
+			set{this.m_Raum=value;}
+		}
+		public string Einheit
+		{
+			get{return m_Einheit;}
+			set{this.m_Einheit=value;}
+		}
+		public double Flaeche
+		{
+			get{return m_Flaeche;}
+			set{this.m_Flaeche = value;}
+		}
 	
-	public string Positionsnummer
-	{
-		get{return m_Positionsnummer;}
-		set{this.m_Positionsnummer = value;}
-	}
-	public string Kurztext
-	{
-		get{return m_Kurztext;}
-		set{this.m_Kurztext = value;}
-	}
-	public string Langtext
-	{
-		get{return m_Langtext;}
-		set{this.m_Langtext = value;}
-	}
+		public string Positionsnummer
+		{
+			get{return m_Positionsnummer;}
+			set{this.m_Positionsnummer = value;}
+		}
+		public string Kurztext
+		{
+			get{return m_Kurztext;}
+			set{this.m_Kurztext = value;}
+		}
+		public string Langtext
+		{
+			get{return m_Langtext;}
+			set{this.m_Langtext = value;}
+		}
 
-	public decimal EPreis
-	{
-		get{return m_EPreis;}
-		set{this.m_EPreis = value;}
-	}
+		public decimal EPreis
+		{
+			get{return m_EPreis;}
+			set{this.m_EPreis = value;}
+		}
 
-	public decimal GPreis // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
-	{
-		get{return m_GPreis;}
-		set{this.m_GPreis = value;}
-	}
+		public decimal GPreis // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
+		{
+			get{return m_GPreis;}
+			set{this.m_GPreis = value;}
+		}
 
-	public	decimal realMatKosten
-	{
-		get{return m_realMatKosten;}
-		set{this.m_realMatKosten = value;}
-	}
+		public	decimal realMatKosten
+		{
+			get{return m_realMatKosten;}
+			set{this.m_realMatKosten = value;}
+		}
 
-	public decimal realLohnKosten
-	{
-		get{return m_realLohnKosten;}
-		set{this.m_realLohnKosten = value;}
-	}
+		public decimal realLohnKosten
+		{
+			get{return m_realLohnKosten;}
+			set{this.m_realLohnKosten = value;}
+		}
 
-	public decimal realGesamtKosten
-	{
-		get{return m_realGesamtKosten;}
-		set{this.m_realGesamtKosten = value;}
-	}
+		public decimal realGesamtKosten
+		{
+			get{return m_realGesamtKosten;}
+			set{this.m_realGesamtKosten = value;}
+		}
 
-	#endregion
+		#endregion
 
-	#region Konstruktoren/Destruktoren - Position
+		#region Konstruktoren/Destruktoren - Position
 		
-	public Position ()
-	{
-		m_Raum = "";
-		m_Flaeche=0;
+		public Position ()
+		{
+			m_Raum = "";
+			m_Flaeche=0;
 		
-		m_Positionsnummer="";
-		m_Kurztext="";
-		m_Langtext="";
-		m_EPreis=0;
-		m_GPreis=0; // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
-		m_realMatKosten=0;
-		m_realLohnKosten=0;
-		m_realGesamtKosten=0; 		
+			m_Positionsnummer="";
+			m_Kurztext="";
+			m_Langtext="";
+			m_EPreis=0;
+			m_GPreis=0; // also Fl‰che*ePreis - brauchen wir wahrscheinlich gar nicht wirklich
+			m_realMatKosten=0;
+			m_realLohnKosten=0;
+			m_realGesamtKosten=0; 		
+		}
+
+		#endregion
+
+		#region Funktionen - Position
+		#endregion
+
 	}
-
-	#endregion
-
-	#region Funktionen - Position
-	#endregion
-
-}
 
 	public class DB
 	{
@@ -3038,19 +3542,19 @@ public class Position
 			return Verzeichnis;
 		}
 		public DataSet alle_Kunden_ausgebenDS()
-		/// Diese Methode erfordert keinen ‹bergabewert, sie liefert alle in der DB 
-		/// gespeicherten Kunden in einem dataSet nur f¸r Waller zur¸ck.
+			/// Diese Methode erfordert keinen ‹bergabewert, sie liefert alle in der DB 
+			/// gespeicherten Kunden in einem dataSet nur f¸r Waller zur¸ck.
 		{
 		
 		
 			DataSet myDataSet = new DataSet("Kunden");
 		
 			DataTable Kunden = myDataSet.Tables.Add("Kunden");
-            Kunden.Columns.Add("Kundennummer",typeof(int));
-            Kunden.Columns.Add("Kuerzel",typeof(string));
+			Kunden.Columns.Add("Kundennummer",typeof(int));
+			Kunden.Columns.Add("Kuerzel",typeof(string));
 			Kunden.Columns.Add("Firma",typeof(string));
 			Kunden.Columns.Add("Anrede",typeof(string));
-            Kunden.Columns.Add("Name",typeof(string));
+			Kunden.Columns.Add("Name",typeof(string));
 			Kunden.Columns.Add("Vorname",typeof(string));
 			Kunden.Columns.Add("Strasse",typeof(string));
 			Kunden.Columns.Add("Ort",typeof(string));
@@ -3062,22 +3566,23 @@ public class Position
 			Kunden.Columns.Add("Fax",typeof(string));
 			Kunden.Columns.Add("eMail",typeof(string));
 			Kunden.PrimaryKey = new DataColumn[]{Kunden.Columns["Kundenummer"]};
-            OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM Kunde",myconnection);
+			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM Kunde",myconnection);
 			try
 			{
 				myDataAdapter.Fill(myDataSet,"Kunden");
 			}
-		catch(Exception ex){
+			catch(Exception ex)
+			{
 				
 				MessageBox.Show(""+ex);
-			    return null;
+				return null;
 			}
 		
 		
 			return myDataSet;
 		}
 		public DataSet alle_Postionen_ausgebenDS()
-			{
+		{
 		
 		
 			DataSet myDataSet = new DataSet("Positionen");
@@ -3129,7 +3634,7 @@ public class Position
 			
 			
 			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
-		   MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
+			MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
 			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
 
 			return myDataSet;
@@ -3348,7 +3853,7 @@ public class Position
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return ‰nderungen;}
 		
-        public int Kunde_aendern_Name(string name,Kunde k)
+		public int Kunde_aendern_Name(string name,Kunde k)
 		{
 			/// Diese Methode schreibt den neuen Namen(Heirat?) des referenzierten Kunden in die Datenbank.
 			int ‰nderungen=0; 
@@ -3456,7 +3961,7 @@ public class Position
 			return ‰nderungen;
 		}
 		
-        public int Kunde_aendern_Bank(string Bank,Kunde k)
+		public int Kunde_aendern_Bank(string Bank,Kunde k)
 		{
 			/// Diese Methode schreibt den neue Bank des referenzierten Kunden in die Datenbank.
 			int ‰nderungen=0; 
@@ -3488,7 +3993,7 @@ public class Position
 			return ‰nderungen;
 		}
 		
-        public int Kunde_aendern_Fax(string Fax,Kunde k)
+		public int Kunde_aendern_Fax(string Fax,Kunde k)
 		{
 			/// Diese Methode schreibt die neue Faxnummer(Irrtum beim ersten Eintrag?) des referenzierten Kunden in die Datenbank.
 			int ‰nderungen=0; 
@@ -3534,7 +4039,7 @@ public class Position
 
 		public int Neuer_Kunde_Anlegen(Kunde K)
 		{
-		    int count=0;
+			int count=0;
 			int ‰nderungen =0;
 			Kunde myKunde = K;
 			OleDbCommand PS = new OleDbCommand("SELECT * FROM Kunde", myconnection);
@@ -3551,7 +4056,7 @@ public class Position
 			{
 				count++;
 			}
-            dataReaderPS.Close();
+			dataReaderPS.Close();
 			OleDbCommand Kunde_anlegen= null ;
 			try	
 			{	
@@ -3572,15 +4077,17 @@ public class Position
 				Kunde_lˆschen= new OleDbCommand("DELETE FROM Kunde WHERE Kundennr="+myKunde.Kundennummer+"" ,myconnection);
 				‰nderungen =Kunde_lˆschen.ExecuteNonQuery();
 			}
-			catch (Exception ex){MessageBox.Show(""+ex);
-			return 0;}
+			catch (Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return 0;}
 			return ‰nderungen;
 		
 		}
         
 
 
-        public Position Pos_suchen_nach_Posnummer (string Pos)
+		public Position Pos_suchen_nach_Posnummer (string Pos)
 		{
        
 			Position myPos = new Position();
@@ -3590,8 +4097,10 @@ public class Position
 			{	
 				dataReader4 = suchePos.ExecuteReader();
 			}
-			catch(Exception ex){MessageBox.Show(""+ex);
-			return null;
+			catch(Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return null;
 			}
 		
 			if(dataReader4.Read())
@@ -3633,8 +4142,10 @@ public class Position
 			{
 				dataReaderPS = PS.ExecuteReader();
 			}
-			catch(Exception ex){MessageBox.Show(""+ex);
-			return "";}
+			catch(Exception ex)
+			{
+				MessageBox.Show(""+ex);
+				return "";}
 		
 			while (dataReaderPS.Read())
 			{
@@ -3708,10 +4219,10 @@ public class Position
 			/// 
 		{
 			int count=0;
-		   Kunde myKunde = K;
+			Kunde myKunde = K;
 			
 			OleDbCommand sucheAlleVorg‰nge= new OleDbCommand("SELECT * FROM KundeVorgang WHERE Kundennr="+myKunde.Kundennummer+"", myconnection);
-		OleDbDataReader dataReaderCount = null;
+			OleDbDataReader dataReaderCount = null;
 		
 			try 
 			{
@@ -3719,12 +4230,13 @@ public class Position
 			}
 			catch(Exception ex){MessageBox.Show(""+ex);}
 		
-			while (dataReaderCount.Read()){
-			count++;
+			while (dataReaderCount.Read())
+			{
+				count++;
 			}
 			dataReaderCount.Close();
-			 string[] Vorg‰nge =new string[count];
-            count=0;
+			string[] Vorg‰nge =new string[count];
+			count=0;
 			OleDbDataReader dataReaderAV = null;
 		
 			try 
@@ -3737,7 +4249,7 @@ public class Position
 			{
 				if (!(dataReaderAV.IsDBNull(1)))
 					Vorg‰nge[count] = dataReaderAV.GetString(1);
-					count++;
+				count++;
 			}
 
 			dataReaderAV.Close();
