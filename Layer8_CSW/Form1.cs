@@ -35,7 +35,7 @@
 // | Version 1.244b   | 26.11.03	   | 18:54    | CSW			   |  "alle_Vorgaenge_eines_Kunden_ausgeben()" an die neue DB angepasst, hat er nich automatisch übernommen.
 // | Version 1.245    | 27.11.03	   | 00:14	  | CSW			   |  Ich verzweifel, wenn ich eine neue Zeile einfüge, erscheint die auch lässt sich aber nicht bearbeiten
 // | Version 1.246    | 01.12.03	   | 18:26	  | CH			   |  Kunde-Funktionalität im Menu
-
+// | Version 1.25     | 05.12.03	   | 14:26	  | Casi     	   |  Erste Seite wird gedruckt --noch Fehlerbehaftet
 using System;
 using System.Text;
 using System.Drawing;
@@ -282,11 +282,13 @@ namespace Layer8_CSW
 		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
 		private System.Windows.Forms.ListBox LBox_Kunde;
 	
-		// Casi's Gerümpel------------------------------------------
+		// Casi's überaus wichtige Deklarationen du Haufen------------------------------------------
 		private Font maintextFont = new Font("times New Roman", 14);
         private Font subTextFont = new Font("Times New Roman" ,12);
 		private PageSettings storedPageSettings;
 		uint aktuelleSeite;
+		int aktuellePos=0;
+		int PosAnzahl;
 		// ---------------------------------------------------------
 		
 		public DB UnsereDb;
@@ -3381,22 +3383,78 @@ namespace Layer8_CSW
 			}
 		}
 		
+		private string[] ZeilenZähler(string Text){
+		
+		
+		int maxCharInLine=38;	
+		int count=0; // Zeilen des Ergebinsarrays mit druckbaren Zeichenlängen
+		int i=0; // Index des "Wörterarrays"
+		string myString = Text;
+		string [] myStringArray;
+		string [] Zeilen = new string[25];
+		myStringArray = myString.Split(null,100); // Zerlegt den String in Worte und speichert sie sequenziel in ein Array
+     		
+			while(i<myStringArray.Length) 
+			{
+			
+				if(Zeilen[count]==null)
+				{
+					
+					Zeilen[count]=myStringArray[i];
+					i++;}
+				else
+				{
+
+					if(Zeilen[count].Length + myStringArray[i].Length < maxCharInLine) // Wenn die Zeichen der aktuellen Zeile plus die Zeichen des nächsten WOrtes kleiner als 25 ist, d.h noch gedruckt werden können, dann wird das WOrt der Zeile hinzugefügt.
+					{ 
+					
+						Zeilen[count]=Zeilen[count]+" "+myStringArray[i];
+						i++;
+					}
+					else
+						count++; // Das nächste Wort passt nicht mehr in die Zeile, es wird in der nächsten Zeile begonnen
+				}
+
+			}
+				return Zeilen;
+			}
+			
+
 		private void pd_PrintPage(object sender, PrintPageEventArgs e){
 		    
+           
+			
 			string s_Anrede;
 			string s_Strasse;
 			string s_Ort;
 			string s_Kuerzel;
 			string s_Datum;
 			string s_Bauadresse;
-
-			int AnzahlDerPos = VG.PosListe.Tables.Count;
-            MessageBox.Show(""+AnzahlDerPos);
+			string s_Bestellung;
+			string s_Rechnung;
+			string [] langText;
+       // Abstände zum linken Rand --> hier mal als Tab bezeichnet
+			
+			const float ersterTab=61F;
+			const float zweiterTab= 94.88F;
+			const float MitteTab=183F;
+			const float DatumsTab=452.05F;
+			const float AnzahlEinheitTab= 109.05F;
+			const float KuerzelTab=452.05F;
+			const float RechnungsTabS1= 354.33F;
+			const float PreisTab=439.4F;
+			const float SummeTab=490.4F;
+            PosAnzahl= VG.PosListe.Tables[0].Rows.Count;
+            int maxLine=58;
+            
+			int x=0; //Schleifenzähler
+	int aktline= 0;
+            e.Graphics.PageUnit = GraphicsUnit.Point; // PrintingPoints statt Pixel
 			if(aktuelleSeite == 1)
 			{
-			e.Graphics.PageUnit = GraphicsUnit.Point; // PrintingPoints statt Pixel
 			
-		  
+			
+		  // Strings erzeugen
             s_Anrede= VG.UnserKunde.Anrede.Trim();
 			s_Anrede+=" "+VG.UnserKunde.NName.Trim();
             s_Strasse=VG.UnserKunde.Strasse.Trim();
@@ -3409,24 +3467,66 @@ namespace Layer8_CSW
             s_Bauadresse= VG.BauStrasse.ToString();
 			s_Bauadresse+="   "+VG.BauPLZ.ToString();
             s_Bauadresse+=" "+VG.BauOrt.ToString();
+            s_Bestellung="Bestellung: 0007/45000007762/ip";
+			s_Rechnung="RECHNUNG Nr.: "+VG.Vorgangsnummer.ToString();
+		
+			// Strings drucken
+		  
+		    e.Graphics.DrawString(s_Anrede,this.subTextFont, Brushes.Black, zweiterTab, 13*this.subTextFont.SizeInPoints);
+			e.Graphics.DrawString(s_Strasse,this.subTextFont, Brushes.Black, zweiterTab, 14*this.subTextFont.SizeInPoints);
+            e.Graphics.DrawString(s_Ort,this.subTextFont, Brushes.Black, zweiterTab, (16*this.subTextFont.SizeInPoints));
+            e.Graphics.DrawString(s_Datum,this.subTextFont, Brushes.Black, DatumsTab, 20*this.subTextFont.SizeInPoints);
+			e.Graphics.DrawString(s_Kuerzel, this.subTextFont, Brushes.Black,KuerzelTab, 21*this.subTextFont.SizeInPoints );
+            e.Graphics.DrawString(s_Bauadresse, this.subTextFont, Brushes.Black,zweiterTab, 23*this.subTextFont.SizeInPoints);
+	        e.Graphics.DrawString(s_Bestellung, this.subTextFont, Brushes.Black,zweiterTab, 24*this.subTextFont.SizeInPoints);
+		    e.Graphics.DrawString(s_Rechnung, this.subTextFont, Brushes.Black,RechnungsTabS1, 24*this.subTextFont.SizeInPoints); // Hier fehlt noch der Test, ob der string in die Zeile passt
+            aktline=26;
+				//  propritäre Lösung, sehr unflexibel!
+			    
+				while(aktline<=maxLine && PosAnzahl>0){
+                 
+	    		   langText = this.ZeilenZähler(VG.PosListe.Tables[0].Rows[aktuellePos][3].ToString());
+					if(langText.Length+aktline>maxLine)
+					{
+						e.HasMorePages=true;
+					}
+					else
+					{
 
-			e.Graphics.DrawString(s_Anrede,this.subTextFont, Brushes.Black,92.05F, 160.1F);
-			e.Graphics.DrawString(s_Strasse,this.subTextFont, Brushes.Black, 92.05F, 160.1F+12);
-            e.Graphics.DrawString(s_Ort,this.subTextFont, Brushes.Black, 92.05F, (160.1F+12+this.subTextFont.GetHeight()));
-            e.Graphics.DrawString(s_Datum,this.subTextFont, Brushes.Black, 452.05F, 240F);
-			e.Graphics.DrawString(s_Kuerzel, this.subTextFont, Brushes.Black,452.05F, 240F+12 );
-            e.Graphics.DrawString(s_Bauadresse, this.subTextFont, Brushes.Black,92.05F, 252F+this.subTextFont.GetHeight());
-			e.HasMorePages=false;// nur zu Testzwecken
+						string PosNummer = VG.PosListe.Tables[0].Rows[aktuellePos][1].ToString();
+						string AnzahlEinheit = VG.PosListe.Tables[0].Rows[aktuellePos][5].ToString();
+						e.Graphics.DrawString(PosNummer, this.subTextFont, Brushes.Black, ersterTab,aktline*this.subTextFont.SizeInPoints);
+						e.Graphics.DrawString(AnzahlEinheit, this.subTextFont, Brushes.Black, AnzahlEinheitTab,aktline*this.subTextFont.SizeInPoints);
+						x=0;
+						while(x <langText.Length && langText[x]!=null)
+						{
+							
+							e.Graphics.DrawString(langText[x],this.subTextFont, Brushes.Black,MitteTab,aktline*this.subTextFont.SizeInPoints);
+							aktline++;
+							x++;
+						}
+                   
+					e.Graphics.DrawString(VG.PosListe.Tables[0].Rows[aktuellePos][4].ToString(),this.subTextFont,Brushes.Black,PreisTab,(aktline-1)*this.subTextFont.SizeInPoints);
+                    e.Graphics.DrawString(VG.PosListe.Tables[0].Rows[aktuellePos][6].ToString(),this.subTextFont,Brushes.Black,SummeTab,(aktline-1)*this.subTextFont.SizeInPoints);
+					aktuellePos++;
+					MessageBox.Show(aktuellePos.ToString());
+					PosAnzahl--;
+					aktline++;
+					
+					}
+				   
+				}
+				
+			
 			}
 			else
 			{ 
 					e.Graphics.DrawString("Dies ´sollte nicht dat Deckblatt sein ;-)",this.maintextFont, Brushes.Black, 10,10);
 			        e.HasMorePages=false;	
 			}
-			
-			aktuelleSeite++;
 
 		}
+
 
 		private void menuDruckenPrintPreview_Click(object sender, System.EventArgs e)
 		{
