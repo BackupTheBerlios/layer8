@@ -18,6 +18,8 @@
 // | Version 1.19	  | 05.11.03	   | 00:39    | CSW            |  Übersichtstabseite angelegt
 // | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbeträge in den DataGrids haben jetzt ein Währungsformat (und nur da)
 // | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der Übersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Menü verschwindet immer erst nach der 2.Auswahl
+// | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelöst: Während des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -25,7 +27,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.OleDb;
-
 
 using System.IO;
 using System.Xml;
@@ -2520,9 +2521,11 @@ namespace Layer8_CSW
 
 		private void button_Übersicht_alle_Kunden_Click(object sender, System.EventArgs e)
 		{	// Statt einem DataSet übernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
+			DG_Übersicht.Enabled =false;
 			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
 			KundenView.Sort="Kundennr";
 			DG_Übersicht.SetDataBinding(KundenView,null);
+			DG_Übersicht.Enabled =true;
 		}
 
 		private void button_Übersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
@@ -2558,23 +2561,25 @@ namespace Layer8_CSW
 		
 		private void FPos_dummy(object sender, System.EventArgs e)
 		{
+		DG_Übersicht.Enabled =false;
 		radio_F.Checked=true;
 		this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-			
+		DG_Übersicht.Enabled =true;	
 
 		}
 		private void MPos_dummy(object sender, System.EventArgs e)
 		{
+			DG_Übersicht.Enabled =false;
 			radio_M.Checked=true;
 			this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-			
+			DG_Übersicht.Enabled =true;
 
 		}
 		private void ZPos_dummy(object sender, System.EventArgs e)
-		{
+		{	DG_Übersicht.Enabled =false;
 			radio_Z.Checked=true;
 			this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-
+			DG_Übersicht.Enabled =true;
 			
 
 		}
