@@ -22,6 +22,7 @@
 // | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es g‰be System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekommt von mir ein Bier ;-) 
 // | Version 1.21	  | 13.11.03	   | 00:42    | CSW			   |  Automatisches Berechnen der Betr‰ge (Netto/Brutto) unter Ber¸cksichtigung von MwSt und Rabatt, Darstellung im W‰hrungsformat, Kleinere ƒnderungen auf der Positionsseite, Einbinden von "alle_Vorg‰nge" in der ‹bersicht
 // | Version 1.22     | 16.11.03	   | 12:30	  | CSW			   |  Filtern der Kunden¸bersicht nach Namen (auch Teile, Anfangsbuchstaben etc.)
+// | Version 1.22b    | 17.11.03	   | 17:13	  | CSW			   |  Kleine ‹berarbeitung (Filtern -> Suchen) + Button + MessageBox
 
 using System;
 using System.Drawing;
@@ -231,6 +232,7 @@ namespace Layer8_CSW
 		private System.Windows.Forms.Label label33;
 		private System.Windows.Forms.TextBox txtBox_‹bersicht_Kundenauswahl;
 		private System.Windows.Forms.Label label34;
+		private System.Windows.Forms.Button button_‹bersicht_Kunden_suchen;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
@@ -410,6 +412,7 @@ namespace Layer8_CSW
 			this.radio_F = new System.Windows.Forms.RadioButton();
 			this.button_‹bersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
 			this.gBox_Kunden‹bersicht = new System.Windows.Forms.GroupBox();
+			this.label34 = new System.Windows.Forms.Label();
 			this.txtBox_‹bersicht_Kundenauswahl = new System.Windows.Forms.TextBox();
 			this.button_‹bersicht_Vorg‰nge_anzeigen = new System.Windows.Forms.Button();
 			this.button_‹bersicht_alle_Kunden = new System.Windows.Forms.Button();
@@ -430,7 +433,7 @@ namespace Layer8_CSW
 			this.menuItem13 = new System.Windows.Forms.MenuItem();
 			this.menuItem14 = new System.Windows.Forms.MenuItem();
 			this.menuItem15 = new System.Windows.Forms.MenuItem();
-			this.label34 = new System.Windows.Forms.Label();
+			this.button_‹bersicht_Kunden_suchen = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Zahlung.SuspendLayout();
@@ -1743,6 +1746,7 @@ namespace Layer8_CSW
 			// 
 			// gBox_Kunden‹bersicht
 			// 
+			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_Kunden_suchen);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.label34);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.txtBox_‹bersicht_Kundenauswahl);
 			this.gBox_Kunden‹bersicht.Controls.Add(this.button_‹bersicht_Vorg‰nge_anzeigen);
@@ -1754,9 +1758,17 @@ namespace Layer8_CSW
 			this.gBox_Kunden‹bersicht.TabStop = false;
 			this.gBox_Kunden‹bersicht.Text = "Kunden-‹bersicht";
 			// 
+			// label34
+			// 
+			this.label34.Location = new System.Drawing.Point(256, 32);
+			this.label34.Name = "label34";
+			this.label34.Size = new System.Drawing.Size(56, 20);
+			this.label34.TabIndex = 3;
+			this.label34.Text = "Suchen:";
+			// 
 			// txtBox_‹bersicht_Kundenauswahl
 			// 
-			this.txtBox_‹bersicht_Kundenauswahl.Location = new System.Drawing.Point(360, 32);
+			this.txtBox_‹bersicht_Kundenauswahl.Location = new System.Drawing.Point(328, 32);
 			this.txtBox_‹bersicht_Kundenauswahl.Name = "txtBox_‹bersicht_Kundenauswahl";
 			this.txtBox_‹bersicht_Kundenauswahl.Size = new System.Drawing.Size(96, 20);
 			this.txtBox_‹bersicht_Kundenauswahl.TabIndex = 2;
@@ -1878,13 +1890,14 @@ namespace Layer8_CSW
 			this.menuItem15.Index = 3;
 			this.menuItem15.Text = "Lˆschen";
 			// 
-			// label34
+			// button_‹bersicht_Kunden_suchen
 			// 
-			this.label34.Location = new System.Drawing.Point(304, 32);
-			this.label34.Name = "label34";
-			this.label34.Size = new System.Drawing.Size(40, 20);
-			this.label34.TabIndex = 3;
-			this.label34.Text = "Filtern:";
+			this.button_‹bersicht_Kunden_suchen.Location = new System.Drawing.Point(424, 32);
+			this.button_‹bersicht_Kunden_suchen.Name = "button_‹bersicht_Kunden_suchen";
+			this.button_‹bersicht_Kunden_suchen.Size = new System.Drawing.Size(32, 23);
+			this.button_‹bersicht_Kunden_suchen.TabIndex = 4;
+			this.button_‹bersicht_Kunden_suchen.Text = "los";
+			this.button_‹bersicht_Kunden_suchen.Click += new System.EventHandler(this.button_‹bersicht_Kunden_suchen_Click);
 			// 
 			// MainFrame
 			// 
@@ -2908,10 +2921,28 @@ namespace Layer8_CSW
 				DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
 				KundenView.Sort="Kundennr";
 				KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
-
-				DG_‹bersicht.SetDataBinding(KundenView,null);
+				if (KundenView.Count==0)
+					MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+				else
+					DG_‹bersicht.SetDataBinding(KundenView,null);
 				DG_‹bersicht.Enabled =true;
 			}
+		}
+
+		private void button_‹bersicht_Kunden_suchen_Click(object sender, System.EventArgs e)
+		{
+			String name;
+			name = this.txtBox_‹bersicht_Kundenauswahl.Text;
+			
+			DG_‹bersicht.Enabled =false;
+			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
+			KundenView.Sort="Kundennr";
+			KundenView.RowFilter = "Name LIKE '"+name+"%'" ;
+			if (KundenView.Count==0)
+				MessageBox.Show("Keine passenden Eintr‰ge gefunden.","Schade");
+			else
+				DG_‹bersicht.SetDataBinding(KundenView,null);
+			DG_‹bersicht.Enabled =true;
 		}
 
 
