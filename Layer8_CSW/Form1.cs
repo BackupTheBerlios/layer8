@@ -13,13 +13,7 @@
 // | Version 1.14	  | 29.10.03	   | 14:00    | CSW			   |  Listbox zur Auswahl eines Kunden eingefügt
 // | Version 1.15	  | 29.10.03	   | 22:42    | CH			   |  Suche Kunde nach Name gibt jetzt auch mehrere Kunden nur bei teilweiser Eingabe des Namens aus (sorry Casi)
 // | Version 1.16	  | 30.10.03	   | 20:00    | CH			   |  ComboBox "Anrede" Anbindung bei Kunde Anzeigen
-// | Version 1.17	  | 30.10.03	   | 23:56    | CH			   |  ComboBox "Anrede" wird nun auch in DB geschrieben
-// | Version 1.18	  | 03.11.03	   | 22:49    | CH			   |  Fehler korrigiert (Casi)
-// | Version 1.19	  | 05.11.03	   | 00:39    | CSW            |  Übersichtstabseite angelegt
-// | Version 1.19b    | 05.11.03	   | 21:36    | CSW			   |  Kleinere Korrekturen: Reihenfolge der Tabs; Bezeichnungen der Spalten in den Datagrids; Geldbeträge in den DataGrids haben jetzt ein Währungsformat (und nur da)
-// | Version 1.20	  | 08.11.03	   | 13:01    | CSW            |  Das DataGrid in der Übersicht hat jetzt ein ContextMenu, leider hat dat noch einen Fehler, das Menü verschwindet immer erst nach der 2.Auswahl
-// | Version 1.20b	  | 08.11.03	   | 13:34	  | CSW            |  Problem gelöst: Während des EventHandlings muss das Datagrid wohl auf Enabled=false sein, damit dat klappt
-// | Version 1.20c	  | 08.11.03	   | 14:42	  | CSW            |  Hab dat eigentliche Problem erkannt: Fehlerhafte Beschreibung im Buch vom Gartner und der MSDN, beide behaupten u.a. es gäbe System.Windows.Forms.DataGrid.HitTestInfo.Type, wer dat findet bekomt von mir ein Bier ;-) 
+
 
 
 using System;
@@ -29,6 +23,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.OleDb;
+
 
 using System.IO;
 using System.Xml;
@@ -172,45 +167,10 @@ namespace Layer8_CSW
 		private KundenVerzeichnis Verzeichnis;
 		private System.Windows.Forms.DateTimePicker dateTimePicker_Bau;
 		private System.Windows.Forms.ListBox LBox_Kunde;
-		private System.Windows.Forms.Button button_allePositionen;
-		private System.Windows.Forms.TabPage Übersicht;
-		private System.Windows.Forms.GroupBox gBox_KundenÜbersicht;
-		private System.Windows.Forms.GroupBox gBox_PosÜbersicht;
-		private System.Windows.Forms.Button button_Übersicht_Pos_Anzeigen;
-		private System.Windows.Forms.Button button_Übersicht_alle_Kunden;
-		private System.Windows.Forms.Button button4;
-		private System.Windows.Forms.GroupBox gBox_PosBeschränken;
-		private System.Windows.Forms.RadioButton radio_F;
-		private System.Windows.Forms.RadioButton radio_M;
-		private System.Windows.Forms.RadioButton radio_Z;
-		private System.Windows.Forms.DataGrid DG_Übersicht;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle1;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn8;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn9;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn10;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn11;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn12;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn13;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn14;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle3;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyle4;
-		private System.Windows.Forms.DataGridTableStyle dataGridTableStyleKundenÜbersicht;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn15;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn16;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn17;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn18;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn19;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn20;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn21;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn22;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn23;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn24;
-		private System.Windows.Forms.DataGridTextBoxColumn dataGridTextBoxColumn25;
-		private System.Windows.Forms.ContextMenu cMenu_KundenDG;
 		
 		// CSW: wird im EventHandler von "dataGrid_Vorgang_CurrentCellChanged" benutzt und gibt mir immer denaktuellen Index des Datagrids
 		private bool DG_Zeile_bearbeiten;
-
+		
 		
 		
 		
@@ -248,7 +208,6 @@ namespace Layer8_CSW
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Configuration.AppSettingsReader configurationAppSettings = new System.Configuration.AppSettingsReader();
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainFrame));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.Kunde = new System.Windows.Forms.TabPage();
@@ -305,7 +264,6 @@ namespace Layer8_CSW
 			this.txtbox_VornameTab2 = new System.Windows.Forms.TextBox();
 			this.txtbox_NameTab2 = new System.Windows.Forms.TextBox();
 			this.Positionen = new System.Windows.Forms.TabPage();
-			this.button_allePositionen = new System.Windows.Forms.Button();
 			this.pos_Speichern = new System.Windows.Forms.Button();
 			this.Pos_anlegen = new System.Windows.Forms.Button();
 			this.button_Flaeche = new System.Windows.Forms.Button();
@@ -350,40 +308,6 @@ namespace Layer8_CSW
 			this.label27 = new System.Windows.Forms.Label();
 			this.txtbox_Rabatt = new System.Windows.Forms.TextBox();
 			this.txtbox_Brutto = new System.Windows.Forms.TextBox();
-			this.Übersicht = new System.Windows.Forms.TabPage();
-			this.DG_Übersicht = new System.Windows.Forms.DataGrid();
-			this.cMenu_KundenDG = new System.Windows.Forms.ContextMenu();
-			this.dataGridTableStyle1 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTextBoxColumn8 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn9 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn10 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn11 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn12 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn13 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn14 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTableStyle3 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTableStyle4 = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTableStyleKundenÜbersicht = new System.Windows.Forms.DataGridTableStyle();
-			this.dataGridTextBoxColumn15 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn16 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn17 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn18 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn25 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn21 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn19 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn20 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn22 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn23 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.dataGridTextBoxColumn24 = new System.Windows.Forms.DataGridTextBoxColumn();
-			this.gBox_PosÜbersicht = new System.Windows.Forms.GroupBox();
-			this.gBox_PosBeschränken = new System.Windows.Forms.GroupBox();
-			this.radio_Z = new System.Windows.Forms.RadioButton();
-			this.radio_M = new System.Windows.Forms.RadioButton();
-			this.radio_F = new System.Windows.Forms.RadioButton();
-			this.button_Übersicht_Pos_Anzeigen = new System.Windows.Forms.Button();
-			this.gBox_KundenÜbersicht = new System.Windows.Forms.GroupBox();
-			this.button4 = new System.Windows.Forms.Button();
-			this.button_Übersicht_alle_Kunden = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.Kunde.SuspendLayout();
 			this.Bauvorhaben.SuspendLayout();
@@ -392,11 +316,6 @@ namespace Layer8_CSW
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).BeginInit();
 			this.Zahlung.SuspendLayout();
 			this.groupBox1.SuspendLayout();
-			this.Übersicht.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.DG_Übersicht)).BeginInit();
-			this.gBox_PosÜbersicht.SuspendLayout();
-			this.gBox_PosBeschränken.SuspendLayout();
-			this.gBox_KundenÜbersicht.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -408,7 +327,6 @@ namespace Layer8_CSW
 			this.tabControl1.Controls.Add(this.Bauvorhaben);
 			this.tabControl1.Controls.Add(this.Positionen);
 			this.tabControl1.Controls.Add(this.Zahlung);
-			this.tabControl1.Controls.Add(this.Übersicht);
 			this.tabControl1.Location = new System.Drawing.Point(16, 24);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
@@ -527,7 +445,6 @@ namespace Layer8_CSW
 			this.cbox_Anrede.Size = new System.Drawing.Size(104, 21);
 			this.cbox_Anrede.TabIndex = 23;
 			this.cbox_Anrede.Text = "Herr";
-			this.cbox_Anrede.Leave += new System.EventHandler(this.cbox_Anrede_Leave);
 			// 
 			// txtbox_Name
 			// 
@@ -917,7 +834,6 @@ namespace Layer8_CSW
 			// 
 			// Positionen
 			// 
-			this.Positionen.Controls.Add(this.button_allePositionen);
 			this.Positionen.Controls.Add(this.pos_Speichern);
 			this.Positionen.Controls.Add(this.Pos_anlegen);
 			this.Positionen.Controls.Add(this.button_Flaeche);
@@ -946,16 +862,6 @@ namespace Layer8_CSW
 			this.Positionen.TabIndex = 1;
 			this.Positionen.Text = "Positionen";
 			this.Positionen.ToolTipText = "Hier finden sich die Rechnungspositionen";
-			// 
-			// button_allePositionen
-			// 
-			this.button_allePositionen.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.button_allePositionen.Location = new System.Drawing.Point(136, 40);
-			this.button_allePositionen.Name = "button_allePositionen";
-			this.button_allePositionen.Size = new System.Drawing.Size(30, 20);
-			this.button_allePositionen.TabIndex = 24;
-			this.button_allePositionen.Text = "...";
-			this.button_allePositionen.Click += new System.EventHandler(this.button_allePositionen_Click);
 			// 
 			// pos_Speichern
 			// 
@@ -1122,7 +1028,7 @@ namespace Layer8_CSW
 			// dataGridTextBoxColumn5
 			// 
 			this.dataGridTextBoxColumn5.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn5.Format = "C";
+			this.dataGridTextBoxColumn5.Format = "";
 			this.dataGridTextBoxColumn5.FormatInfo = null;
 			this.dataGridTextBoxColumn5.HeaderText = "Preis/Einheit";
 			this.dataGridTextBoxColumn5.MappingName = "Preis/Einheit";
@@ -1133,14 +1039,14 @@ namespace Layer8_CSW
 			this.dataGridTextBoxColumn6.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
 			this.dataGridTextBoxColumn6.Format = "";
 			this.dataGridTextBoxColumn6.FormatInfo = null;
-			this.dataGridTextBoxColumn6.HeaderText = "Fläche / Anzahl";
+			this.dataGridTextBoxColumn6.HeaderText = "Fläche";
 			this.dataGridTextBoxColumn6.MappingName = "Fläche";
 			this.dataGridTextBoxColumn6.Width = 73;
 			// 
 			// dataGridTextBoxColumn7
 			// 
 			this.dataGridTextBoxColumn7.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
-			this.dataGridTextBoxColumn7.Format = "C";
+			this.dataGridTextBoxColumn7.Format = "";
 			this.dataGridTextBoxColumn7.FormatInfo = null;
 			this.dataGridTextBoxColumn7.HeaderText = "Gesamtpreis";
 			this.dataGridTextBoxColumn7.MappingName = "Gesamtpreis";
@@ -1240,7 +1146,7 @@ namespace Layer8_CSW
 			// 
 			// txtbox_Posnummer
 			// 
-			this.txtbox_Posnummer.Location = new System.Drawing.Point(24, 40);
+			this.txtbox_Posnummer.Location = new System.Drawing.Point(48, 40);
 			this.txtbox_Posnummer.Name = "txtbox_Posnummer";
 			this.txtbox_Posnummer.Size = new System.Drawing.Size(112, 20);
 			this.txtbox_Posnummer.TabIndex = 1;
@@ -1369,306 +1275,6 @@ namespace Layer8_CSW
 			this.txtbox_Brutto.TabIndex = 29;
 			this.txtbox_Brutto.Text = "";
 			// 
-			// Übersicht
-			// 
-			this.Übersicht.Controls.Add(this.DG_Übersicht);
-			this.Übersicht.Controls.Add(this.gBox_PosÜbersicht);
-			this.Übersicht.Controls.Add(this.gBox_KundenÜbersicht);
-			this.Übersicht.Location = new System.Drawing.Point(4, 22);
-			this.Übersicht.Name = "Übersicht";
-			this.Übersicht.Size = new System.Drawing.Size(988, 590);
-			this.Übersicht.TabIndex = 4;
-			this.Übersicht.Text = "Übersicht";
-			// 
-			// DG_Übersicht
-			// 
-			this.DG_Übersicht.DataMember = "";
-			this.DG_Übersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.DG_Übersicht.Location = new System.Drawing.Point(16, 160);
-			this.DG_Übersicht.Name = "DG_Übersicht";
-			this.DG_Übersicht.ReadOnly = true;
-			this.DG_Übersicht.Size = new System.Drawing.Size(960, 416);
-			this.DG_Übersicht.TabIndex = 2;
-			this.DG_Übersicht.TableStyles.AddRange(new System.Windows.Forms.DataGridTableStyle[] {
-																									 this.dataGridTableStyle1,
-																									 this.dataGridTableStyle3,
-																									 this.dataGridTableStyle4,
-																									 this.dataGridTableStyleKundenÜbersicht});
-			this.DG_Übersicht.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DG_Übersicht_MouseUp);
-			// 
-			// dataGridTableStyle1
-			// 
-			this.dataGridTableStyle1.DataGrid = this.DG_Übersicht;
-			this.dataGridTableStyle1.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																												  this.dataGridTextBoxColumn8,
-																												  this.dataGridTextBoxColumn9,
-																												  this.dataGridTextBoxColumn10,
-																												  this.dataGridTextBoxColumn11,
-																												  this.dataGridTextBoxColumn12,
-																												  this.dataGridTextBoxColumn13,
-																												  this.dataGridTextBoxColumn14});
-			this.dataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle1.MappingName = "MPos";
-			// 
-			// dataGridTextBoxColumn8
-			// 
-			this.dataGridTextBoxColumn8.Format = "";
-			this.dataGridTextBoxColumn8.FormatInfo = null;
-			this.dataGridTextBoxColumn8.HeaderText = ((string)(configurationAppSettings.GetValue("dataGridTextBoxColumn8.HeaderText", typeof(string))));
-			this.dataGridTextBoxColumn8.MappingName = "Posnummer";
-			this.dataGridTextBoxColumn8.Width = 50;
-			// 
-			// dataGridTextBoxColumn9
-			// 
-			this.dataGridTextBoxColumn9.Format = "";
-			this.dataGridTextBoxColumn9.FormatInfo = null;
-			this.dataGridTextBoxColumn9.HeaderText = "Kurztext";
-			this.dataGridTextBoxColumn9.MappingName = "Kurztext";
-			this.dataGridTextBoxColumn9.Width = 150;
-			// 
-			// dataGridTextBoxColumn10
-			// 
-			this.dataGridTextBoxColumn10.Format = "";
-			this.dataGridTextBoxColumn10.FormatInfo = null;
-			this.dataGridTextBoxColumn10.HeaderText = "Langtext";
-			this.dataGridTextBoxColumn10.MappingName = "Langtext";
-			this.dataGridTextBoxColumn10.Width = 400;
-			// 
-			// dataGridTextBoxColumn11
-			// 
-			this.dataGridTextBoxColumn11.Format = "C";
-			this.dataGridTextBoxColumn11.FormatInfo = null;
-			this.dataGridTextBoxColumn11.HeaderText = "Preis";
-			this.dataGridTextBoxColumn11.MappingName = "Preis";
-			this.dataGridTextBoxColumn11.Width = 75;
-			// 
-			// dataGridTextBoxColumn12
-			// 
-			this.dataGridTextBoxColumn12.Format = "";
-			this.dataGridTextBoxColumn12.FormatInfo = null;
-			this.dataGridTextBoxColumn12.HeaderText = "Einheit";
-			this.dataGridTextBoxColumn12.MappingName = "Einheit";
-			this.dataGridTextBoxColumn12.Width = 60;
-			// 
-			// dataGridTextBoxColumn13
-			// 
-			this.dataGridTextBoxColumn13.Format = "C";
-			this.dataGridTextBoxColumn13.FormatInfo = null;
-			this.dataGridTextBoxColumn13.HeaderText = "Materialkosten";
-			this.dataGridTextBoxColumn13.MappingName = "MKosten";
-			this.dataGridTextBoxColumn13.Width = 90;
-			// 
-			// dataGridTextBoxColumn14
-			// 
-			this.dataGridTextBoxColumn14.Format = "";
-			this.dataGridTextBoxColumn14.FormatInfo = null;
-			this.dataGridTextBoxColumn14.HeaderText = "Lohnkosten";
-			this.dataGridTextBoxColumn14.MappingName = "LKosten";
-			this.dataGridTextBoxColumn14.Width = 90;
-			// 
-			// dataGridTableStyle3
-			// 
-			this.dataGridTableStyle3.DataGrid = this.DG_Übersicht;
-			this.dataGridTableStyle3.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle3.MappingName = "FPos";
-			// 
-			// dataGridTableStyle4
-			// 
-			this.dataGridTableStyle4.DataGrid = this.DG_Übersicht;
-			this.dataGridTableStyle4.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyle4.MappingName = "ZPos";
-			// 
-			// dataGridTableStyleKundenÜbersicht
-			// 
-			this.dataGridTableStyleKundenÜbersicht.DataGrid = this.DG_Übersicht;
-			this.dataGridTableStyleKundenÜbersicht.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] {
-																																this.dataGridTextBoxColumn15,
-																																this.dataGridTextBoxColumn16,
-																																this.dataGridTextBoxColumn17,
-																																this.dataGridTextBoxColumn18,
-																																this.dataGridTextBoxColumn25,
-																																this.dataGridTextBoxColumn21,
-																																this.dataGridTextBoxColumn19,
-																																this.dataGridTextBoxColumn20,
-																																this.dataGridTextBoxColumn22,
-																																this.dataGridTextBoxColumn23,
-																																this.dataGridTextBoxColumn24});
-			this.dataGridTableStyleKundenÜbersicht.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-			this.dataGridTableStyleKundenÜbersicht.MappingName = "Kunden";
-			// 
-			// dataGridTextBoxColumn15
-			// 
-			this.dataGridTextBoxColumn15.Format = "";
-			this.dataGridTextBoxColumn15.FormatInfo = null;
-			this.dataGridTextBoxColumn15.HeaderText = "KD-Nr.";
-			this.dataGridTextBoxColumn15.MappingName = "Kundennr";
-			this.dataGridTextBoxColumn15.Width = 40;
-			// 
-			// dataGridTextBoxColumn16
-			// 
-			this.dataGridTextBoxColumn16.Format = "";
-			this.dataGridTextBoxColumn16.FormatInfo = null;
-			this.dataGridTextBoxColumn16.HeaderText = "Kürzel";
-			this.dataGridTextBoxColumn16.MappingName = "Kuerzel";
-			this.dataGridTextBoxColumn16.Width = 45;
-			// 
-			// dataGridTextBoxColumn17
-			// 
-			this.dataGridTextBoxColumn17.Format = "";
-			this.dataGridTextBoxColumn17.FormatInfo = null;
-			this.dataGridTextBoxColumn17.HeaderText = "Anrede";
-			this.dataGridTextBoxColumn17.MappingName = "Anrede";
-			this.dataGridTextBoxColumn17.Width = 55;
-			// 
-			// dataGridTextBoxColumn18
-			// 
-			this.dataGridTextBoxColumn18.Format = "";
-			this.dataGridTextBoxColumn18.FormatInfo = null;
-			this.dataGridTextBoxColumn18.HeaderText = "Name";
-			this.dataGridTextBoxColumn18.MappingName = "Name";
-			this.dataGridTextBoxColumn18.Width = 105;
-			// 
-			// dataGridTextBoxColumn25
-			// 
-			this.dataGridTextBoxColumn25.Format = "";
-			this.dataGridTextBoxColumn25.FormatInfo = null;
-			this.dataGridTextBoxColumn25.HeaderText = "Vorname";
-			this.dataGridTextBoxColumn25.MappingName = "Vorname";
-			this.dataGridTextBoxColumn25.Width = 80;
-			// 
-			// dataGridTextBoxColumn21
-			// 
-			this.dataGridTextBoxColumn21.Format = "";
-			this.dataGridTextBoxColumn21.FormatInfo = null;
-			this.dataGridTextBoxColumn21.HeaderText = "Strasse";
-			this.dataGridTextBoxColumn21.MappingName = "Strasse";
-			this.dataGridTextBoxColumn21.Width = 135;
-			// 
-			// dataGridTextBoxColumn19
-			// 
-			this.dataGridTextBoxColumn19.Format = "";
-			this.dataGridTextBoxColumn19.FormatInfo = null;
-			this.dataGridTextBoxColumn19.HeaderText = "PLZ";
-			this.dataGridTextBoxColumn19.MappingName = "PLZ";
-			this.dataGridTextBoxColumn19.Width = 45;
-			// 
-			// dataGridTextBoxColumn20
-			// 
-			this.dataGridTextBoxColumn20.Format = "";
-			this.dataGridTextBoxColumn20.FormatInfo = null;
-			this.dataGridTextBoxColumn20.HeaderText = "Ort";
-			this.dataGridTextBoxColumn20.MappingName = "Ort";
-			this.dataGridTextBoxColumn20.Width = 75;
-			// 
-			// dataGridTextBoxColumn22
-			// 
-			this.dataGridTextBoxColumn22.Format = "";
-			this.dataGridTextBoxColumn22.FormatInfo = null;
-			this.dataGridTextBoxColumn22.HeaderText = "Telefon";
-			this.dataGridTextBoxColumn22.MappingName = "Telefon";
-			this.dataGridTextBoxColumn22.Width = 102;
-			// 
-			// dataGridTextBoxColumn23
-			// 
-			this.dataGridTextBoxColumn23.Format = "";
-			this.dataGridTextBoxColumn23.FormatInfo = null;
-			this.dataGridTextBoxColumn23.HeaderText = "Fax";
-			this.dataGridTextBoxColumn23.MappingName = "Fax";
-			this.dataGridTextBoxColumn23.Width = 102;
-			// 
-			// dataGridTextBoxColumn24
-			// 
-			this.dataGridTextBoxColumn24.Format = "";
-			this.dataGridTextBoxColumn24.FormatInfo = null;
-			this.dataGridTextBoxColumn24.HeaderText = "eMail";
-			this.dataGridTextBoxColumn24.MappingName = "eMail";
-			this.dataGridTextBoxColumn24.Width = 125;
-			// 
-			// gBox_PosÜbersicht
-			// 
-			this.gBox_PosÜbersicht.Controls.Add(this.gBox_PosBeschränken);
-			this.gBox_PosÜbersicht.Controls.Add(this.button_Übersicht_Pos_Anzeigen);
-			this.gBox_PosÜbersicht.Location = new System.Drawing.Point(16, 16);
-			this.gBox_PosÜbersicht.Name = "gBox_PosÜbersicht";
-			this.gBox_PosÜbersicht.Size = new System.Drawing.Size(456, 128);
-			this.gBox_PosÜbersicht.TabIndex = 1;
-			this.gBox_PosÜbersicht.TabStop = false;
-			this.gBox_PosÜbersicht.Text = "Positions-Übersicht";
-			// 
-			// gBox_PosBeschränken
-			// 
-			this.gBox_PosBeschränken.Controls.Add(this.radio_Z);
-			this.gBox_PosBeschränken.Controls.Add(this.radio_M);
-			this.gBox_PosBeschränken.Controls.Add(this.radio_F);
-			this.gBox_PosBeschränken.Location = new System.Drawing.Point(264, 16);
-			this.gBox_PosBeschränken.Name = "gBox_PosBeschränken";
-			this.gBox_PosBeschränken.Size = new System.Drawing.Size(176, 104);
-			this.gBox_PosBeschränken.TabIndex = 1;
-			this.gBox_PosBeschränken.TabStop = false;
-			this.gBox_PosBeschränken.Text = "Beschränkung auf:";
-			// 
-			// radio_Z
-			// 
-			this.radio_Z.Location = new System.Drawing.Point(24, 72);
-			this.radio_Z.Name = "radio_Z";
-			this.radio_Z.Size = new System.Drawing.Size(130, 24);
-			this.radio_Z.TabIndex = 2;
-			this.radio_Z.Text = "Z - Zusatzpositionen";
-			// 
-			// radio_M
-			// 
-			this.radio_M.Location = new System.Drawing.Point(24, 44);
-			this.radio_M.Name = "radio_M";
-			this.radio_M.Size = new System.Drawing.Size(100, 24);
-			this.radio_M.TabIndex = 1;
-			this.radio_M.Text = "M - Maurer";
-			// 
-			// radio_F
-			// 
-			this.radio_F.Checked = true;
-			this.radio_F.Location = new System.Drawing.Point(24, 16);
-			this.radio_F.Name = "radio_F";
-			this.radio_F.TabIndex = 0;
-			this.radio_F.TabStop = true;
-			this.radio_F.Text = "F - Fliesenleger";
-			// 
-			// button_Übersicht_Pos_Anzeigen
-			// 
-			this.button_Übersicht_Pos_Anzeigen.Location = new System.Drawing.Point(24, 24);
-			this.button_Übersicht_Pos_Anzeigen.Name = "button_Übersicht_Pos_Anzeigen";
-			this.button_Übersicht_Pos_Anzeigen.Size = new System.Drawing.Size(216, 32);
-			this.button_Übersicht_Pos_Anzeigen.TabIndex = 0;
-			this.button_Übersicht_Pos_Anzeigen.Text = "Positionen Anzeigen";
-			this.button_Übersicht_Pos_Anzeigen.Click += new System.EventHandler(this.button_Übersicht_Pos_Anzeigen_Click);
-			// 
-			// gBox_KundenÜbersicht
-			// 
-			this.gBox_KundenÜbersicht.Controls.Add(this.button4);
-			this.gBox_KundenÜbersicht.Controls.Add(this.button_Übersicht_alle_Kunden);
-			this.gBox_KundenÜbersicht.Location = new System.Drawing.Point(496, 16);
-			this.gBox_KundenÜbersicht.Name = "gBox_KundenÜbersicht";
-			this.gBox_KundenÜbersicht.Size = new System.Drawing.Size(480, 128);
-			this.gBox_KundenÜbersicht.TabIndex = 0;
-			this.gBox_KundenÜbersicht.TabStop = false;
-			this.gBox_KundenÜbersicht.Text = "Kunden-Übersicht";
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(24, 80);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(208, 32);
-			this.button4.TabIndex = 1;
-			this.button4.Text = "Alle Vorgänge anzeigen";
-			// 
-			// button_Übersicht_alle_Kunden
-			// 
-			this.button_Übersicht_alle_Kunden.Location = new System.Drawing.Point(24, 24);
-			this.button_Übersicht_alle_Kunden.Name = "button_Übersicht_alle_Kunden";
-			this.button_Übersicht_alle_Kunden.Size = new System.Drawing.Size(208, 32);
-			this.button_Übersicht_alle_Kunden.TabIndex = 0;
-			this.button_Übersicht_alle_Kunden.Text = "Alle Kunden anzeigen";
-			this.button_Übersicht_alle_Kunden.Click += new System.EventHandler(this.button_Übersicht_alle_Kunden_Click);
-			// 
 			// MainFrame
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1687,11 +1293,6 @@ namespace Layer8_CSW
 			((System.ComponentModel.ISupportInitialize)(this.dataGrid_Vorgang)).EndInit();
 			this.Zahlung.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
-			this.Übersicht.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.DG_Übersicht)).EndInit();
-			this.gBox_PosÜbersicht.ResumeLayout(false);
-			this.gBox_PosBeschränken.ResumeLayout(false);
-			this.gBox_KundenÜbersicht.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1704,6 +1305,7 @@ namespace Layer8_CSW
 		static void Main() 
 		{
 			Application.Run(new MainFrame());
+
 		   
 		}
 
@@ -1735,11 +1337,7 @@ namespace Layer8_CSW
 			TT_Kundenseite.SetToolTip(this.txtbox_Name, "Der Nachname des aktuellen Kunden");
 			TT_Kundenseite.SetToolTip(this.txtbox_Vorname, "Der Vorname des aktuellen Kunden");
 			
-			// TableStyles für das Übersichts-DataGrid, hab ich aus der Initialize Component kopiert
-			this.dataGridTableStyle3.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
-			this.dataGridTableStyle4.GridColumnStyles.AddRange(new System.Windows.Forms.DataGridColumnStyle[] { this.dataGridTextBoxColumn8,this.dataGridTextBoxColumn9,this.dataGridTextBoxColumn10,this.dataGridTextBoxColumn11,this.dataGridTextBoxColumn12,this.dataGridTextBoxColumn13,this.dataGridTextBoxColumn14});
 			
-		
 		}
 
 
@@ -1832,10 +1430,9 @@ namespace Layer8_CSW
 					String kuerz;
 					kuerz = this.txtbox_Kürzel.Text;
 				
-					Kunde temp = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
-					if (temp != null)
+					VG.UnserKunde = UnsereDb.Kunde_suchen_nach_Kuerzel(kuerz);	// CSW 17.10.03 14:30 "K" in Unser Kunde geändert/ DB zu ner Public Variablen  von Mainframe gemacht und diese bei Form1.Load initialisieren lassen
+					if (VG.UnserKunde != null)
 					{
-						VG.UnserKunde = temp;
 						kunde_Anzeigen(VG.UnserKunde);
 					}
 					else MessageBox.Show("Kunde nicht gefunden");
@@ -2066,9 +1663,8 @@ namespace Layer8_CSW
 				UnsereDb.Kunde_aendern_Strasse(this.txtbox_Strasse.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Vorname(this.txtbox_Vorname.Text, VG.UnserKunde);
 				UnsereDb.Kunde_aendern_Tel(this.txtbox_Telefonnummer.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);
-				UnsereDb.Kunde_aendern_Anrede(VG.UnserKunde.Anrede, VG.UnserKunde);
+				// UnsereDb.Kunde_aendern_Fax(this.txtbox_Fax.Text, VG.UnserKunde);			Casi ich will sie haben!
+				// UnsereDb.Kunde_aendern_Email(this.txtbox_Email.Text, VG.UnserKunde);		Casi ich will sie haben!
 				this.alle_kunden_textboxen_auf_read();
 				// }
 			}
@@ -2343,7 +1939,7 @@ namespace Layer8_CSW
 		{
 			Dialog_Fläche Dialog_F = new Dialog_Fläche();
 			Dialog_F.ShowDialog();				// Modale Darstellung
-			
+
 			if (Dialog_F.DialogResult==DialogResult.OK)		// Dialog über OK beendet
 			{	
 				string msg_boxFläche = "Folgende Fläche wurde eingeben: ";
@@ -2498,100 +2094,6 @@ namespace Layer8_CSW
 			LBox_Kunde.Visible=false;
 		}
 
-		private void button_allePositionen_Click(object sender, System.EventArgs e)
-		{
-			Dialog_Positionen DialogPos = new Dialog_Positionen();
-			DialogPos.ShowDialog();
-
-		}
-
-		private void cbox_Anrede_Leave(object sender, System.EventArgs e)
-		{
-			if (this.bearbeiten_flag)
-			{
-				if (this.cbox_Anrede.SelectedIndex == 0)
-					VG.UnserKunde.Anrede = "Herr";
-				if (this.cbox_Anrede.SelectedIndex == 1)
-					VG.UnserKunde.Anrede = "Frau";
-				else if (this.cbox_Anrede.SelectedIndex == 2)
-					VG.UnserKunde.Anrede = "Firma";
-
-				this.kunde_Anzeigen(VG.UnserKunde);
-			}
-		}
-
-		private void button_Übersicht_alle_Kunden_Click(object sender, System.EventArgs e)
-		{	// Statt einem DataSet übernehme ich hier ein DataView, damit ich die Zeilen Sortieren kann
-			DG_Übersicht.Enabled =false;
-			DataView KundenView = new DataView(UnsereDb.alle_Kunden_ausgebenDS().Tables[0]);
-			KundenView.Sort="Kundennr";
-			DG_Übersicht.SetDataBinding(KundenView,null);
-			DG_Übersicht.Enabled =true;
-		}
-
-		private void button_Übersicht_Pos_Anzeigen_Click(object sender, System.EventArgs e)
-		{
-		if (radio_F.Checked)
-			DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"FPos");
-		else if (radio_M.Checked)
-			DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"MPos");
-		else
-			DG_Übersicht.SetDataBinding(UnsereDb.alle_Postionen_ausgebenDS(),"ZPos");
-
-		}
-
-		private void DG_Übersicht_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{	cMenu_KundenDG.MenuItems.Clear();
-				cMenu_KundenDG_Anlegen(); // Standard-Elemente
-				if(DG_Übersicht.HitTest(e.X,e.Y).Type.ToString()=="Cell")
-				{
-						
-					
-					cMenu_KundenDG.MenuItems.Add("-");
-					cMenu_KundenDG.MenuItems.Add("Position übernehmen (Dummy)");
-				}
-				cMenu_KundenDG.Show(DG_Übersicht,new Point(e.X,e.Y));
-			}
-		}
-
-		private void cMenu_KundenDG_Anlegen()
-		{
-		
-		cMenu_KundenDG.MenuItems.Add("alle Kunden",new System.EventHandler(this.button_Übersicht_alle_Kunden_Click));
-		cMenu_KundenDG.MenuItems.Add("-");
-		cMenu_KundenDG.MenuItems.Add("Fliesenleger-Positionen anzeigen",new System.EventHandler(FPos_dummy));	
-		cMenu_KundenDG.MenuItems.Add("Maurer-Positionen anzeigen",new System.EventHandler(MPos_dummy));	
-		cMenu_KundenDG.MenuItems.Add("Zusatz-Positionen anzeigen",new System.EventHandler(ZPos_dummy));	
-		}
-		
-		private void FPos_dummy(object sender, System.EventArgs e)
-		{
-		DG_Übersicht.Enabled =false;
-		radio_F.Checked=true;
-		this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-		DG_Übersicht.Enabled =true;	
-
-		}
-		private void MPos_dummy(object sender, System.EventArgs e)
-		{
-			DG_Übersicht.Enabled =false;
-			radio_M.Checked=true;
-			this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-			DG_Übersicht.Enabled =true;
-
-		}
-		private void ZPos_dummy(object sender, System.EventArgs e)
-		{	DG_Übersicht.Enabled =false;
-			radio_Z.Checked=true;
-			this.button_Übersicht_Pos_Anzeigen_Click(sender, e);
-			DG_Übersicht.Enabled =true;
-			
-
-		}
-
-		
 	}
 
 
@@ -3536,19 +3038,19 @@ public class Position
 			return Verzeichnis;
 		}
 		public DataSet alle_Kunden_ausgebenDS()
-			/// Diese Methode erfordert keinen Übergabewert, sie liefert alle in der DB 
-			/// gespeicherten Kunden in einem dataSet nur für Waller zurück.
+		/// Diese Methode erfordert keinen Übergabewert, sie liefert alle in der DB 
+		/// gespeicherten Kunden in einem dataSet nur für Waller zurück.
 		{
 		
 		
 			DataSet myDataSet = new DataSet("Kunden");
-			//MessageBox.Show("DataSet erzeugt"); glaube ich Dir auch
+		
 			DataTable Kunden = myDataSet.Tables.Add("Kunden");
-			Kunden.Columns.Add("Kundennr",typeof(int));
-			Kunden.Columns.Add("Kuerzel",typeof(string));
+            Kunden.Columns.Add("Kundennummer",typeof(int));
+            Kunden.Columns.Add("Kuerzel",typeof(string));
 			Kunden.Columns.Add("Firma",typeof(string));
 			Kunden.Columns.Add("Anrede",typeof(string));
-			Kunden.Columns.Add("Name",typeof(string));
+            Kunden.Columns.Add("Name",typeof(string));
 			Kunden.Columns.Add("Vorname",typeof(string));
 			Kunden.Columns.Add("Strasse",typeof(string));
 			Kunden.Columns.Add("Ort",typeof(string));
@@ -3559,28 +3061,27 @@ public class Position
 			Kunden.Columns.Add("Telefon",typeof(string));
 			Kunden.Columns.Add("Fax",typeof(string));
 			Kunden.Columns.Add("eMail",typeof(string));
-			Kunden.PrimaryKey = new DataColumn[]{Kunden.Columns["Kundennr"]};
-			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM Kunde",myconnection);
+			Kunden.PrimaryKey = new DataColumn[]{Kunden.Columns["Kundenummer"]};
+            OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM Kunde",myconnection);
 			try
 			{
 				myDataAdapter.Fill(myDataSet,"Kunden");
 			}
-			catch(Exception ex)
-			{
+		catch(Exception ex){
 				
 				MessageBox.Show(""+ex);
-				return null;
+			    return null;
 			}
 		
-			
+		
 			return myDataSet;
 		}
 		public DataSet alle_Postionen_ausgebenDS()
-		{
+			{
 		
 		
 			DataSet myDataSet = new DataSet("Positionen");
-			//MessageBox.Show("DataSet erzeugt"); glaube ich Dir
+
 			DataTable MPos = myDataSet.Tables.Add("MPos");
 			DataTable FPos = myDataSet.Tables.Add("FPos");
 			DataTable ZPos = myDataSet.Tables.Add("ZPos");
@@ -3627,9 +3128,9 @@ public class Position
 		    
 			
 			
-//			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
-//			MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
-//			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
+			MessageBox.Show(""+MPos.Rows[0]["PosNummer"]);
+		   MessageBox.Show(""+FPos.Rows[0]["PosNummer"]);
+			MessageBox.Show(""+ZPos.Rows[0]["PosNummer"]);
 
 			return myDataSet;
 		}
@@ -3847,7 +3348,7 @@ public class Position
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
 		
-		public int Kunde_aendern_Name(string name,Kunde k)
+        public int Kunde_aendern_Name(string name,Kunde k)
 		{
 			/// Diese Methode schreibt den neuen Namen(Heirat?) des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -3955,7 +3456,7 @@ public class Position
 			return änderungen;
 		}
 		
-		public int Kunde_aendern_Bank(string Bank,Kunde k)
+        public int Kunde_aendern_Bank(string Bank,Kunde k)
 		{
 			/// Diese Methode schreibt den neue Bank des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -3987,7 +3488,7 @@ public class Position
 			return änderungen;
 		}
 		
-		public int Kunde_aendern_Fax(string Fax,Kunde k)
+        public int Kunde_aendern_Fax(string Fax,Kunde k)
 		{
 			/// Diese Methode schreibt die neue Faxnummer(Irrtum beim ersten Eintrag?) des referenzierten Kunden in die Datenbank.
 			int änderungen=0; 
@@ -4033,7 +3534,7 @@ public class Position
 
 		public int Neuer_Kunde_Anlegen(Kunde K)
 		{
-			int count=0;
+		    int count=0;
 			int änderungen =0;
 			Kunde myKunde = K;
 			OleDbCommand PS = new OleDbCommand("SELECT * FROM Kunde", myconnection);
@@ -4050,7 +3551,7 @@ public class Position
 			{
 				count++;
 			}
-			dataReaderPS.Close();
+            dataReaderPS.Close();
 			OleDbCommand Kunde_anlegen= null ;
 			try	
 			{	
@@ -4071,17 +3572,15 @@ public class Position
 				Kunde_löschen= new OleDbCommand("DELETE FROM Kunde WHERE Kundennr="+myKunde.Kundennummer+"" ,myconnection);
 				änderungen =Kunde_löschen.ExecuteNonQuery();
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(""+ex);
-				return 0;}
+			catch (Exception ex){MessageBox.Show(""+ex);
+			return 0;}
 			return änderungen;
 		
 		}
         
 
 
-		public Position Pos_suchen_nach_Posnummer (string Pos)
+        public Position Pos_suchen_nach_Posnummer (string Pos)
 		{
        
 			Position myPos = new Position();
@@ -4091,10 +3590,8 @@ public class Position
 			{	
 				dataReader4 = suchePos.ExecuteReader();
 			}
-			catch(Exception ex)
-			{
-				MessageBox.Show(""+ex);
-				return null;
+			catch(Exception ex){MessageBox.Show(""+ex);
+			return null;
 			}
 		
 			if(dataReader4.Read())
@@ -4136,10 +3633,8 @@ public class Position
 			{
 				dataReaderPS = PS.ExecuteReader();
 			}
-			catch(Exception ex)
-			{
-				MessageBox.Show(""+ex);
-				return "";}
+			catch(Exception ex){MessageBox.Show(""+ex);
+			return "";}
 		
 			while (dataReaderPS.Read())
 			{
@@ -4176,7 +3671,7 @@ public class Position
 		
 		public int VorgangKunde_in_DB_schreiben(Vorgang V)
 		{
-			/// Diese Methode schreibt, den Namen des übergebenen Vorgangs und den zugehörigen Kunden in die DB.
+			/// Diese Methode schreibt, den Namen des übergebenen Vorganmgs und den zugehörigen Kunden in die DB.
 			/// Die Methode liefert einen int zurück, der die Anzahl der geänderten Datensätze beschreibt.
 			/// 
  
@@ -4209,16 +3704,14 @@ public class Position
 			catch (Exception ex){MessageBox.Show(""+ex);}
 			return änderungen;}
 
-		
-		
 		public string[] alle_Vorgaenge_eines_Kunde_ausgeben (Kunde K)
 			/// 
 		{
 			int count=0;
-			Kunde myKunde = K;
+		   Kunde myKunde = K;
 			
 			OleDbCommand sucheAlleVorgänge= new OleDbCommand("SELECT * FROM KundeVorgang WHERE Kundennr="+myKunde.Kundennummer+"", myconnection);
-			OleDbDataReader dataReaderCount = null;
+		OleDbDataReader dataReaderCount = null;
 		
 			try 
 			{
@@ -4226,13 +3719,12 @@ public class Position
 			}
 			catch(Exception ex){MessageBox.Show(""+ex);}
 		
-			while (dataReaderCount.Read())
-			{
-				count++;
+			while (dataReaderCount.Read()){
+			count++;
 			}
 			dataReaderCount.Close();
-			string[] Vorgänge =new string[count];
-			count=0;
+			 string[] Vorgänge =new string[count];
+            count=0;
 			OleDbDataReader dataReaderAV = null;
 		
 			try 
@@ -4245,7 +3737,7 @@ public class Position
 			{
 				if (!(dataReaderAV.IsDBNull(1)))
 					Vorgänge[count] = dataReaderAV.GetString(1);
-				count++;
+					count++;
 			}
 
 			dataReaderAV.Close();
@@ -4254,7 +3746,35 @@ public class Position
 		}
 
 		
+	
+		public DataSet alle_Vorgaenge_eines_Kunden_ausgeben()
+			
+		{
 		
+		
+			DataSet myDataSet = new DataSet("KundenVorgaenge");
+			DataTable KundenVorgaenge = myDataSet.Tables.Add("KundenVorgaenge");
+			KundenVorgaenge.Columns.Add("Kundenummer",typeof(int));
+			KundenVorgaenge.Columns.Add("Vorgang",typeof(string));
+			KundenVorgaenge.Columns.Add("Index",typeof(int));
+			KundenVorgaenge.PrimaryKey = new DataColumn[]{KundenVorgaenge.Columns["Index"]};
+			OleDbDataAdapter myDataAdapter = new OleDbDataAdapter("SELECT *  FROM KundeVorgang",myconnection);
+			try
+			{
+				myDataAdapter.Fill(myDataSet,"KundenVorgaenge");
+			}
+			catch(Exception ex)
+			{
+				
+				MessageBox.Show(""+ex);
+				return null;
+			}
+		
+		
+			return myDataSet;
+		}
+
+
 		#endregion
 
 	
